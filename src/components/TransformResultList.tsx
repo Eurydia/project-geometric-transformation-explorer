@@ -52,9 +52,11 @@ export const TransformResultList: FC<Props> = memo(
         );
       }
 
-      return `\\begin{align} 
-      ${items.join("\\\\")} 
-      \\end{align}`;
+      return items.length > 0
+        ? `\\begin{align} 
+      ${items.join(`\\\\`)} 
+      \\end{align}`
+        : "";
     }, [result]);
 
     const centerReady = useMemo(() => {
@@ -146,16 +148,12 @@ export const TransformResultList: FC<Props> = memo(
           disablePadding
         >
           <ListItemText disableTypography>
-            <MathJax dynamic>
-              {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-              {preparedResult}
+            <MathJax>
+              {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ${preparedResult}`}
             </MathJax>
           </ListItemText>
         </ListItem>
       </List>
     );
-  },
-  (prev, next) => {
-    return prev.result === next.result;
   }
 );

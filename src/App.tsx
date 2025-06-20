@@ -52,6 +52,7 @@ export const App = () => {
       keypad: false, // hide the on-screen keypad
       settingsMenu: false, // hide the wrench menu
     });
+
     return () => {
       if (desmosRef.current !== undefined) {
         desmosRef.current!.destroy();
@@ -64,6 +65,11 @@ export const App = () => {
     if (desmosRef.current === undefined) {
       return;
     }
+
+    if (result.center === undefined) {
+      return;
+    }
+
     desmosRef.current.removeExpressions(
       desmosRef.current
         .getExpressions()
@@ -71,8 +77,7 @@ export const App = () => {
         .filter((id) => id !== undefined)
         .map((id) => ({ id }))
     );
-
-    const { x, y } = data.center;
+    const { x, y } = result.center;
 
     desmosRef.current.setExpression({
       id: "pivot",
@@ -162,15 +167,15 @@ export const App = () => {
         });
       }
     }
-  }, [data.center, result]);
+  }, [result]);
 
   const handleSolve = useCallback(
     () =>
       setResult({
-        result: helper.getResult(),
+        result: structuredClone(helper.getResult()),
         direction: data.direction,
         angle: data.angle,
-        center: data.center,
+        center: structuredClone(data.center),
       }),
     [data.angle, data.center, data.direction, helper]
   );
