@@ -3,6 +3,7 @@ import { MathJaxContext } from "better-react-mathjax";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
+import "./main.css";
 import { theme } from "./theme";
 
 createRoot(document.getElementById("root")!).render(
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
           inlineMath: [["$", "$"]],
           displayMath: [["$$", "$$"]],
         },
+        ignoreHtmlClass: "no-mathjax",
       }}
       hideUntilTypeset="every"
     >

@@ -1,24 +1,21 @@
-import {
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { MathJax } from "better-react-mathjax";
+import { TextField } from "@mui/material";
 import type { FC } from "react";
 
 type Props = {
   value: string;
   onChange: (value: string) => unknown;
-  label: string;
+  error?: boolean;
 };
 export const NumberTextField: FC<Props> = ({
   value,
   onChange,
-  label,
+  error,
 }) => {
   return (
     <TextField
       fullWidth
+      size="small"
+      error={error}
       variant="outlined"
       value={value}
       onChange={(e) => onChange(e.target.value)}
@@ -27,18 +24,6 @@ export const NumberTextField: FC<Props> = ({
           inputMode: "numeric",
         },
         input: {
-          startAdornment: (
-            <InputAdornment position="start">
-              <Typography sx={{ userSelect: "none" }}>
-                <MathJax
-                  dynamic
-                  inline
-                >
-                  {label}
-                </MathJax>
-              </Typography>
-            </InputAdornment>
-          ),
           sx: { fontFamily: "monospace" },
         },
       }}

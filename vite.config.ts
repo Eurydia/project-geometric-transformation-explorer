@@ -5,6 +5,6 @@ import tspath from "vite-tsconfig-paths";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tspath()],
-  base: "/project-ayw-m2-rotation-calculator",
+  base: "/project-ayw-m2-rotation-calculator/",
 });
 

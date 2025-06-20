@@ -2,233 +2,314 @@ import {
   Box,
   Button,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Paper,
+  Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { MathJax } from "better-react-mathjax";
-import { useCallback, useState } from "react";
+import {
+  blue,
+  deepOrange,
+  grey,
+} from "@mui/material/colors";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { AngleInput } from "./components/AngleInput";
 import { CoordinateForm } from "./components/CoordinateForm";
-import { RotationSolver } from "./services/RotationSolver";
+import { DirectionInput } from "./components/DirectionInput";
+import { TransformResultList } from "./components/TransformResultList";
+import { useRotationGroup } from "./hooks/useRotationGroup";
+import type { Vec2D } from "./types";
 
 export const App = () => {
-  // useEffect(() => {
-  //   const elt = document.createElement("div");
-  //   elt.style.width = "600px";
-  //   elt.style.height = "400px";
+  const { data, handlers, helper } = useRotationGroup();
 
-  //   const calculator = Desmos.GraphingCalculator(elt, {
-  //     expressions: false, // hide the expression list
-  //     keypad: false, // hide the on-screen keypad
-  //     settingsMenu: false, // hide the wrench menu
-  //   });
-
-  //   calculator.setExpression({
-  //     id: "graph1",
-  //     latex: "y=x^2",
-  //   });
-
-  //   document.body.prepend(elt);
-  //   return () => elt.remove();
-  // }, []);
-  const [center, setCenter] = useState({
-    x: "0",
-    y: "0",
+  const desmosRef = useRef<Desmos.Calculator>(undefined);
+  const [result, setResult] = useState<{
+    center?: Vec2D<string>;
+    result: ReturnType<typeof helper.getResult>;
+    angle?: string;
+    direction: number;
+  }>({
+    result: [],
+    direction: 0,
   });
-  const [point, setPoint] = useState({
-    x: "1",
-    y: "1",
-  });
-  const [angle, setAngle] = useState("");
-  const [direction, setDirection] = useState(1);
 
-  const [result, setResult] = useState<
-    RotationSolver | undefined
-  >(undefined);
-
-  const handleSolve = useCallback(() => {
-    const e = new RotationSolver();
-    if (
-      e.withPoint(point) === undefined ||
-      e.withAngle(angle, direction) === undefined ||
-      e.withCenter(center) === undefined
-    ) {
-      setResult(undefined);
+  useEffect(() => {
+    const root = document.querySelector(
+      "#desmos-graph"
+    ) as HTMLDivElement | null;
+    if (root === null) {
       return;
     }
 
-    setResult(e.solve() ?? undefined);
-  }, [center, point, angle, direction]);
+    desmosRef.current = Desmos.GraphingCalculator(root, {
+      expressions: false, // hide the expression list
+      keypad: false, // hide the on-screen keypad
+      settingsMenu: false, // hide the wrench menu
+    });
+    return () => {
+      if (desmosRef.current !== undefined) {
+        desmosRef.current!.destroy();
+      }
+      desmosRef.current = undefined;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (desmosRef.current === undefined) {
+      return;
+    }
+    desmosRef.current.removeExpressions(
+      desmosRef.current
+        .getExpressions()
+        .map(({ id }) => id)
+        .filter((id) => id !== undefined)
+        .map((id) => ({ id }))
+    );
+
+    const { x, y } = data.center;
+
+    desmosRef.current.setExpression({
+      id: "pivot",
+      label: `\`P(${x}, ${y})\``,
+      showLabel: true,
+      points: true,
+      latex: `P = (${x}, ${y})`,
+      dragMode: "NONE",
+      color: grey.A700,
+    });
+    const primeCoords: string[] = [];
+    const pointCoords: string[] = [];
+    for (const [id, [point, prime]] of Object.entries(
+      result.result
+    )) {
+      const pointXStr = point.x.toLocaleString("fullwide", {
+        useGrouping: false,
+        maximumFractionDigits: 6,
+        notation: "standard",
+      });
+      const pointYStr = point.y.toLocaleString("fullwide", {
+        useGrouping: false,
+        maximumFractionDigits: 6,
+        notation: "standard",
+      });
+      const pointCoord = `\\left(${pointXStr}, ${pointYStr}\\right)`;
+      pointCoords.push(pointCoord);
+      desmosRef.current.setExpression({
+        id: `A${id}-point`,
+        showLabel: true,
+        label: `\`A_{${id}}${pointCoord}\``,
+        points: true,
+        latex: `A_{${id}} = ${pointCoord}`,
+        dragMode: "NONE",
+        color: blue.A200,
+      });
+
+      const primeXStr = prime.x.toLocaleString("fullwide", {
+        useGrouping: false,
+        maximumFractionDigits: 6,
+        notation: "standard",
+      });
+      const primeYStr = prime.y.toLocaleString("fullwide", {
+        useGrouping: false,
+        maximumFractionDigits: 6,
+        notation: "standard",
+      });
+      const primeCoord = `\\left(${primeXStr}, ${primeYStr}\\right)`;
+      primeCoords.push(primeCoord);
+      desmosRef.current.setExpression({
+        id: `A${id}-prime`,
+        showLabel: true,
+        label: `\`A^{\\prime}_{${id}}${primeCoord}\``,
+        points: true,
+        latex: primeCoord,
+        dragMode: "NONE",
+        color: deepOrange.A700,
+      });
+
+      desmosRef.current.setExpression({
+        id: `A${id}-circle`,
+        latex: `(x - P.x)^2 + (y - P.y)^2 = (A_{${id}}.x - P.x)^2 + (A_{${id}}.y - P.y)^2`,
+        dragMode: "NONE",
+        lineOpacity: 0.5,
+        color: grey.A700,
+      });
+      if (pointCoords.length === 3) {
+        desmosRef.current.setExpression({
+          id: `point-polygon`,
+          latex: `\\operatorname{polygon}\\left(${pointCoords.join(
+            ", "
+          )}\\right)`,
+          dragMode: "NONE",
+          fill: true,
+          color: blue.A200,
+          fillOpacity: 0.7,
+        });
+        desmosRef.current.setExpression({
+          id: `prime-polygon`,
+          latex: `\\operatorname{polygon}\\left(${primeCoords.join(
+            ","
+          )}\\right)`,
+          dragMode: "NONE",
+          color: deepOrange.A700,
+          fill: true,
+          fillOpacity: 0.7,
+        });
+      }
+    }
+  }, [data.center, result]);
+
+  const handleSolve = useCallback(
+    () =>
+      setResult({
+        result: helper.getResult(),
+        direction: data.direction,
+        angle: data.angle,
+        center: data.center,
+      }),
+    [data.angle, data.center, data.direction, helper]
+  );
 
   return (
-    <Box
-      sx={{
-        padding: 2,
-        maxWidth: "md",
-        margin: "auto",
-        display: "flex",
-        flexDirection: "column",
-        gap: 1,
-      }}
-    >
-      <Paper
-        variant="outlined"
-        sx={{ padding: 4 }}
-      >
-        <Grid
-          container
-          spacing={2}
-        >
-          <Grid size={6}>
-            <CoordinateForm
-              value={center}
-              onChange={setCenter}
-              label="จุดกำเนิด"
-            />
-          </Grid>
-          <Grid size={6}>
-            <CoordinateForm
-              value={point}
-              onChange={setPoint}
-              label="จุดที่จะหมุด"
-            />
-          </Grid>
-          <Grid size={12}>
-            <AngleInput
-              angle={angle}
-              onAngleChange={setAngle}
-              onDirectionChange={setDirection}
-              direction={direction}
-            />
-          </Grid>
-          <Grid size={12}>
-            <Toolbar
-              disableGutters
-              variant="dense"
+    <Box>
+      <Grid container>
+        <Grid size={{ md: 4 }}>
+          <Paper
+            square
+            variant="outlined"
+            sx={{
+              maxHeight: "100vh",
+              height: "100vh",
+              overflowY: "auto",
+              scrollbarGutter: "stable",
+              scrollbarWidth: "thin",
+            }}
+          >
+            <Stack
+              spacing={2}
+              sx={{ padding: 2 }}
             >
-              <Button
-                variant="contained"
-                disableElevation
-                disableRipple
-                onClick={handleSolve}
+              <Paper
+                variant="outlined"
+                square
+                sx={{
+                  padding: 2,
+                  flexDirection: "column",
+                  gap: 2,
+                  display: "flex",
+                }}
               >
-                {`คำนวณ`}
-              </Button>
-            </Toolbar>
-          </Grid>
+                <DirectionInput
+                  value={data.direction}
+                  onChange={handlers.setDirection}
+                />
+                <AngleInput
+                  value={data.angle}
+                  onChange={handlers.setAngle}
+                />
+                <CoordinateForm
+                  label="จุดหมุน $(x,y)$"
+                  value={data.center}
+                  onChange={handlers.setCenter}
+                />
+                {data.points.map(({ vec, id }) => {
+                  return (
+                    <Grid
+                      container
+                      key={`t-point-${id}`}
+                      spacing={0.5}
+                    >
+                      <Grid size={{ md: 10 }}>
+                        <CoordinateForm
+                          label={`พิกัดที่ ${id}`}
+                          value={vec}
+                          onChange={handlers.updatePointValue(
+                            id
+                          )}
+                        />
+                      </Grid>
+                      <Grid
+                        size={{ md: 2 }}
+                        sx={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          display: "flex",
+                        }}
+                      >
+                        <Button
+                          color="error"
+                          disabled={
+                            data.points.length === 1
+                          }
+                          disableElevation
+                          disableRipple
+                          onClick={handlers.removePoint(id)}
+                        >
+                          ลบ
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  );
+                })}
+                <Toolbar
+                  variant="dense"
+                  disableGutters
+                  sx={{
+                    justifyContent: "space-between",
+                    gap: 0.5,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    disableElevation
+                    disableRipple
+                    onClick={handleSolve}
+                  >
+                    คำนวณ
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    disableElevation
+                    disableRipple
+                    disabled={data.points.length >= 3}
+                    onClick={handlers.addPoint}
+                  >
+                    เพิ่มพิกัด
+                  </Button>
+                </Toolbar>
+              </Paper>
+              <Paper
+                square
+                sx={{ padding: 2 }}
+                variant="outlined"
+              >
+                <Typography variant="h5">
+                  {`ผลลัพธ์`}
+                </Typography>
+                <TransformResultList {...result} />
+              </Paper>
+            </Stack>
+          </Paper>
         </Grid>
-      </Paper>
-      {result !== undefined && (
-        <Paper
-          variant="outlined"
-          sx={{ padding: 4 }}
+        <Grid
+          size={{ md: 8 }}
+          sx={{ height: "100vh" }}
         >
-          <Typography
-            variant="h5"
-            component="div"
-            fontWeight={600}
-          >
-            {`ผลลัพท์การหมุน`}
-          </Typography>
-          <List
-            dense
-            disablePadding
-          >
-            <ListItem
-              dense
-              disableGutters
-              disablePadding
-            >
-              <ListItemText disableTypography>
-                <MathJax>{`จุดกำเนิด: $(
-                ${result.center!.x.toLocaleString(
-                  "fullwide",
-                  {
-                    maximumFractionDigits: 3,
-                    useGrouping: false,
-                  }
-                )},
-                 ${result.center!.y.toLocaleString(
-                   "fullwide",
-                   {
-                     maximumFractionDigits: 3,
-                     useGrouping: false,
-                   }
-                 )}
-                )$`}</MathJax>
-              </ListItemText>
-            </ListItem>
-            <ListItem
-              dense
-              disableGutters
-              disablePadding
-            >
-              <ListItemText disableTypography>
-                <MathJax>{`จุดหมุด: $(
-                ${result.point!.x.toLocaleString(
-                  "fullwide",
-                  {
-                    maximumFractionDigits: 3,
-                    useGrouping: false,
-                  }
-                )},
-                 ${result.point!.y.toLocaleString(
-                   "fullwide",
-                   {
-                     maximumFractionDigits: 3,
-                     useGrouping: false,
-                   }
-                 )}
-                )$`}</MathJax>
-              </ListItemText>
-            </ListItem>
-            <ListItem
-              dense
-              disableGutters
-              disablePadding
-            >
-              <ListItemText disableTypography>
-                <MathJax>{`องศา: $
-                ${(
-                  (result.angle! * 180) /
-                  Math.PI
-                ).toLocaleString("fullwide", {
-                  maximumFractionDigits: 3,
-                  useGrouping: false,
-                })}^{\\circ}$`}</MathJax>
-              </ListItemText>
-            </ListItem>
-            <ListItem
-              dense
-              disableGutters
-              disablePadding
-            >
-              <ListItemText disableTypography>
-                <MathJax>{`ผลลัพท์: $(
-                ${result.result!.x.toLocaleString(
-                  "fullwide",
-                  {
-                    maximumFractionDigits: 3,
-                    useGrouping: false,
-                  }
-                )},
-                 ${result.result!.y.toLocaleString(
-                   "fullwide",
-                   {
-                     maximumFractionDigits: 3,
-                     useGrouping: false,
-                   }
-                 )}
-                )$`}</MathJax>
-              </ListItemText>
-            </ListItem>
-          </List>
-        </Paper>
-      )}
+          <div
+            id="desmos-graph"
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        </Grid>
+      </Grid>
     </Box>
   );
 };

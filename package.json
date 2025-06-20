@@ -7,18 +7,16 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist -b gh-pages"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^7.1.2",
-    "chart.js": "^4.5.0",
-    "chartjs-plugin-annotation": "^3.1.0",
     "react": "^19.1.0",
-    "react-chartjs-2": "^5.3.0",
-    "react-dom": "^19.1.0",
-    "victory": "^37.3.6"
+    "desmos": "^1.5.4",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
@@ -28,7 +26,6 @@
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
     "better-react-mathjax": "^2.3.0",
-    "desmos": "^1.5.4",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
@@ -40,3 +37,4 @@
     "vite-tsconfig-paths": "^5.1.4"
   }
 }
+

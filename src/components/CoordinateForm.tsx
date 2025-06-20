@@ -1,71 +1,68 @@
+import { validateNum } from "@/hooks/useRotationGroup";
+import type { Vec2D } from "@/types";
 import { Grid, Typography } from "@mui/material";
-import { memo, useMemo, type FC } from "react";
-import { ErrorList } from "./ErrorList";
+import { MathJax } from "better-react-mathjax";
+import { memo, useCallback, useMemo, type FC } from "react";
 import { NumberTextField } from "./NumberTextField";
 
 type Props = {
   label?: string;
-  value: { x: string; y: string };
-  onChange: (
-    callback: (prev: { x: string; y: string }) => {
-      x: string;
-      y: string;
-    }
-  ) => unknown;
+  value: Vec2D<string>;
+  onChange: (value: Vec2D<string>) => unknown;
 };
 export const CoordinateForm: FC<Props> = memo(
   ({ value, onChange, label }) => {
-    const errors = useMemo(() => {
-      const _errors: string[] = [];
-
-      if (isNaN(Number(value.x))) {
-        _errors.push(`พิกัด $x$ ไม่ถูกต้อง`);
-      }
-      if (isNaN(Number(value.y))) {
-        _errors.push(`พิกัด $y$ ไม่ถูกต้อง`);
-      }
-      return _errors;
+    const error = useMemo(() => {
+      return {
+        x: !validateNum(value.x),
+        y: !validateNum(value.y),
+      };
     }, [value]);
+
+    const handleXChange = useCallback(
+      (x: string) => {
+        onChange({ x, y: value.y });
+      },
+      [value.y, onChange]
+    );
+    const handleYChange = useCallback(
+      (y: string) => {
+        onChange({ y, x: value.x });
+      },
+      [value.x, onChange]
+    );
 
     return (
       <Grid
         container
         spacing={1}
       >
-        {label !== undefined && (
-          <Grid size={12}>
-            <Typography>{label}</Typography>
-          </Grid>
-        )}
-        <Grid size={{ md: 6 }}>
+        <Grid
+          size={{ xs: 12, md: 4 }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Typography>
+            <MathJax dynamic>{label}</MathJax>
+          </Typography>
+        </Grid>
+        <Grid size={{ xs: 6, md: 4 }}>
           <NumberTextField
-            label="$x:$"
+            error={error.x}
             value={value.x}
-            onChange={(x) =>
-              onChange(({ y }) => ({
-                x,
-                y,
-              }))
-            }
+            onChange={handleXChange}
           />
         </Grid>
-        <Grid size={{ md: 6 }}>
+        <Grid size={{ md: 4, xs: 6 }}>
           <NumberTextField
-            label="$y:$"
+            error={error.y}
             value={value.y}
-            onChange={(y) =>
-              onChange(({ x }) => ({
-                y,
-                x,
-              }))
-            }
+            onChange={handleYChange}
           />
         </Grid>
-        {errors.length > 0 && (
-          <Grid size={12}>
-            <ErrorList errors={errors} />
-          </Grid>
-        )}
       </Grid>
     );
   }
