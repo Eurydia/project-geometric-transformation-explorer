@@ -14,6 +14,20 @@ import {
   type FC,
 } from "react";
 
+const FORMULAE = [
+  `$A(x,y)$ หมุนตามเข็มนาฬิกา $90^{\\circ}$ รอบจุดกำเนิด $(0,0)$: $$A'(y,-x)$$`,
+  `$A(x,y)$ หมุนทวนเข็มนาฬิกา $90^{\\circ}$ รอบจุดกำเนิด $(0,0)$: $$A'(-y,x)$$`,
+  `$A(x,y)$ หมุนตามหรือทวนเข็มนาฬิกา $180^{\\circ}$ รอบจุดกำเนิด $(0,0)$: $$A'(-x,-y)$$`,
+  `$A(x,y)$ หมุนตามเข็มนาฬิกา $270^{\\circ}$ รอบจุดกำเนิด $(0,0)$: $$A'(-y,x)$$`,
+  `$A(x,y)$ หมุนทวนเข็มนาฬิกา $270^{\\circ}$ รอบจุดกำเนิด $(0,0)$: $$A'(y,-x)$$`,
+
+  `$A(x,y)$ หมุนตามเข็มนาฬิกา $90^{\\circ}$ รอบจุดกำเนิด $(a,b)$: $$A'(a-b+y, b+a-x)$$`,
+  `$A(x,y)$ หมุนทวนเข็มนาฬิกา $90^{\\circ}$ รอบจุดกำเนิด $(a,b)$: $$A'(a+b-y, b-a+x)$$`,
+  `$A(x,y)$ หมุนตามหรือทวนเข็มนาฬิกา $180^{\\circ}$ รอบจุดกำเนิด $(a,b)$: $$A'(2a-x,2b-y)$$`,
+  `$A(x,y)$ หมุนตามเข็มนาฬิกา $270^{\\circ}$ รอบจุดกำเนิด $(a,b)$: $$A'(a+b-y, b-a+x)$$`,
+  `$A(x,y)$ หมุนทวนเข็มนาฬิกา $270^{\\circ}$ รอบจุดกำเนิด $(a,b)$: $$A'(a-b+y, b+a-x)$$`,
+] as const;
+
 export const FormulaBlog: FC = memo(() => {
   const [open, setOpen] = useState(false);
 
@@ -50,67 +64,27 @@ export const FormulaBlog: FC = memo(() => {
       </Stack>
       <Collapse in={open}>
         <List
-          dense
-          disablePadding
           sx={{
-            "pl": 4,
-            "listStyleType": "disc",
-            "& .MuiListItem-root": {
-              display: "list-item",
-            },
+            paddingLeft: 4,
+            listStyleType: "disc",
           }}
         >
-          <ListItem>
-            <ListItemText
-              slotProps={{ primary: { variant: "body1" } }}
-            >
-              <MathJax dynamic>
-                {`$A(x,y)$ หมุนตามเข็มนาฬิกา $90^{\\circ}$ รอบจุดกำเนิด $(0,0)$:
-                  $$A'(y,-x)$$`}
-              </MathJax>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              slotProps={{ primary: { variant: "body1" } }}
-            >
-              <MathJax dynamic>
-                {`$A(x,y)$ หมุนทวนเข็มนาฬิกา $90^{\\circ}$ รอบจุดกำเนิด $(0,0)$:
-                  $$A'(-y,x)$$
-                `}
-              </MathJax>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              slotProps={{ primary: { variant: "body1" } }}
-            >
-              <MathJax dynamic>
-                {`$A(x,y)$ หมุนตามหรือทวนเข็มนาฬิกา $180^{\\circ}$ รอบจุดกำเนิด $(0,0)$:
-                  $$A'(-x,-y)$$`}
-              </MathJax>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              slotProps={{ primary: { variant: "body1" } }}
-            >
-              <MathJax dynamic>
-                {`$A(x,y)$ หมุนตามเข็มนาฬิกา $270^{\\circ}$ รอบจุดกำเนิด $(0,0)$:
-                  $$A'(-y,x)$$`}
-              </MathJax>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              slotProps={{ primary: { variant: "body1" } }}
-            >
-              <MathJax dynamic>
-                {`$A(x,y)$ หมุนทวนเข็มนาฬิกา $270^{\\circ}$ รอบจุดกำเนิด $(0,0)$:
-                  $$A'(y,-x)$$`}
-              </MathJax>
-            </ListItemText>
-          </ListItem>
+          {FORMULAE.map((eq, index) => {
+            return (
+              <ListItem
+                key={`eq-${index}`}
+                sx={{ display: "list-item" }}
+              >
+                <ListItemText
+                  slotProps={{
+                    primary: { variant: "body1" },
+                  }}
+                >
+                  <MathJax dynamic>{eq}</MathJax>
+                </ListItemText>
+              </ListItem>
+            );
+          })}
         </List>
       </Collapse>
     </Stack>

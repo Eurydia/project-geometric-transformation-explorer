@@ -4,12 +4,21 @@ import {
 } from "@/hooks/useRotationGroup";
 import type { Vec2D } from "@/types";
 import {
+  Collapse,
   List,
   ListItem,
   ListItemText,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
-import { memo, useMemo, type FC } from "react";
+import {
+  memo,
+  useCallback,
+  useMemo,
+  useState,
+  type FC,
+} from "react";
 
 type Props = {
   data:
@@ -69,56 +78,92 @@ export const TransformResultList: FC<Props> = memo(
         : `ตามเข็มนาฬิกา`;
     }, [data]);
 
+    const [open, setOpen] = useState(false);
+
+    const handleToggle = useCallback(
+      () => setOpen((prev) => !prev),
+      []
+    );
     return (
-      <List
-        dense
-        disablePadding
-      >
-        <ListItem
-          dense
-          disableGutters
-          disablePadding
+      <Stack>
+        <Stack
+          direction="row"
+          useFlexGap
+          flexWrap="wrap"
+          alignItems="center"
+          justifyContent="space-between"
         >
-          <ListItemText disableTypography>
-            <MathJax dynamic>
-              {`จุดหมุน: $${center}$`}
-            </MathJax>
-          </ListItemText>
-        </ListItem>
-        <ListItem
-          dense
-          disableGutters
-          disablePadding
-        >
-          <ListItemText disableTypography>
-            <MathJax dynamic>
-              {`ขนาดของมุมที่หมุน: $${angle}$`}
-            </MathJax>
-          </ListItemText>
-        </ListItem>
-        <ListItem
-          dense
-          disableGutters
-          disablePadding
-        >
-          <ListItemText disableTypography>
-            <MathJax dynamic>
-              {`ทิศทาง: ${direction}`}
-            </MathJax>
-          </ListItemText>
-        </ListItem>
-        <ListItem
-          dense
-          disableGutters
-          disablePadding
-        >
-          <ListItemText disableTypography>
-            <MathJax dynamic>
-              {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: \\begin{align} ${result}\\end{align} `}
-            </MathJax>
-          </ListItemText>
-        </ListItem>
-      </List>
+          <Typography
+            variant="h5"
+            component="div"
+            fontWeight={700}
+          >
+            {`ผลลัพธ์`}
+          </Typography>
+          <Typography
+            onClick={handleToggle}
+            sx={{
+              "&:hover": {
+                textDecorationLine: "underline",
+              },
+            }}
+          >
+            {open ? `(ซ่อน)` : `(แสดง)`}
+          </Typography>
+        </Stack>
+
+        <Collapse in={open}>
+          <List
+            dense
+            disablePadding
+          >
+            <ListItem
+              dense
+              disableGutters
+              disablePadding
+            >
+              <ListItemText disableTypography>
+                <MathJax dynamic>
+                  {`จุดหมุน: $${center}$`}
+                </MathJax>
+              </ListItemText>
+            </ListItem>
+            <ListItem
+              dense
+              disableGutters
+              disablePadding
+            >
+              <ListItemText disableTypography>
+                <MathJax dynamic>
+                  {`ขนาดของมุมที่หมุน: $${angle}$`}
+                </MathJax>
+              </ListItemText>
+            </ListItem>
+            <ListItem
+              dense
+              disableGutters
+              disablePadding
+            >
+              <ListItemText disableTypography>
+                <MathJax dynamic>
+                  {`ทิศทาง: ${direction}`}
+                </MathJax>
+              </ListItemText>
+            </ListItem>
+            <ListItem
+              dense
+              disableGutters
+              disablePadding
+            >
+              <ListItemText disableTypography>
+                <MathJax dynamic>
+                  {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: \\begin{align} ${result}\\end{align} `}
+                </MathJax>
+              </ListItemText>
+            </ListItem>
+          </List>
+        </Collapse>
+      </Stack>
     );
   }
 );

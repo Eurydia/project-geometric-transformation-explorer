@@ -31,10 +31,8 @@ import type { Vec2D } from "./types";
 
 export const App = () => {
   const { data, handlers, helper } = useRotationGroup();
-
   const { desmosRef, makePoint, makeCircle, makePolygon } =
     useDesmosGraph("#desmos-graph");
-
   const [result, setResult] = useState<
     | {
         center: Vec2D<number>;
@@ -148,7 +146,6 @@ export const App = () => {
             >
               {`การแปลงทางเรขาคณิต (การหมุน)`}
             </Typography>
-            <PropertyBlog />
             <Toolbar>
               <Button
                 variant="outlined"
@@ -223,14 +220,8 @@ export const App = () => {
                 เพิ่มพิกัด
               </Button>
             </Toolbar>
-            <Typography
-              variant="h5"
-              component="div"
-              fontWeight={700}
-            >
-              {`ผลลัพธ์`}
-            </Typography>
             <TransformResultList data={result} />
+            <PropertyBlog />
             <FormulaBlog />
             <AttributionBlog />
           </Paper>
