@@ -10,6 +10,23 @@ export const validateVec = ({ x, y }: Vec2D<string>) => {
   return validateNum(x) && validateNum(y);
 };
 
+export const formatNumber = (n: number) => {
+  return n.toLocaleString("fullwide", {
+    useGrouping: false,
+    maximumFractionDigits: 6,
+    notation: "standard",
+  });
+};
+
+export const formatVec = ({ x, y }: Vec2D<number>) => {
+  return { x: formatNumber(x), y: formatNumber(y) };
+};
+
+export const formatCoord = (vec: Vec2D<number>) => {
+  const { x, y } = formatVec(vec);
+  return `\\left(${x},${y}\\right)`;
+};
+
 export const parseVec = ({
   x,
   y,
@@ -123,6 +140,18 @@ export const useRotationGroup = () => {
     return result;
   }, [angle, center, direction, points]);
 
+  const reset = useCallback(() => {
+    setAngle("90");
+    setCenter({ x: "0", y: "0" });
+    setDirection(1);
+    setPoints((prev) =>
+      prev.map(({ id }) => ({
+        id,
+        vec: { x: "0", y: "0" },
+      }))
+    );
+  }, []);
+
   return {
     data: {
       angle,
@@ -138,6 +167,7 @@ export const useRotationGroup = () => {
       removePoint,
       updatePointValue,
       addPoint,
+      reset,
     },
     helper: {
       getResult,

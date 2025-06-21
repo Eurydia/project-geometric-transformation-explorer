@@ -1,7 +1,6 @@
 import {
-  parseVec,
-  validateNum,
-  validateVec,
+  formatCoord,
+  formatNumber,
 } from "@/hooks/useRotationGroup";
 import type { Vec2D } from "@/types";
 import {
@@ -13,88 +12,62 @@ import { MathJax } from "better-react-mathjax";
 import { memo, useMemo, type FC } from "react";
 
 type Props = {
-  center?: Vec2D<string>;
-  result: Record<number, [Vec2D<number>, Vec2D<number>]>;
-  angle?: string;
-  direction: number;
+  data:
+    | {
+        center: Vec2D<number>;
+        result: Record<
+          number,
+          [Vec2D<number>, Vec2D<number>]
+        >;
+        angle: number;
+        direction: number;
+      }
+    | undefined;
 };
 export const TransformResultList: FC<Props> = memo(
-  ({ angle, center, direction, result }) => {
-    const preparedResult = useMemo(() => {
-      const items: string[] = [];
-      for (const [
-        { x, y },
-        { x: px, y: py },
-      ] of Object.values(result)) {
-        const xstr = x.toLocaleString("fullwide", {
-          notation: "standard",
-          maximumFractionDigits: 6,
-          useGrouping: false,
-        });
-        const ystr = y.toLocaleString("fullwide", {
-          notation: "standard",
-          maximumFractionDigits: 6,
-          useGrouping: false,
-        });
-        const pystr = py.toLocaleString("fullwide", {
-          notation: "standard",
-          maximumFractionDigits: 6,
-          useGrouping: false,
-        });
-        const pxstr = px.toLocaleString("fullwide", {
-          notation: "standard",
-          maximumFractionDigits: 6,
-          useGrouping: false,
-        });
+  ({ data }) => {
+    const result = useMemo(() => {
+      if (data === undefined) {
+        return "-";
+      }
 
+      const items: string[] = [];
+      for (const [id, [preimg, img]] of Object.entries(
+        data.result
+      )) {
+        const preimgCoord = formatCoord(preimg);
+        const imgCoord = formatCoord(img);
+        const id_ = formatNumber(Number(id));
         items.push(
-          `(${xstr}, ${ystr}) &\\rightarrow (${pxstr},${pystr})`
+          `A_{${id_}}${preimgCoord} &\\rightarrow A_{${id_}}^{\\prime}${imgCoord}`
         );
       }
 
-      return items.length > 0
-        ? `\\begin{align} 
-      ${items.join(`\\\\`)} 
-      \\end{align}`
-        : "";
-    }, [result]);
+      return items.length > 0 ? items.join(`\\\\`) : "-";
+    }, [data]);
 
-    const centerReady = useMemo(() => {
-      const r = center !== undefined && validateVec(center);
-      if (!r) {
-        return { ready: false };
+    const center = useMemo(() => {
+      if (data === undefined) {
+        return "-";
       }
-      const { x, y } = parseVec(center);
-      return {
-        ready: true,
-        x: x.toLocaleString("fullwide", {
-          notation: "standard",
-          maximumFractionDigits: 6,
-          useGrouping: false,
-        }),
-        y: y.toLocaleString("fullwide", {
-          notation: "standard",
-          maximumFractionDigits: 6,
-          useGrouping: false,
-        }),
-      };
-    }, [center]);
+      return formatCoord(data.center);
+    }, [data]);
 
-    const angleReady = useMemo(() => {
-      const ready =
-        angle !== undefined && validateNum(angle);
-      if (!ready) {
-        return { ready };
+    const angle = useMemo(() => {
+      if (data === undefined) {
+        return "-";
       }
-      return {
-        ready,
-        angle: Number(angle).toLocaleString("fullwide", {
-          notation: "standard",
-          maximumFractionDigits: 6,
-          useGrouping: false,
-        }),
-      };
-    }, [angle]);
+      return `${formatNumber(data.angle)}^{\\circ}`;
+    }, [data]);
+
+    const direction = useMemo(() => {
+      if (data === undefined) {
+        return "$-$";
+      }
+      return data.direction === -1
+        ? `ทวนเข็มนาฬิกา`
+        : `ตามเข็มนาฬิกา`;
+    }, [data]);
 
     return (
       <List
@@ -108,9 +81,7 @@ export const TransformResultList: FC<Props> = memo(
         >
           <ListItemText disableTypography>
             <MathJax dynamic>
-              {centerReady.ready
-                ? `จุดหมุน: $(${centerReady.x}, ${centerReady.y})$`
-                : `จุดหมุน: $-$`}
+              {`จุดหมุน: $${center}$`}
             </MathJax>
           </ListItemText>
         </ListItem>
@@ -121,9 +92,7 @@ export const TransformResultList: FC<Props> = memo(
         >
           <ListItemText disableTypography>
             <MathJax dynamic>
-              {angleReady.ready
-                ? `ขนาดของมุมที่หมุน: $${angleReady.angle}^{\\circ}$`
-                : `ขนาดของมุมที่หมุน: $-$`}
+              {`ขนาดของมุมที่หมุน: $${angle}$`}
             </MathJax>
           </ListItemText>
         </ListItem>
@@ -134,11 +103,7 @@ export const TransformResultList: FC<Props> = memo(
         >
           <ListItemText disableTypography>
             <MathJax dynamic>
-              {direction === 0
-                ? `ทิศทาง: $-$`
-                : direction === -1
-                ? `ทิศทาง: ทวนเข็มนาฬิกา`
-                : `ทิศทาง: ตามเข็มนาฬิกา`}
+              {`ทิศทาง: ${direction}`}
             </MathJax>
           </ListItemText>
         </ListItem>
@@ -148,8 +113,8 @@ export const TransformResultList: FC<Props> = memo(
           disablePadding
         >
           <ListItemText disableTypography>
-            <MathJax>
-              {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ${preparedResult}`}
+            <MathJax dynamic>
+              {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: \\begin{align} ${result}\\end{align} `}
             </MathJax>
           </ListItemText>
         </ListItem>

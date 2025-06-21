@@ -1,0 +1,87 @@
+import {
+  Collapse,
+  List,
+  ListItem,
+  ListItemText,
+  Stack,
+  Typography,
+} from "@mui/material";
+import {
+  memo,
+  useCallback,
+  useState,
+  type FC,
+} from "react";
+
+export const PropertyBlog: FC = memo(() => {
+  const [open, setOpen] = useState(false);
+
+  const handleToggle = useCallback(
+    () => setOpen((prev) => !prev),
+    []
+  );
+
+  return (
+    <Stack spacing={0.5}>
+      <Stack
+        direction="row"
+        useFlexGap
+        flexWrap="wrap"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Typography
+          variant="h6"
+          component="div"
+        >
+          {`สมบัติการหมุน`}
+        </Typography>
+        <Typography
+          onClick={handleToggle}
+          sx={{
+            "&:hover": {
+              textDecorationLine: "underline",
+            },
+          }}
+        >
+          {open ? `(ซ่อน)` : `(แสดง)`}
+        </Typography>
+      </Stack>
+      <Collapse in={open}>
+        <List
+          dense
+          disablePadding
+          sx={{
+            "pl": 4,
+            "listStyleType": "disc",
+            "& .MuiListItem-root": {
+              display: "list-item",
+            },
+          }}
+        >
+          <ListItem>
+            <ListItemText
+              slotProps={{ primary: { variant: "body1" } }}
+            >
+              {`รูปต้นแบบและภาพที่ได้จากการหมุน สามารถทับกันได้สนิทโดยไม่ต้องพลิกรูป หรือกล่าวว่ารูปต้นแบบและภาพที่ได้จากการหมุนเท่ากันทุกประการ`}
+            </ListItemText>
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              slotProps={{ primary: { variant: "body1" } }}
+            >
+              {`จุดแต่ละจุดบนรูปต้นแบบและภาพที่ได้จากการหมุนจุดนั้น จะอยู่บนวงกลมเดียวกันที่มีจุดหมุนเป็นจุดศูนย์กลาง แต่วงกลมทั้งหลายเหล่านั้นไม่จำเป็นต้องมีรัศมียาวเท่ากัน`}
+            </ListItemText>
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              slotProps={{ primary: { variant: "body1" } }}
+            >
+              {`เส้นตรงที่แบ่งครึ่งและตั้งฉากกับส่วนของเส้นตรงที่เชื่อมระหว่างจุดบนรูปต้นแบบและภาพที่ได้จากการหมุนจุดนั้น จะผ่านจุดหมุนเสมอ`}
+            </ListItemText>
+          </ListItem>
+        </List>
+      </Collapse>
+    </Stack>
+  );
+});
