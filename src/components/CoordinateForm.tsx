@@ -2,11 +2,17 @@ import { validateNum } from "@/hooks/useRotationGroup";
 import type { Vec2D } from "@/types";
 import { Grid, Typography } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
-import { memo, useCallback, useMemo, type FC } from "react";
+import {
+  memo,
+  useCallback,
+  useMemo,
+  type FC,
+  type ReactNode,
+} from "react";
 import { NumberTextField } from "./NumberTextField";
 
 type Props = {
-  label?: string;
+  label: string | ReactNode;
   value: Vec2D<string>;
   onChange: (value: Vec2D<string>) => unknown;
 };
@@ -43,11 +49,17 @@ export const CoordinateForm: FC<Props> = memo(
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-start",
+            flexDirection: "row",
+            flexWrap: "wrap",
           }}
         >
-          <Typography>
-            <MathJax dynamic>{label}</MathJax>
-          </Typography>
+          {typeof label === "string" ? (
+            <Typography>
+              <MathJax dynamic>{label}</MathJax>
+            </Typography>
+          ) : (
+            label
+          )}
         </Grid>
         <Grid size={{ xs: 6, md: 4 }}>
           <NumberTextField

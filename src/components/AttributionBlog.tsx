@@ -23,7 +23,7 @@ export const AttributionBlog: FC = memo(() => {
         justifyContent="space-between"
       >
         <Typography
-          variant="h6"
+          variant="h5"
           component="div"
         >
           {`ข้อมูลเว็ปไซต์`}
@@ -42,12 +42,6 @@ export const AttributionBlog: FC = memo(() => {
 
       <Collapse in={open}>
         <Stack spacing={1}>
-          <Typography
-            variant="subtitle2"
-            component="div"
-          >
-            {`(แก้ไขครั้งล่าสุดเมื่อ: 21 มิถุนายน พ.ศ. 2568)`}
-          </Typography>
           <Typography>
             {`เว็ปไซต์ถูกจัดทำและพัฒนาเพื่อให้เป็นสื่อการสอนของกลุ่มสาระการเรียนรู้คณิตศาสตร์ เรื่องการแปลงทางเรขาคณิต (การหมุน)`}
           </Typography>
@@ -56,6 +50,9 @@ export const AttributionBlog: FC = memo(() => {
           </Typography>
           <Typography>{`นางสาวเจนจิรา แจ้งมากและ`}</Typography>
           <Typography>{`นายธนกร พุทธรักษา`}</Typography>
+          <Typography component="div">
+            {`(แก้ไขครั้งล่าสุดเมื่อ: 21 มิถุนายน พ.ศ. 2568)`}
+          </Typography>
         </Stack>
       </Collapse>
     </Stack>

@@ -66,7 +66,7 @@ export const useDesmosGraph = (id: string) => {
         dragMode: "NONE",
         showLabel: false,
         lineWidth: 2,
-        lineOpacity: 0.5,
+        lineOpacity: 0.2,
         color,
         lines: true,
         lineStyle: "SOLID",
@@ -117,7 +117,7 @@ export const useDesmosGraph = (id: string) => {
         dragMode: "NONE",
         color,
         fill: true,
-        fillOpacity: 0.7,
+        fillOpacity: 0.5,
       });
     },
     []

@@ -7,4 +7,3 @@ export default defineConfig({
   plugins: [react(), tspath()],
   base: "/project-ayw-m2-rotation-calculator/",
 });
-

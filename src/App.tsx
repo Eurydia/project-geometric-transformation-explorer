@@ -1,9 +1,12 @@
+import DeleteRounded from "@mui/icons-material/DeleteRounded";
 import {
   Box,
   Button,
   Grid,
+  IconButton,
   Paper,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import {
@@ -80,7 +83,6 @@ export const App = () => {
       makeCircle("O", `A_{${id}}`, grey["A700"]);
     }
     if (preimgCoords.length >= 3) {
-      console.debug(preimgCoords);
       makePolygon(preimgCoords, blue["A200"]);
       makePolygon(imgCoords, deepOrange["A400"]);
     }
@@ -131,11 +133,12 @@ export const App = () => {
               maxHeight: { md: "100vh" },
               height: { xs: undefined, md: "100vh" },
               overflowY: "auto",
+              overflowX: "hidden",
               scrollbarGutter: "stable",
               scrollbarWidth: "thin",
               padding: 2,
               flexDirection: "column",
-              gap: 2,
+              gap: 1,
               display: "flex",
             }}
           >
@@ -152,7 +155,7 @@ export const App = () => {
                 color="error"
                 onClick={handlers.reset}
               >
-                เคลียร์
+                {`คืนค่าเริ่มต้น`}
               </Button>
             </Toolbar>
             <DirectionInput
@@ -170,31 +173,49 @@ export const App = () => {
             />
             {data.points.map(({ vec, id }) => {
               return (
-                <Grid
-                  container
+                <CoordinateForm
                   key={`t-point-${id}`}
-                  spacing={0.5}
-                >
-                  <Grid size={{ md: 10 }}>
-                    <CoordinateForm
-                      label={`พิกัดที่ ${id}`}
-                      value={vec}
-                      onChange={handlers.updatePointValue(
-                        id
-                      )}
-                    />
-                  </Grid>
-                  <Grid size={{ md: 2 }}>
-                    <Button
-                      fullWidth
-                      color="error"
-                      disabled={data.points.length === 1}
-                      onClick={handlers.removePoint(id)}
-                    >
-                      {`ลบ`}
-                    </Button>
-                  </Grid>
-                </Grid>
+                  label={
+                    <>
+                      <Typography
+                        sx={{
+                          wordBreak: "break-all",
+                          wordWrap: "break-word",
+                          whiteSpace: "wrap",
+                        }}
+                      >
+                        {`พิกัดที่ ${id}`}
+                      </Typography>
+                      <Tooltip
+                        placement="auto"
+                        title={
+                          data.points.length ===
+                          1 ? null : (
+                            <Typography>
+                              {`ลบพิกัด`}
+                            </Typography>
+                          )
+                        }
+                      >
+                        <span>
+                          <IconButton
+                            disabled={
+                              data.points.length === 1
+                            }
+                            onClick={handlers.removePoint(
+                              id
+                            )}
+                            edge="end"
+                          >
+                            <DeleteRounded />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    </>
+                  }
+                  value={vec}
+                  onChange={handlers.updatePointValue(id)}
+                />
               );
             })}
             <Toolbar
@@ -242,4 +263,3 @@ export const App = () => {
     </Box>
   );
 };
-
