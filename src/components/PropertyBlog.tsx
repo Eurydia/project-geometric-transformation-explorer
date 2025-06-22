@@ -1,7 +1,6 @@
 import prop12 from "@/assets/prop1+2.jpg";
 import prop3 from "@/assets/prop3.jpg";
 import {
-  Box,
   Collapse,
   List,
   ListItem,
@@ -15,6 +14,7 @@ import {
   useState,
   type FC,
 } from "react";
+import { ExpandableImage } from "./ExpandableImage";
 
 const PROPERTIES = [
   `รูปต้นแบบและภาพที่ได้จากการหมุน สามารถทับกันได้สนิทโดยไม่ต้องพลิกรูป หรือกล่าวว่ารูปต้นแบบและภาพที่ได้จากการหมุนเท่ากันทุกประการ`,
@@ -82,16 +82,11 @@ export const PropertyBlog: FC = memo(() => {
             </ListItemText>
           </ListItem>
         </List>
-        <Box
-          component="img"
+        <ExpandableImage
           src={prop12}
-          alt="ตัวอย่างกราฟ"
-          width="100%"
-          sx={{
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "contain",
-          }}
+          alt={`แผนภาพแสดงคุณสมบัติที่หนึ่งและสองของการหมุน`}
         />
+
         <List
           sx={{
             pl: 4,
@@ -108,15 +103,9 @@ export const PropertyBlog: FC = memo(() => {
             </ListItemText>
           </ListItem>
         </List>
-        <Box
-          component="img"
+        <ExpandableImage
           src={prop3}
-          alt="ตัวอย่างกราฟ"
-          width="100%"
-          sx={{
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "contain",
-          }}
+          alt={`แผนภาพแสดงคุณสมบัติที่สามของการหมุน`}
         />
       </Collapse>
     </Stack>

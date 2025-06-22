@@ -5,7 +5,11 @@ export const theme = createTheme({
   typography: { fontFamily: "Noto Serif Thai; serif" },
   palette: {
     primary: brown,
-    text: { primary: brown[900], secondary: brown[500] },
+    text: {
+      primary: brown["800"],
+      secondary: brown["A700"],
+    },
+    // background: { paper: grey["900"] },
   },
   components: {
     MuiToolbar: {

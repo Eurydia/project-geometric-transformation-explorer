@@ -6,4 +6,9 @@ import tspath from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [react(), tspath()],
   base: "/project-ayw-m2-rotation-calculator/",
+  build: {
+    rollupOptions: {
+      watch: { chokidar: { useFsEvents: false } },
+    },
+  },
 });

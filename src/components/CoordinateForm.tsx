@@ -15,9 +15,10 @@ type Props = {
   label: string | ReactNode;
   value: Vec2D<string>;
   onChange: (value: Vec2D<string>) => unknown;
+  endIcon?: ReactNode;
 };
 export const CoordinateForm: FC<Props> = memo(
-  ({ value, onChange, label }) => {
+  ({ endIcon, value, onChange, label }) => {
     const error = useMemo(() => {
       return {
         x: !validateNum(value.x),
@@ -48,18 +49,24 @@ export const CoordinateForm: FC<Props> = memo(
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-start",
+            justifyContent: {
+              xs: "space-between",
+              md: "flex-start",
+            },
             flexDirection: "row",
             flexWrap: "wrap",
           }}
         >
-          {typeof label === "string" ? (
-            <Typography>
-              <MathJax dynamic>{label}</MathJax>
-            </Typography>
-          ) : (
-            label
-          )}
+          <Typography
+            sx={{
+              wordWrap: "break-word",
+              wordBreak: "break-all",
+              whiteSpace: "wrap",
+            }}
+          >
+            <MathJax dynamic>{label}</MathJax>
+          </Typography>
+          {endIcon}
         </Grid>
         <Grid size={{ xs: 6, md: 4 }}>
           <NumberTextField
@@ -68,7 +75,12 @@ export const CoordinateForm: FC<Props> = memo(
             onChange={handleXChange}
           />
         </Grid>
-        <Grid size={{ md: 4, xs: 6 }}>
+        <Grid
+          size={{
+            xs: 6,
+            md: 4,
+          }}
+        >
           <NumberTextField
             error={error.y}
             value={value.y}

@@ -51,6 +51,7 @@ export const AngleInput: FC<Props> = memo(
             variant="outlined"
             disableElevation
             disableRipple
+            color="inherit"
           >
             {new Array(3).fill(0).map((_, index) => (
               <Button

@@ -1,4 +1,4 @@
-import DeleteRounded from "@mui/icons-material/DeleteRounded";
+import { DeleteRounded } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -128,16 +128,16 @@ export const App = () => {
             square
             variant="outlined"
             sx={{
-              maxHeight: { md: "100vh" },
-              height: { xs: undefined, md: "100vh" },
-              overflowY: "auto",
-              overflowX: "hidden",
-              scrollbarGutter: "stable",
-              scrollbarWidth: "thin",
               padding: 2,
               flexDirection: "column",
               gap: 1,
               display: "flex",
+              overflowY: "auto",
+              scrollbarGutter: "stable",
+              scrollbarWidth: "thin",
+              height: { md: "100%" },
+              maxHeight: { md: "100vh" },
+              overflowX: "hidden",
             }}
           >
             <Typography
@@ -173,46 +173,33 @@ export const App = () => {
               return (
                 <CoordinateForm
                   key={`point-input-${id}`}
-                  label={
-                    <>
-                      <Typography
-                        sx={{
-                          wordBreak: "break-all",
-                          wordWrap: "break-word",
-                          whiteSpace: "wrap",
-                        }}
-                      >
-                        {`พิกัดที่ ${id}`}
-                      </Typography>
-                      <Tooltip
-                        placement="auto"
-                        title={
-                          data.points.length ===
-                          1 ? null : (
-                            <Typography>
-                              {`ลบพิกัด`}
-                            </Typography>
-                          )
-                        }
-                      >
-                        <span>
-                          <IconButton
-                            disabled={
-                              data.points.length === 1
-                            }
-                            onClick={handlers.removePoint(
-                              id
-                            )}
-                            edge="end"
-                          >
-                            <DeleteRounded />
-                          </IconButton>
-                        </span>
-                      </Tooltip>
-                    </>
-                  }
+                  label={`พิกัดที่ ${id}`}
                   value={vec}
                   onChange={handlers.updatePointValue(id)}
+                  endIcon={
+                    <Tooltip
+                      placement="auto"
+                      title={
+                        data.points.length === 1 ? null : (
+                          <Typography>
+                            {`ลบพิกัด`}
+                          </Typography>
+                        )
+                      }
+                    >
+                      <span>
+                        <IconButton
+                          disabled={
+                            data.points.length === 1
+                          }
+                          onClick={handlers.removePoint(id)}
+                          color="inherit"
+                        >
+                          <DeleteRounded />
+                        </IconButton>
+                      </span>
+                    </Tooltip>
+                  }
                 />
               );
             })}
