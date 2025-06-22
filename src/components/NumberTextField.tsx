@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { OutlinedInput } from "@mui/material";
 import type { FC } from "react";
 
 type Props = {
@@ -12,19 +12,19 @@ export const NumberTextField: FC<Props> = ({
   error,
 }) => {
   return (
-    <TextField
+    <OutlinedInput
       fullWidth
       size="small"
       error={error}
-      variant="outlined"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       slotProps={{
-        htmlInput: {
-          inputMode: "numeric",
+        root: {
+          inputMode: "decimal",
         },
         input: {
           sx: { fontFamily: "monospace" },
+          type: "number",
         },
       }}
     />
