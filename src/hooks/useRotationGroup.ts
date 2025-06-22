@@ -15,6 +15,7 @@ export const formatNumber = (n: number) => {
     useGrouping: false,
     maximumFractionDigits: 6,
     notation: "standard",
+    signDisplay: "auto",
   });
 };
 

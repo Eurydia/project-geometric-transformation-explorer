@@ -49,12 +49,10 @@ export const CoordinateForm: FC<Props> = memo(
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: {
-              xs: "space-between",
-              md: "flex-start",
-            },
+            justifyContent: "space-between",
             flexDirection: "row",
             flexWrap: "wrap",
+            gap: 1,
           }}
         >
           <Typography

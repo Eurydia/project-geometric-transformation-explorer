@@ -1,12 +1,9 @@
-import { DeleteRounded } from "@mui/icons-material";
 import {
   Box,
   Button,
   Grid,
-  IconButton,
   Paper,
   Toolbar,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import {
@@ -177,28 +174,30 @@ export const App = () => {
                   value={vec}
                   onChange={handlers.updatePointValue(id)}
                   endIcon={
-                    <Tooltip
-                      placement="auto"
-                      title={
-                        data.points.length === 1 ? null : (
-                          <Typography>
-                            {`ลบพิกัด`}
-                          </Typography>
-                        )
+                    <Typography
+                      component="div"
+                      color={
+                        data.points.length === 1
+                          ? "textDisabled"
+                          : "textSecondary"
                       }
+                      onClick={handlers.removePoint(id)}
+                      sx={{
+                        "cursor":
+                          data.points.length > 1
+                            ? "pointer"
+                            : "auto",
+                        "pointerEvents":
+                          data.points.length === 1
+                            ? "none"
+                            : "auto",
+                        "&:hover": {
+                          textDecorationLine: "underline",
+                        },
+                      }}
                     >
-                      <span>
-                        <IconButton
-                          disabled={
-                            data.points.length === 1
-                          }
-                          onClick={handlers.removePoint(id)}
-                          color="inherit"
-                        >
-                          <DeleteRounded />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
+                      {`(ลบ)`}
+                    </Typography>
                   }
                 />
               );
