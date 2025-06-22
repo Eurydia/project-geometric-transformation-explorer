@@ -85,10 +85,35 @@ export const useDesmosGraph = (id: string) => {
       polygonIdRef.current = id + 1;
 
       desmosRef.current.setExpression({
+        id: `point-list-${id}`,
+        latex: `P_{${id}} = 
+          \\left[
+            ${coords.join(",")}
+          \\right]`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        id: `mean-x-${id}`,
+        latex: `X_{${id}} = \\operatorname{mean}\\left(P_{${id}}.x\\right)`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        id: `mean-y-${id}`,
+        latex: `Y_{${id}} = \\operatorname{mean}\\left(P_{${id}}.y\\right)`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        id: `point-theta-${id}`,
+        latex: `Q_{${id}} =\\operatorname{arctan}\\left(P_{${id}}.y - Y_{${id}}, P_{${id}}.x - X_{${id}}\\right)`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
         id: `polygon-${id}`,
-        latex: `\\operatorname{polygon}\\left(${coords.join(
-          ","
-        )}\\right)`,
+        latex: `\\operatorname{polygon}\\left(\\operatorname{sort}\\left(P_{${id}},Q_{${id}}\\right)\\right)`,
         dragMode: "NONE",
         color,
         fill: true,

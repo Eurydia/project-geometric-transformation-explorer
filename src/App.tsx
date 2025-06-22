@@ -1,7 +1,5 @@
 import DeleteRounded from "@mui/icons-material/DeleteRounded";
 import {
-  Alert,
-  AlertTitle,
   Box,
   Button,
   Grid,
@@ -10,7 +8,6 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-  useTheme,
 } from "@mui/material";
 import {
   blue,
@@ -24,7 +21,6 @@ import { CoordinateForm } from "./components/CoordinateForm";
 import { DirectionInput } from "./components/DirectionInput";
 import { FormulaBlog } from "./components/FormulaBlog";
 import { PropertyBlog } from "./components/PropertyBlog";
-import { SortableCoordinateList } from "./components/SortableCoordinateList";
 import { TransformResultList } from "./components/TransformResultList";
 import { useDesmosGraph } from "./hooks/useDesmosGraph";
 import {
@@ -37,7 +33,6 @@ import {
 import type { Vec2D } from "./types";
 
 export const App = () => {
-  const { palette } = useTheme();
   const { data, handlers, helper } = useRotationGroup();
   const { desmosRef, makePoint, makeCircle, makePolygon } =
     useDesmosGraph("#desmos-graph");
@@ -174,78 +169,53 @@ export const App = () => {
               value={data.center}
               onChange={handlers.setCenter}
             />
-
-            <Alert severity="info">
-              <AlertTitle>{`เคล็ดลับ`}</AlertTitle>
-              <Typography>{`สามารถลากพิกัดเพื่อเรียงลำดับใหม่ได้`}</Typography>
-            </Alert>
-            <SortableCoordinateList
-              items={data.points}
-              onChange={handlers.setPoints}
-              renderItem={({
-                props,
-                value: { id, vec },
-              }) => {
-                return (
-                  <Box
-                    {...props}
-                    sx={{
-                      backgroundColor:
-                        palette.background.paper,
-                      cursor:
-                        data.points.length > 1
-                          ? "move"
-                          : undefined,
-                    }}
-                  >
-                    <CoordinateForm
-                      label={
-                        <>
-                          <Typography
-                            sx={{
-                              wordBreak: "break-all",
-                              wordWrap: "break-word",
-                              whiteSpace: "wrap",
-                            }}
-                          >
-                            {`พิกัดที่ ${id}`}
-                          </Typography>
-                          <Tooltip
-                            placement="auto"
-                            title={
-                              data.points.length ===
-                              1 ? null : (
-                                <Typography>
-                                  {`ลบพิกัด`}
-                                </Typography>
-                              )
+            {data.points.map(({ vec, id }) => {
+              return (
+                <CoordinateForm
+                  key={`point-input-${id}`}
+                  label={
+                    <>
+                      <Typography
+                        sx={{
+                          wordBreak: "break-all",
+                          wordWrap: "break-word",
+                          whiteSpace: "wrap",
+                        }}
+                      >
+                        {`พิกัดที่ ${id}`}
+                      </Typography>
+                      <Tooltip
+                        placement="auto"
+                        title={
+                          data.points.length ===
+                          1 ? null : (
+                            <Typography>
+                              {`ลบพิกัด`}
+                            </Typography>
+                          )
+                        }
+                      >
+                        <span>
+                          <IconButton
+                            disabled={
+                              data.points.length === 1
                             }
+                            onClick={handlers.removePoint(
+                              id
+                            )}
+                            edge="end"
                           >
-                            <span>
-                              <IconButton
-                                disabled={
-                                  data.points.length === 1
-                                }
-                                onClick={handlers.removePoint(
-                                  id
-                                )}
-                                edge="end"
-                              >
-                                <DeleteRounded />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
-                        </>
-                      }
-                      value={vec}
-                      onChange={handlers.updatePointValue(
-                        id
-                      )}
-                    />
-                  </Box>
-                );
-              }}
-            />
+                            <DeleteRounded />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    </>
+                  }
+                  value={vec}
+                  onChange={handlers.updatePointValue(id)}
+                />
+              );
+            })}
 
             <Toolbar
               sx={{
