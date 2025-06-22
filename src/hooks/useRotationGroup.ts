@@ -58,8 +58,10 @@ const computeRotation = (
 };
 
 export const useRotationGroup = () => {
+  const previousPointsRef = useRef<
+    { id: number; vec: Vec2D<string> }[]
+  >([]);
   const pointIdRef = useRef(2);
-
   const [angle, setAngle] = useState("90");
   const [direction, setDirection] = useState(1);
   const [points, setPoints] = useState<
@@ -114,28 +116,30 @@ export const useRotationGroup = () => {
 
   const getResult = useCallback(() => {
     if (!validateVec(center)) {
-      return {};
+      return [];
     }
     if (!validateNum(angle)) {
-      return {};
+      return [];
     }
     if (points.some((point) => !validateVec(point.vec))) {
-      return {};
+      return [];
     }
 
     const pCenter = parseVec(center);
     const pAngle = Number(angle) * direction;
 
-    const result: Record<
-      number,
-      [Vec2D<number>, Vec2D<number>]
-    > = {};
+    const result: {
+      id: number;
+      preimage: Vec2D<number>;
+      image: Vec2D<number>;
+    }[] = [];
     for (const point of points) {
       const pPoint = parseVec(point.vec);
-      result[point.id] = [
-        pPoint,
-        computeRotation(pPoint, pCenter, pAngle),
-      ];
+      result.push({
+        id: point.id,
+        preimage: pPoint,
+        image: computeRotation(pPoint, pCenter, pAngle),
+      });
     }
     return result;
   }, [angle, center, direction, points]);
@@ -158,6 +162,7 @@ export const useRotationGroup = () => {
       direction,
       points,
       center,
+      previousPointsRef,
     },
     handlers: {
       setAngle,

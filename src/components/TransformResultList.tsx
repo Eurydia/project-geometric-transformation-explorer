@@ -24,10 +24,11 @@ type Props = {
   data:
     | {
         center: Vec2D<number>;
-        result: Record<
-          number,
-          [Vec2D<number>, Vec2D<number>]
-        >;
+        result: {
+          id: number;
+          preimage: Vec2D<number>;
+          image: Vec2D<number>;
+        }[];
         angle: number;
         direction: number;
       }
@@ -39,14 +40,13 @@ export const TransformResultList: FC<Props> = memo(
       if (data === undefined) {
         return "-";
       }
-
+      const _data = structuredClone(data.result);
+      _data.sort((x, y) => x.id - y.id);
       const items: string[] = [];
-      for (const [id, [preimg, img]] of Object.entries(
-        data.result
-      )) {
-        const preimgCoord = formatCoord(preimg);
-        const imgCoord = formatCoord(img);
-        const id_ = formatNumber(Number(id));
+      for (const { id, image, preimage } of _data) {
+        const preimgCoord = formatCoord(preimage);
+        const imgCoord = formatCoord(image);
+        const id_ = formatNumber(id);
         items.push(
           `A_{${id_}}${preimgCoord} &\\rightarrow A_{${id_}}^{\\prime}${imgCoord}`
         );
@@ -94,7 +94,7 @@ export const TransformResultList: FC<Props> = memo(
           justifyContent="space-between"
         >
           <Typography
-            variant="h5"
+            variant="h6"
             component="div"
             fontWeight={700}
           >

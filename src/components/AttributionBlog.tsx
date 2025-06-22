@@ -23,7 +23,7 @@ export const AttributionBlog: FC = memo(() => {
         justifyContent="space-between"
       >
         <Typography
-          variant="h5"
+          variant="h6"
           component="div"
         >
           {`ข้อมูลเว็ปไซต์`}

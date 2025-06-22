@@ -40,7 +40,7 @@ export const PropertyBlog: FC = memo(() => {
         justifyContent="space-between"
       >
         <Typography
-          variant="h5"
+          variant="h6"
           component="div"
         >
           {`สมบัติการหมุน`}
