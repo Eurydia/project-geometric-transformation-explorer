@@ -1,4 +1,5 @@
-import img from "@/assets/graph-image.png";
+import prop12 from "@/assets/prop1+2.jpg";
+import prop3 from "@/assets/prop3.jpg";
 import {
   Box,
   Collapse,
@@ -62,26 +63,54 @@ export const PropertyBlog: FC = memo(() => {
             listStyleType: "disc",
           }}
         >
-          {PROPERTIES.map((msg, index) => {
-            return (
-              <ListItem
-                key={`prop-msg-${index}`}
-                sx={{ display: "list-item" }}
-              >
-                <ListItemText
-                  slotProps={{
-                    primary: { variant: "body1" },
-                  }}
-                >
-                  {msg}
-                </ListItemText>
-              </ListItem>
-            );
-          })}
+          <ListItem sx={{ display: "list-item" }}>
+            <ListItemText
+              slotProps={{
+                primary: { variant: "body1" },
+              }}
+            >
+              {PROPERTIES[0]}
+            </ListItemText>
+          </ListItem>
+          <ListItem sx={{ display: "list-item" }}>
+            <ListItemText
+              slotProps={{
+                primary: { variant: "body1" },
+              }}
+            >
+              {PROPERTIES[1]}
+            </ListItemText>
+          </ListItem>
         </List>
         <Box
           component="img"
-          src={img}
+          src={prop12}
+          alt="ตัวอย่างกราฟ"
+          width="100%"
+          sx={{
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+          }}
+        />
+        <List
+          sx={{
+            pl: 4,
+            listStyleType: "disc",
+          }}
+        >
+          <ListItem sx={{ display: "list-item" }}>
+            <ListItemText
+              slotProps={{
+                primary: { variant: "body1" },
+              }}
+            >
+              {PROPERTIES[2]}
+            </ListItemText>
+          </ListItem>
+        </List>
+        <Box
+          component="img"
+          src={prop3}
           alt="ตัวอย่างกราฟ"
           width="100%"
           sx={{
