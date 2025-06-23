@@ -1,15 +1,18 @@
-import { createTheme } from "@mui/material";
-import { brown } from "@mui/material/colors";
+import { createTheme, darken } from "@mui/material";
+import { green, red } from "@mui/material/colors";
 
 export const theme = createTheme({
   typography: { fontFamily: "Noto Serif Thai; serif" },
   palette: {
-    primary: brown,
-    text: {
-      primary: brown["800"],
-      secondary: brown["A700"],
+    primary: {
+      main: green["700"],
     },
-    // background: { paper: grey["900"] },
+    secondary: red,
+    background: {
+      default: green["200"],
+      paper: "#fff",
+    },
+    text: { primary: darken(green[900], 0.3) },
   },
   components: {
     MuiToolbar: {
