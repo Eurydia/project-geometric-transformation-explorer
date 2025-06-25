@@ -1,41 +1,30 @@
-import {
-  Button,
-  Grid,
-  Paper,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { Grid, Paper, Stack } from "@mui/material";
 import {
   blue,
   deepOrange,
   grey,
 } from "@mui/material/colors";
 import { useCallback, useEffect, useState } from "react";
-import { AngleInput } from "./components/AngleInput";
-import { AttributionBlog } from "./components/AttributionBlog";
-import { CoordinateForm } from "./components/CoordinateForm";
-import { DirectionInput } from "./components/DirectionInput";
-import { FormulaBlog } from "./components/FormulaBlog";
-import { PropertyBlog } from "./components/PropertyBlog";
-import { TransformResultList } from "./components/TransformResultList";
+import { AttributionBlog } from "./components/blogs/AttributionBlog";
+import { FormulaBlog } from "./components/blogs/FormulaBlog";
+import { PropertyBlog } from "./components/blogs/PropertyBlog";
+import { ResultDisplay } from "./components/data-display/ResultDisplay";
+import { CalculatorForm } from "./components/form/CalculatorForm";
 import { useDesmosGraph } from "./hooks/useDesmosGraph";
-import {
-  formatCoord,
-  parseVec,
-  useRotationGroup,
-  validateNum,
-  validateVec,
-} from "./hooks/useRotationGroup";
+import { formatCoord } from "./hooks/useRotationGroup";
 import type { Vec2D } from "./types";
 
 export const App = () => {
-  const { data, handlers, helper } = useRotationGroup();
   const { desmosRef, makePoint, makeCircle, makePolygon } =
     useDesmosGraph("#desmos-graph");
   const [result, setResult] = useState<
     | {
         center: Vec2D<number>;
-        result: ReturnType<typeof helper.getResult>;
+        result: {
+          id: number;
+          preimage: Vec2D<number>;
+          image: Vec2D<number>;
+        }[];
         angle: number;
         direction: number;
       }
@@ -88,33 +77,18 @@ export const App = () => {
     result,
   ]);
 
-  const handleSolve = useCallback(() => {
-    desmosRef.current?.removeExpressions(
-      desmosRef.current
-        .getExpressions()
-        .filter(({ id }) => id !== undefined)
-        .map(({ id }) => ({ id: id! }))
-    );
-    if (
-      !validateNum(data.angle) ||
-      !validateVec(data.center)
-    ) {
-      setResult(undefined);
-    }
-
-    setResult({
-      result: structuredClone(helper.getResult()),
-      direction: data.direction,
-      angle: Number(data.angle),
-      center: parseVec(data.center),
-    });
-  }, [
-    data.angle,
-    data.center,
-    data.direction,
-    desmosRef,
-    helper,
-  ]);
+  const handleSolve = useCallback(
+    (result_: typeof result) => {
+      desmosRef.current?.removeExpressions(
+        desmosRef.current
+          .getExpressions()
+          .filter(({ id }) => id !== undefined)
+          .map(({ id }) => ({ id: id! }))
+      );
+      setResult(result_);
+    },
+    [desmosRef]
+  );
 
   return (
     <Grid
@@ -141,96 +115,8 @@ export const App = () => {
             scrollbarWidth: "none",
           }}
         >
-          <Typography
-            variant="h4"
-            component="div"
-            fontWeight={700}
-          >
-            {`การแปลงทางเรขาคณิต (การหมุน)`}
-          </Typography>
-          <Toolbar>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handlers.reset}
-            >
-              {`คืนค่าเริ่มต้น`}
-            </Button>
-          </Toolbar>
-          <DirectionInput
-            value={data.direction}
-            onChange={handlers.setDirection}
-          />
-          <AngleInput
-            value={data.angle}
-            onChange={handlers.setAngle}
-          />
-          <CoordinateForm
-            label="จุดหมุน $(x,y)$"
-            value={data.center}
-            onChange={handlers.setCenter}
-          />
-          {data.points.map(({ vec, id }) => {
-            return (
-              <CoordinateForm
-                key={`point-input-${id}`}
-                label={`พิกัดที่ ${id}`}
-                value={vec}
-                onChange={handlers.updatePointValue(id)}
-                endIcon={
-                  <Typography
-                    component="div"
-                    color={
-                      data.points.length === 1
-                        ? "textDisabled"
-                        : "error"
-                    }
-                    onClick={handlers.removePoint(id)}
-                    sx={{
-                      "cursor":
-                        data.points.length > 1
-                          ? "pointer"
-                          : "auto",
-                      "pointerEvents":
-                        data.points.length === 1
-                          ? "none"
-                          : "auto",
-                      "&:hover": {
-                        textDecorationLine: "underline",
-                      },
-                    }}
-                  >
-                    {`(ลบ)`}
-                  </Typography>
-                }
-              />
-            );
-          })}
-
-          <Toolbar
-            sx={{
-              justifyContent: "space-between",
-              gap: 0.5,
-              flexWrap: "wrap",
-            }}
-          >
-            <Button
-              variant="contained"
-              disableElevation
-              disableRipple
-              onClick={handleSolve}
-            >
-              คำนวณ
-            </Button>
-            <Button
-              variant="outlined"
-              disabled={data.points.length >= 4}
-              onClick={handlers.addPoint}
-            >
-              เพิ่มพิกัด
-            </Button>
-          </Toolbar>
-          <TransformResultList data={result} />
+          <CalculatorForm onSubmit={handleSolve} />
+          <ResultDisplay data={result} />
           <PropertyBlog />
           <FormulaBlog />
           <AttributionBlog />
@@ -239,21 +125,28 @@ export const App = () => {
       <Grid
         size={{ xs: 12, md: 8 }}
         sx={{
-          height: { md: "100%" },
+          height: { xs: "50vh", md: "100%" },
         }}
       >
-        <Paper
-          variant="outlined"
+        <Stack
+          spacing={1}
           sx={{ height: "100%" }}
         >
-          <div
-            id="desmos-graph"
-            style={{
-              width: "100%",
+          <Paper
+            variant="outlined"
+            sx={{
               height: "100%",
             }}
-          />
-        </Paper>
+          >
+            <div
+              id="desmos-graph"
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+            />
+          </Paper>
+        </Stack>
       </Grid>
     </Grid>
   );

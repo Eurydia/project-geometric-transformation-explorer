@@ -12,7 +12,7 @@ export const theme = createTheme({
       default: green["200"],
       paper: "#fff",
     },
-    text: { primary: darken(green[900], 0.3) },
+    text: { primary: darken(green[900], 0.1) },
   },
   components: {
     MuiToolbar: {

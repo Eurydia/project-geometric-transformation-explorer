@@ -42,10 +42,13 @@ const PI_OVER_180 = Math.PI / 180;
 const degToRad = (n: number) => n * PI_OVER_180;
 
 const computeRotation = (
-  { x, y }: Vec2D<number>,
-  { x: a, y: b }: Vec2D<number>,
+  preimage: Vec2D<number>, // preimage
+  center: Vec2D<number>, // center
   angle: number
 ): Vec2D<number> => {
+  const { x, y } = preimage;
+  const { x: a, y: b } = center;
+
   const shiftX = x - a;
   const shiftY = y - b;
   const angleRad = degToRad(angle);
