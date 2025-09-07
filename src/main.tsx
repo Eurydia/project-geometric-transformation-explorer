@@ -1,9 +1,4 @@
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { MathJaxContext } from "better-react-mathjax";
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { App } from "./App";
-import "./main.css";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 
@@ -11,7 +6,10 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
 // Create a new router instance
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  basepath: "/geometric-transformation-explorer/",
+});
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {

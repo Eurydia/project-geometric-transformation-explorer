@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Grid, Paper, Stack } from "@mui/material";
+import { Paper, Stack } from "@mui/material";
 import { blue, deepOrange, grey } from "@mui/material/colors";
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
 import { FormulaBlog } from "@/components/blogs/FormulaBlog";
@@ -10,6 +10,7 @@ import { CalculatorForm } from "@/components/form/CalculatorForm";
 import { useDesmosGraph } from "@/hooks/useDesmosGraph";
 import { formatCoord } from "@/hooks/useRotationGroup";
 import type { Vec2D } from "@/types";
+import { SplitLayout } from "@/components/layouts/split-layout";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -81,56 +82,48 @@ function RouteComponent() {
   );
 
   return (
-    <Grid container spacing={2} sx={{ padding: 2, height: { md: "100vh" } }}>
-      <Grid
-        size={{ md: 4 }}
-        sx={{
-          maxHeight: { md: "100%" },
-        }}
-      >
-        <Paper
-          variant="outlined"
-          sx={{
-            padding: 2,
-            flexDirection: "column",
-            gap: 1,
-            display: "flex",
-            height: { md: "100%" },
-            maxHeight: { md: "100%" },
-            overflowY: "auto",
-            scrollbarWidth: "none",
-          }}
-        >
-          <CalculatorForm onSubmit={handleSolve} />
-          <ResultDisplay data={result} />
-          <PropertyBlog />
-          <FormulaBlog />
-          <AttributionBlog />
-        </Paper>
-      </Grid>
-      <Grid
-        size={{ xs: 12, md: 8 }}
-        sx={{
-          height: { xs: "50vh", md: "100%" },
-        }}
-      >
-        <Stack spacing={1} sx={{ height: "100%" }}>
+    <SplitLayout
+      slots={{
+        primary: (
           <Paper
             variant="outlined"
             sx={{
-              height: "100%",
+              padding: 2,
+              flexDirection: "column",
+              gap: 1,
+              display: "flex",
+              height: { md: "100%" },
+              maxHeight: { md: "100%" },
+              overflowY: "auto",
+              scrollbarWidth: "none",
             }}
           >
-            <div
-              id="desmos-graph"
-              style={{
-                width: "100%",
+            <CalculatorForm onSubmit={handleSolve} />
+            <ResultDisplay data={result} />
+            <PropertyBlog />
+            <FormulaBlog />
+            <AttributionBlog />
+          </Paper>
+        ),
+        secondary: (
+          <Stack spacing={1} sx={{ height: "100%" }}>
+            <Paper
+              variant="outlined"
+              sx={{
                 height: "100%",
               }}
-            />
-          </Paper>
-        </Stack>
-      </Grid>
-    </Grid>
+            >
+              <div
+                id="desmos-graph"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            </Paper>
+          </Stack>
+        ),
+      }}
+    />
   );
 }

@@ -13,5 +13,5 @@ export default defineConfig({
     }),
     react(),
   ],
-  base: "/project-ayw-m2-rotation-calculator/",
+  base: "/geometric-transformation-explorer/",
 });
