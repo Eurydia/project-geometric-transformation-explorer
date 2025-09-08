@@ -17,8 +17,12 @@ export const Route = createFileRoute("/")({
 });
 
 function RouteComponent() {
-  const { desmosRef, makePoint, makeCircle, makePolygon } =
-    useDesmosGraph("#desmos-graph");
+  const {
+    desmosRef,
+    addPoint: makePoint,
+    makeCircle,
+    makePolygon,
+  } = useDesmosGraph("#desmos-graph");
   const [result, setResult] = useState<
     | {
         center: Vec2D<number>;

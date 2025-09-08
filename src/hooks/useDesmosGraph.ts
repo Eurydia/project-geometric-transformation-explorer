@@ -7,9 +7,7 @@ export const useDesmosGraph = (id: string) => {
   const polygonIdRef = useRef(0);
 
   useEffect(() => {
-    const root = document.querySelector(
-      id
-    ) as HTMLElement | null;
+    const root = document.querySelector(id) as HTMLElement | null;
     if (root === null) {
       return;
     }
@@ -28,13 +26,8 @@ export const useDesmosGraph = (id: string) => {
     };
   }, [id]);
 
-  const makePoint = useCallback(
-    (
-      label: string,
-      point: string,
-      color: string,
-      name: string
-    ) => {
+  const addPoint = useCallback(
+    (label: string, point: string, color: string, name: string) => {
       if (desmosRef.current === undefined) {
         return;
       }
@@ -75,56 +68,53 @@ export const useDesmosGraph = (id: string) => {
     []
   );
 
-  const makePolygon = useCallback(
-    (coords: string[], color: string) => {
-      if (desmosRef.current === undefined) {
-        return;
-      }
+  const makePolygon = useCallback((coords: string[], color: string) => {
+    if (desmosRef.current === undefined) {
+      return;
+    }
 
-      const id = polygonIdRef.current;
-      polygonIdRef.current = id + 1;
+    const id = polygonIdRef.current;
+    polygonIdRef.current = id + 1;
 
-      desmosRef.current.setExpression({
-        id: `point-list-${id}`,
-        latex: `P_{${id}} = 
+    desmosRef.current.setExpression({
+      id: `point-list-${id}`,
+      latex: `P_{${id}} = 
           \\left[
             ${coords.join(",")}
           \\right]`,
-        hidden: true,
-      });
+      hidden: true,
+    });
 
-      desmosRef.current.setExpression({
-        id: `mean-x-${id}`,
-        latex: `X_{${id}} = \\operatorname{mean}\\left(P_{${id}}.x\\right)`,
-        hidden: true,
-      });
+    desmosRef.current.setExpression({
+      id: `mean-x-${id}`,
+      latex: `X_{${id}} = \\operatorname{mean}\\left(P_{${id}}.x\\right)`,
+      hidden: true,
+    });
 
-      desmosRef.current.setExpression({
-        id: `mean-y-${id}`,
-        latex: `Y_{${id}} = \\operatorname{mean}\\left(P_{${id}}.y\\right)`,
-        hidden: true,
-      });
+    desmosRef.current.setExpression({
+      id: `mean-y-${id}`,
+      latex: `Y_{${id}} = \\operatorname{mean}\\left(P_{${id}}.y\\right)`,
+      hidden: true,
+    });
 
-      desmosRef.current.setExpression({
-        id: `point-theta-${id}`,
-        latex: `Q_{${id}} =\\operatorname{arctan}\\left(P_{${id}}.y - Y_{${id}}, P_{${id}}.x - X_{${id}}\\right)`,
-        hidden: true,
-      });
+    desmosRef.current.setExpression({
+      id: `point-theta-${id}`,
+      latex: `Q_{${id}} =\\operatorname{arctan}\\left(P_{${id}}.y - Y_{${id}}, P_{${id}}.x - X_{${id}}\\right)`,
+      hidden: true,
+    });
 
-      desmosRef.current.setExpression({
-        id: `polygon-${id}`,
-        latex: `\\operatorname{polygon}\\left(\\operatorname{sort}\\left(P_{${id}},Q_{${id}}\\right)\\right)`,
-        dragMode: "NONE",
-        color,
-        fill: true,
-        fillOpacity: 0.5,
-      });
-    },
-    []
-  );
+    desmosRef.current.setExpression({
+      id: `polygon-${id}`,
+      latex: `\\operatorname{polygon}\\left(\\operatorname{sort}\\left(P_{${id}},Q_{${id}}\\right)\\right)`,
+      dragMode: "NONE",
+      color,
+      fill: true,
+      fillOpacity: 0.5,
+    });
+  }, []);
   return {
     desmosRef,
-    makePoint,
+    addPoint,
     makeCircle,
     makePolygon,
   };
