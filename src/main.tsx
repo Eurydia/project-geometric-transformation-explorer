@@ -1,14 +1,20 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import {
+  RouterProvider,
+  createHashHistory,
+  createRouter,
+} from "@tanstack/react-router";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 
+const hashHistory = createHashHistory();
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  basepath: "/geometric-transformation-explorer/",
+  history: hashHistory,
+  // basepath: "/geometric-transformation-explorer/",
 });
 
 // Register the router instance for type safety

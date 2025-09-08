@@ -8,7 +8,7 @@ const globalStyles = (
   <GlobalStyles
     styles={{
       "*": {
-        userSelectable: "none",
+        userSelect: "none",
       },
     }}
   />

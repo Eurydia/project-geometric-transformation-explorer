@@ -4,20 +4,22 @@ import type { FC } from "react";
 type Props = {
   value: string;
   onChange: (value: string) => unknown;
+  onBlur?: () => unknown;
   error?: boolean;
 };
 export const NumberTextField: FC<Props> = ({
   value,
-  onChange,
   error,
+  onChange,
+  onBlur,
 }) => {
   return (
     <OutlinedInput
       fullWidth
-      size="small"
       error={error}
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      onBlur={onBlur}
       slotProps={{
         root: {
           inputMode: "decimal",
