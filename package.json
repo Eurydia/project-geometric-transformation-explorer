@@ -19,6 +19,7 @@
     "@tanstack/react-router": "^1.131.35",
     "@tanstack/react-router-devtools": "^1.131.35",
     "desmos": "^1.5.4",
+    "fp-ts": "^2.16.11",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zod": "^4.1.5"

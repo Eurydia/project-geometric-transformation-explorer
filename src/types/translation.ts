@@ -1,18 +1,23 @@
 import z from "zod";
 
-const NumericString = z
+const NormalString = z
   .string()
-  .normalize()
-  .trim()
-  .refine((arg) => !isNaN(Number(arg)));
+  .refine((arg) => !isNaN(Number(arg)), { error: "non-numeric string" });
 
 export const TranslationFormDataSchema = z.object({
   points: z
-    .object({ x: NumericString, y: NumericString })
+    .object({ x: NormalString, y: NormalString })
     .array()
     .min(3)
-    .max(4),
-  translation: z.object({ x: NumericString, y: NumericString }),
+    .max(4)
+    .default([
+      { x: "", y: "" },
+      { x: "", y: "" },
+      { x: "", y: "" },
+    ]),
+  translation: z
+    .object({ x: NormalString, y: NormalString })
+    .default({ x: "", y: "" }),
 });
 
-export type TranstionFormData = z.output<typeof TranslationFormDataSchema>;
+export type TranslationFormData = z.output<typeof TranslationFormDataSchema>;

@@ -1,8 +1,8 @@
 import { type FC } from "react";
 import { useForm } from "@tanstack/react-form";
 import {
+  alpha,
   Button,
-  Divider,
   Grid,
   Stack,
   TextField,
@@ -10,64 +10,66 @@ import {
   Typography,
 } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
-import { NumberTextField } from "../form-input/NumberTextField";
+import {
+  TranslationFormDataSchema,
+  type TranslationFormData,
+} from "@/types/translation";
 
 type Props = {
-  init: {
-    points: { x: string; y: string }[];
-    translation: { x: string; y: string };
-  };
-  onSubmit: (v: Props["init"]) => unknown;
+  onSubmit: (v: TranslationFormData) => unknown;
 };
-export const TranslationForm: FC<Props> = ({ init, onSubmit }) => {
+export const TranslationForm: FC<Props> = ({ onSubmit }) => {
   const { Field, handleSubmit, Subscribe } = useForm({
-    defaultValues: init,
+    defaultValues: TranslationFormDataSchema.parse({}),
+    validators: {
+      onChange: TranslationFormDataSchema,
+    },
     onSubmit: ({ value }) => {
       onSubmit(value);
     },
-    canSubmitWhenInvalid: true,
-    // validators: {
-    //   onChange: z.object({
-    //     translation: z.object({
-    //       x: z.string().nonempty(),
-    //       y: z.string().nonempty(),
-    //     }),
-    //     points: z
-    //       .object({
-    //         x: z.string().normalize().nonempty(),
-    //         y: z.string().normalize().nonempty(),
-    //       })
-    //       .array()
-    //       .min(3)
-    //       .max(4),
-    //   }),
-    // },
   });
+
   return (
-    <Stack spacing={2}>
+    <Stack spacing={0.5}>
       <Grid spacing={1} container>
         <Grid size={{ md: 4 }}>
-          <Typography>Translation</Typography>
+          <Typography>
+            <MathJax>{`Translation $(x,y)$`}</MathJax>
+          </Typography>
         </Grid>
         <Grid size={{ md: 8 }}>
           <Stack spacing={0.5} direction={"row"}>
             <Field name="translation.x">
               {(field) => (
-                <NumberTextField
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                  onBlur={field.handleBlur}
+                <TextField
                   error={field.state.meta.errors.length > 0}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                  slotProps={{
+                    htmlInput: {
+                      sx: { fontFamily: "monospace" },
+                      type: "number",
+                    },
+                  }}
+                  sx={{ flexBasis: 0, flexGrow: 1 }}
                 />
               )}
             </Field>
             <Field name="translation.y">
               {(field) => (
-                <NumberTextField
-                  value={field.state.value}
-                  onChange={field.handleChange}
-                  onBlur={field.handleBlur}
+                <TextField
                   error={field.state.meta.errors.length > 0}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                  slotProps={{
+                    htmlInput: {
+                      sx: { fontFamily: "monospace" },
+                      type: "number",
+                    },
+                  }}
+                  sx={{ flexBasis: 0, flexGrow: 1 }}
                 />
               )}
             </Field>
@@ -76,9 +78,18 @@ export const TranslationForm: FC<Props> = ({ init, onSubmit }) => {
       </Grid>
       <Field name="points" mode="array">
         {(field) => (
-          <Stack spacing={1} width={"100%"} divider={<Divider flexItem />}>
+          <Stack width={"100%"}>
             {field.state.value.map((_, index) => (
-              <Grid key={index} spacing={1} container>
+              <Grid
+                key={`translate-point-${index}`}
+                spacing={1}
+                container
+                padding={0.5}
+                sx={{
+                  backgroundColor: ({ palette: { primary } }) =>
+                    index % 2 === 1 ? undefined : alpha(primary.light, 0.1),
+                }}
+              >
                 <Grid size={{ md: 4 }}>
                   <Stack spacing={0.5}>
                     <Typography>
@@ -97,28 +108,42 @@ export const TranslationForm: FC<Props> = ({ init, onSubmit }) => {
                   </Stack>
                 </Grid>
                 <Grid size={{ md: 8 }}>
-                  <Stack spacing={1} direction={"row"}>
+                  <Stack spacing={0.5} direction="row">
                     <Field name={`points[${index}].x`}>
                       {(subField) => (
                         <TextField
-                          placeholder="x"
+                          error={subField.state.meta.errors.length > 0}
                           value={subField.state.value}
                           onChange={(e) =>
                             subField.handleChange(e.target.value)
                           }
                           onBlur={subField.handleBlur}
+                          slotProps={{
+                            htmlInput: {
+                              sx: { fontFamily: "monospace" },
+                              type: "number",
+                            },
+                          }}
+                          sx={{ flexBasis: 0, flexGrow: 1 }}
                         />
                       )}
                     </Field>
                     <Field name={`points[${index}].y`}>
                       {(subField) => (
                         <TextField
-                          placeholder="y"
+                          error={subField.state.meta.errors.length > 0}
                           value={subField.state.value}
                           onChange={(e) =>
                             subField.handleChange(e.target.value)
                           }
                           onBlur={subField.handleBlur}
+                          slotProps={{
+                            htmlInput: {
+                              sx: { fontFamily: "monospace" },
+                              type: "number",
+                            },
+                          }}
+                          sx={{ flexBasis: 0, flexGrow: 1 }}
                         />
                       )}
                     </Field>
@@ -131,6 +156,7 @@ export const TranslationForm: FC<Props> = ({ init, onSubmit }) => {
                 {({ values }) => (
                   <Button
                     disabled={values.points.length >= 4}
+                    variant="outlined"
                     onClick={() => field.pushValue({ x: "", y: "" })}
                   >
                     add point
@@ -143,7 +169,17 @@ export const TranslationForm: FC<Props> = ({ init, onSubmit }) => {
       </Field>
 
       <Toolbar>
-        <Button onClick={handleSubmit}>QQ</Button>
+        <Subscribe selector={({ canSubmit }) => ({ canSubmit })}>
+          {({ canSubmit }) => (
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              disabled={!canSubmit}
+            >
+              submit
+            </Button>
+          )}
+        </Subscribe>
       </Toolbar>
     </Stack>
   );
