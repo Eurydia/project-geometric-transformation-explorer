@@ -30,6 +30,11 @@ const AddPolygonOptionsSchema = z.object({
   color: z.string().optional().default(undefined),
 });
 
+const PlotTranslationOptionSchema = z.object({
+  points: Vec2DSchema.array(),
+  translate: Vec2DSchema,
+});
+
 export const useTranslationGraph = (selector: string) => {
   const desmosRef = useRef<Desmos.Calculator>(undefined);
   const pointIdRef = useRef(0);
@@ -194,11 +199,127 @@ export const useTranslationGraph = (selector: string) => {
     );
   }, []);
 
+  const plotTranslation = useCallback(
+    (options: z.input<typeof PlotTranslationOptionSchema>) => {
+      if (desmosRef.current === undefined) {
+        return;
+      }
+      const result = PlotTranslationOptionSchema.safeParse(options);
+      if (!result.success) {
+        return;
+      }
+      clearGraph();
+      const desmos = desmosRef.current;
+      const { points, translate } = result.data;
+
+      const pointsLatex = points.map(({ x, y }) => `(${x},${y})`);
+      const pointsImageLatex = points.map(
+        ({ x, y }) => `(${+x + +translate.x},${+y + +translate.y})`
+      );
+
+      desmos.setExpression({
+        latex: `t(x,y)=(x+${translate.x},y+${translate.y})`,
+      });
+
+      for (const [i, p] of pointsLatex.entries()) {
+        desmos.setExpression({
+          latex: `A_{${i}}=${p}`,
+          label: `\`A_{${i}}${p}\``,
+          showLabel: true,
+        });
+
+        desmos.setExpression({
+          latex: `B_{${i}}=t((A_{${i}}).x,(A_{${i}}).y)`,
+          label: `\`A_{${i}}^{\\prime}${pointsImageLatex[i]}\``,
+          showLabel: true,
+        });
+
+        desmos.setExpression({
+          type: "table",
+          columns: [
+            {
+              latex: "x",
+              values: [`(A_{${i}}).x`, `(B_{${i}}).x`],
+              lines: true,
+            },
+            {
+              latex: "y",
+              values: [`(A_{${i}}).y`, `(B_{${i}}).y`],
+              lines: true,
+            },
+          ],
+        });
+      }
+
+      desmosRef.current.setExpression({
+        latex: `P_{A} =
+          \\left[
+            ${points.map((_, index) => `A_{${index}}`).join(",")}
+          \\right]`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        latex: `M_{XA} = \\operatorname{mean}((P_{A}).x)`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        latex: `M_{YA} = \\operatorname{mean}((P_{A}).y)`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        latex: `Q_{A} =\\operatorname{arctan}((P_{A}).y - M_{YA}, (P_{A}).x - M_{XA})`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        latex: `\\operatorname{polygon}(\\operatorname{sort}(P_{A},Q_{A}))`,
+        dragMode: "NONE",
+        fill: true,
+        fillOpacity: 0.5,
+      });
+
+      desmosRef.current.setExpression({
+        latex: `P_{B} =
+          \\left[
+            ${points.map((_, index) => `B_{${index}}`).join(",")}
+          \\right]`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        latex: `M_{XB} = \\operatorname{mean}((P_{B}).x)`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        latex: `M_{YB} = \\operatorname{mean}((P_{B}).y)`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        latex: `Q_{B} =\\operatorname{arctan}((P_{B}).y - M_{YB}, (P_{B}).x - M_{XB})`,
+        hidden: true,
+      });
+
+      desmosRef.current.setExpression({
+        latex: `\\operatorname{polygon}(\\operatorname{sort}(P_{B},Q_{B}))`,
+        dragMode: "NONE",
+        fill: true,
+        fillOpacity: 0.5,
+      });
+    },
+    [clearGraph]
+  );
+
   return {
     desmosRef,
     addPoint,
     addLineSegment,
     addPolygon,
     clearGraph,
+    plotTranslation,
   };
 };
