@@ -68,7 +68,7 @@ function RouteComponent() {
     }
     if (preimgCoords.length >= 3) {
       makePolygon(preimgCoords, blue["A200"]);
-      makePolygon(imgCoords, deepOrange["A400"]);
+      makePolygon(imgCoords, deepOrange["A200"]);
     }
   }, [desmosRef, makeCircle, makePoint, makePolygon, result]);
 

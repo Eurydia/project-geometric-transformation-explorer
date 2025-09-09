@@ -30,8 +30,8 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
   });
 
   return (
-    <Stack spacing={0.5}>
-      <Grid spacing={1} container>
+    <Stack>
+      <Grid spacing={1} container padding={1}>
         <Grid size={{ md: 4 }}>
           <Typography>
             <MathJax>{`Translation $(x,y)$`}</MathJax>
@@ -84,7 +84,7 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
                 key={`translate-point-${index}`}
                 spacing={1}
                 container
-                padding={0.5}
+                padding={1}
                 sx={{
                   backgroundColor: ({ palette: { primary } }) =>
                     index % 2 === 1 ? undefined : alpha(primary.light, 0.1),

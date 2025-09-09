@@ -15,27 +15,26 @@ const AddPointOptionsSchema = z.object({
   point: Vec2DSchema,
   name: z.string().nonempty().trim().normalize(),
   label: z.string().nonempty().trim().nonempty(),
-  styles: z
-    .object({
-      color: z.string().optional().default(undefined),
-    })
-    .optional(),
+  color: z.string().optional().default(undefined),
 });
 
 const AddLineSegmentOptionsSchema = z.object({
   p1: Vec2DSchema,
   p2: Vec2DSchema,
-  styles: z
-    .object({
-      color: z.string().optional().default(undefined),
-    })
-    .optional(),
+  lineColor: z.string().optional().default(undefined),
+  lineOpacity: z.number().min(0).max(1).optional(),
+});
+
+const AddPolygonOptionsSchema = z.object({
+  points: Vec2DSchema.array(),
+  color: z.string().optional().default(undefined),
 });
 
 export const useTranslationGraph = (selector: string) => {
   const desmosRef = useRef<Desmos.Calculator>(undefined);
   const pointIdRef = useRef(0);
   const polygonIdRef = useRef(0);
+  const lineIdRef = useRef(0);
 
   useEffect(() => {
     const root = document.querySelector(selector) as HTMLElement | null;
@@ -67,20 +66,20 @@ export const useTranslationGraph = (selector: string) => {
         return;
       }
 
-      const { name, point: pointRaw, label, styles } = result.data;
+      const { name, point: pointRaw, label, color } = result.data;
       const point = `(${pointRaw.x}, ${pointRaw.y})`;
 
       const id = pointIdRef.current;
       pointIdRef.current = id + 1;
 
       desmosRef.current.setExpression({
+        id: `point_${id}`,
         latex: `${name} = ${point}`,
-        id: `point-${id}`,
         showLabel: true,
         points: true,
         dragMode: "NONE",
         label: `\`${label}${point}\``,
-        ...styles,
+        color,
       });
     },
     []
@@ -96,12 +95,13 @@ export const useTranslationGraph = (selector: string) => {
         return;
       }
 
-      const { p1, p2, styles } = result.data;
-      const id = pointIdRef.current;
-      pointIdRef.current = id + 1;
+      const { p1, p2, lineColor, lineOpacity } = result.data;
+      const id = lineIdRef.current;
+      lineIdRef.current = id + 1;
 
       desmosRef.current.setExpression({
         type: "table",
+        id: `lineSegment_${id}`,
         columns: [
           {
             latex: "x",
@@ -109,10 +109,8 @@ export const useTranslationGraph = (selector: string) => {
             points: false,
             dragMode: "NONE",
             lines: true,
-            lineOpacity: "1",
-            lineStyle: "DASHED",
-            lineWidth: 2,
-            ...styles,
+            lineOpacity,
+            color: lineColor,
           },
           {
             latex: "y",
@@ -120,68 +118,87 @@ export const useTranslationGraph = (selector: string) => {
             points: false,
             dragMode: "NONE",
             lines: true,
-            lineOpacity: "1",
-            lineStyle: "DASHED",
-            lineWidth: 2,
-            ...styles,
+            lineOpacity,
+            color: lineColor,
           },
         ],
-        // latex: `${name} = ${point}`,
-        // id: `lineSegment-${id}`,
-        // dragMode: "NONE",
-        // ...styles,
       });
     },
     []
   );
 
-  const makePolygon = useCallback((coords: string[], color: string) => {
-    if (desmosRef.current === undefined) {
-      return;
-    }
+  const addPolygon = useCallback(
+    (option: z.input<typeof AddPolygonOptionsSchema>) => {
+      if (desmosRef.current === undefined) {
+        return;
+      }
 
-    const id = polygonIdRef.current;
-    polygonIdRef.current = id + 1;
+      const result = AddPolygonOptionsSchema.safeParse(option);
+      if (!result.success) {
+        return;
+      }
 
-    desmosRef.current.setExpression({
-      id: `point-list-${id}`,
-      latex: `P_{${id}} =
+      const id = polygonIdRef.current;
+      polygonIdRef.current = id + 1;
+
+      const { color, points: pointsRaw } = result.data;
+
+      const points = pointsRaw.map(({ x, y }) => `(${x}, ${y})`);
+
+      desmosRef.current.setExpression({
+        id: `pointList_${id}`,
+        type: "expression",
+        latex: `P_{${id}} =
           \\left[
-            ${coords.join(",")}
+            ${points.join(",")}
           \\right]`,
-      hidden: true,
-    });
+        hidden: true,
+      });
 
-    desmosRef.current.setExpression({
-      id: `mean-x-${id}`,
-      latex: `X_{${id}} = \\operatorname{mean}\\left(P_{${id}}.x\\right)`,
-      hidden: true,
-    });
+      desmosRef.current.setExpression({
+        id: `pointListMeanX_${id}`,
+        latex: `X_{${id}} = \\operatorname{mean}\\left(P_{${id}}.x\\right)`,
+        hidden: true,
+      });
 
-    desmosRef.current.setExpression({
-      id: `mean-y-${id}`,
-      latex: `Y_{${id}} = \\operatorname{mean}\\left(P_{${id}}.y\\right)`,
-      hidden: true,
-    });
+      desmosRef.current.setExpression({
+        id: `pointListMeanY_${id}`,
+        latex: `Y_{${id}} = \\operatorname{mean}\\left(P_{${id}}.y\\right)`,
+        hidden: true,
+      });
 
-    desmosRef.current.setExpression({
-      id: `point-theta-${id}`,
-      latex: `Q_{${id}} =\\operatorname{arctan}\\left(P_{${id}}.y - Y_{${id}}, P_{${id}}.x - X_{${id}}\\right)`,
-      hidden: true,
-    });
+      desmosRef.current.setExpression({
+        id: `pointListTheta_${id}`,
+        latex: `Q_{${id}} =\\operatorname{arctan}\\left(P_{${id}}.y - Y_{${id}}, P_{${id}}.x - X_{${id}}\\right)`,
+        hidden: true,
+      });
 
-    desmosRef.current.setExpression({
-      id: `polygon-${id}`,
-      latex: `\\operatorname{polygon}\\left(\\operatorname{sort}\\left(P_{${id}},Q_{${id}}\\right)\\right)`,
-      dragMode: "NONE",
-      color,
-      fill: true,
-      fillOpacity: 0.5,
-    });
+      desmosRef.current.setExpression({
+        id: `polygon_${id}`,
+        latex: `\\operatorname{polygon}\\left(\\operatorname{sort}\\left(P_{${id}},Q_{${id}}\\right)\\right)`,
+        dragMode: "NONE",
+        color,
+        fill: true,
+        fillOpacity: 0.5,
+      });
+    },
+    []
+  );
+
+  const clearGraph = useCallback(() => {
+    desmosRef.current?.removeExpressions(
+      desmosRef.current
+        .getExpressions()
+        .filter(({ id }) => id !== undefined)
+        .map(({ id }) => ({ id: id! }))
+    );
   }, []);
+
   return {
     desmosRef,
     addPoint,
     addLineSegment,
+    addPolygon,
+    clearGraph,
   };
 };

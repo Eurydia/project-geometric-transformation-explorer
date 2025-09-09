@@ -2,22 +2,20 @@ import z from "zod";
 
 const NormalString = z
   .string()
+  .trim()
+  .nonempty()
+  .normalize()
   .refine((arg) => !isNaN(Number(arg)), { error: "non-numeric string" });
 
 export const TranslationFormDataSchema = z.object({
   points: z
     .object({ x: NormalString, y: NormalString })
     .array()
-    .min(3)
     .max(4)
-    .default([
-      { x: "", y: "" },
-      { x: "", y: "" },
-      { x: "", y: "" },
-    ]),
+    .default([{ x: "1", y: "1" }]),
   translation: z
     .object({ x: NormalString, y: NormalString })
-    .default({ x: "", y: "" }),
+    .default({ x: "2", y: "3" }),
 });
 
 export type TranslationFormData = z.output<typeof TranslationFormDataSchema>;
