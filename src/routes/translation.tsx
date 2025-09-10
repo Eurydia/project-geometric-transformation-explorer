@@ -5,6 +5,7 @@ import { useTranslationGraph } from "@/hooks/useTranslationGraph";
 import { type TranslationFormData } from "@/types/translation";
 import { Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
+import { MathJax } from "better-react-mathjax";
 import { useCallback, useState } from "react";
 
 export const Route = createFileRoute("/translation")({
@@ -48,29 +49,50 @@ function RouteComponent() {
         ),
         primary: (
           <Paper variant="outlined" sx={{ height: "100%", padding: 2 }}>
-            <Typography variant="h5" fontWeight={"700"}>
-              {`(การแปลงเรขาคณิต) การเลื่อนขนาน`}
-            </Typography>
-            <TranslationForm onSubmit={handleSolve} />
-            <Collapsible
-              title={<Typography>{"result"}</Typography>}
-              content={
-                <Stack>
-                  <Typography component={"span"}>
-                    {"translation X:"}
-                    {result === null ? (
-                      <Typography>{`not ready`}</Typography>
-                    ) : (
-                      <Typography>
-                        {result.translation.x === "0"
-                          ? "none"
-                          : `${result.translation.x} units`}
-                      </Typography>
+            <Stack spacing={1}>
+              <Typography variant="h5" fontWeight={"700"}>
+                {`(การแปลงเรขาคณิต) การเลื่อนขนาน`}
+              </Typography>
+              <TranslationForm onSubmit={handleSolve} />
+              <Collapsible
+                title={<Typography fontWeight={600}>{"ผลลัพท์"}</Typography>}
+                content={
+                  <Stack spacing={1}>
+                    {result === null && (
+                      <>
+                        <Typography>{`ขนาดการเลื่อนขนาน: ไม่พร้อมแสดง`}</Typography>
+                        <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ไม่พร้อมแสดง`}</MathJax>
+                      </>
                     )}
-                  </Typography>
-                </Stack>
-              }
-            />
+                    {result !== null && (
+                      <>
+                        <MathJax>{`ขนาดการเลื่อนขนาน: $(${result.translation.x}, ${result.translation.y})$`}</MathJax>
+                        <MathJax>
+                          {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: `}
+                        </MathJax>
+                        <MathJax>
+                          {`$$
+                          \\begin{align*}
+                        ${result.points
+                          .map(({ x, y }, i) => {
+                            const dx = Number(result.translation.x);
+                            const dy = Number(result.translation.y);
+                            const char = String.fromCharCode(i + 65);
+                            const preImage = `${char}(${x}, ${y})`;
+                            const image = `${char}^{\\prime}(${
+                              Number(x) + dx
+                            }, ${Number(y) + dy})`;
+                            return `${preImage} &\\rightarrow ${image}`;
+                          })
+                          .join("\\\\")}
+                        \\end{align*}$$`}
+                        </MathJax>
+                      </>
+                    )}
+                  </Stack>
+                }
+              />
+            </Stack>
           </Paper>
         ),
       }}

@@ -3,7 +3,6 @@ import { useForm } from "@tanstack/react-form";
 import {
   alpha,
   Button,
-  Divider,
   Grid,
   OutlinedInput,
   Stack,
@@ -21,11 +20,10 @@ type Props = {
   onSubmit: (v: TranslationFormData) => unknown;
 };
 export const TranslationForm: FC<Props> = ({ onSubmit }) => {
-  const { Field, handleSubmit, Subscribe, reset } = useForm({
+  const { Field, handleSubmit, Subscribe, reset, pushFieldValue } = useForm({
     defaultValues: TranslationFormDataSchema.parse({}),
     validators: {
       onChange: TranslationFormDataSchema,
-      onBlur: TranslationFormDataSchema,
     },
     onSubmit: ({ value }) => {
       onSubmit(value);
@@ -33,11 +31,32 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
   });
 
   return (
-    <Stack spacing={2} divider={<Divider />}>
-      <Grid padding={1} container spacing={0.5}>
+    <Stack>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Subscribe selector={({ isDefaultValue }) => ({ isDefaultValue })}>
+          {({ isDefaultValue }) => (
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={() => reset()}
+              disabled={isDefaultValue}
+            >
+              {`คืนค่าเริ่มต้น`}
+            </Button>
+          )}
+        </Subscribe>
+      </Toolbar>
+      <Grid
+        padding={1}
+        container
+        spacing={0.5}
+        sx={{
+          backgroundColor: ({ palette }) => alpha(palette.primary.light, 0.08),
+        }}
+      >
         <Grid size={{ sm: 4, xs: 12 }}>
           <Typography>
-            <MathJax>{`ขนาดการเลื่อน $(x,y)$`}</MathJax>
+            <MathJax>{`ขนาดการเลื่อนขนาน $(x,y)$`}</MathJax>
           </Typography>
         </Grid>
         <Grid size={{ sm: 8, xs: 12 }}>
@@ -83,19 +102,6 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
         <Field name="points" mode="array">
           {(field) => (
             <Fragment>
-              <Toolbar>
-                <Subscribe selector={({ values }) => ({ values })}>
-                  {({ values }) => (
-                    <Button
-                      disabled={values.points.length >= 4}
-                      variant="outlined"
-                      onClick={() => field.pushValue({ x: "", y: "" })}
-                    >
-                      {`เพิ่มพิกัด`}
-                    </Button>
-                  )}
-                </Subscribe>
-              </Toolbar>
               {field.state.value.map((_, index) => (
                 <Grid
                   key={`translate-point-${index}`}
@@ -203,15 +209,14 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
             </Button>
           )}
         </Subscribe>
-        <Subscribe selector={({ isDefaultValue }) => ({ isDefaultValue })}>
-          {({ isDefaultValue }) => (
+        <Subscribe selector={({ values }) => ({ values })}>
+          {({ values }) => (
             <Button
-              color="error"
+              disabled={values.points.length >= 4}
               variant="outlined"
-              onClick={() => reset()}
-              disabled={isDefaultValue}
+              onClick={() => pushFieldValue("points", { x: "", y: "" })}
             >
-              {`คืนค่าเริ่มต้น`}
+              {`เพิ่มพิกัด`}
             </Button>
           )}
         </Subscribe>

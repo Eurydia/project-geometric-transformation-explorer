@@ -1,4 +1,4 @@
-import { blue, deepOrange, grey, orange } from "@mui/material/colors";
+import { blue, deepOrange, grey } from "@mui/material/colors";
 import { useCallback, useEffect, useRef } from "react";
 import z from "zod";
 
@@ -79,7 +79,7 @@ export const useTranslationGraph = (selector: string) => {
               values: [`(A_{${i}}).x`, `(B_{${i}}).x`],
               lines: true,
               points: false,
-              color: grey["A700"],
+              color: grey["A400"],
               lineStyle: "DASHED",
             },
             {
@@ -94,18 +94,20 @@ export const useTranslationGraph = (selector: string) => {
         });
         desmos.setExpression({
           latex: `A_{${i}}=${p}`,
-          label: `\`A_{${i}}${p}\``,
+          label: `\`${String.fromCharCode(65 + i)}${p}\``,
           showLabel: true,
-          // dragMode: "NONE",
+          dragMode: "NONE",
           color: blue["A200"],
           points: true,
         });
 
         desmos.setExpression({
           latex: `B_{${i}}=t((A_{${i}}).x,(A_{${i}}).y)`,
-          label: `\`A_{${i}}^{\\prime}${pointsImageLatex[i]}\``,
+          label: `\`${String.fromCharCode(65 + i)}^{\\prime}${
+            pointsImageLatex[i]
+          }\``,
           showLabel: true,
-          color: deepOrange["A200"],
+          color: deepOrange["A400"],
           points: true,
         });
       }
@@ -167,7 +169,7 @@ export const useTranslationGraph = (selector: string) => {
         desmosRef.current.setExpression({
           latex: `\\operatorname{polygon}(\\operatorname{sort}(P_{B},Q_{B}))`,
           dragMode: "NONE",
-          color: orange["A200"],
+          color: deepOrange["A400"],
           fill: true,
         });
       }
