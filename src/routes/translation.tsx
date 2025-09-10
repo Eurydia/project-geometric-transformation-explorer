@@ -1,30 +1,28 @@
 import { TranslationForm } from "@/components/form/translation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
+import { Collapsible } from "@/components/surface/Collapsible";
 import { useTranslationGraph } from "@/hooks/useTranslationGraph";
 import { type TranslationFormData } from "@/types/translation";
-import { Paper, Stack } from "@mui/material";
+import { Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 export const Route = createFileRoute("/translation")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { plotTranslation, addPolygon, addPoint, addLineSegment, clearGraph } =
-    useTranslationGraph("#desmos");
-
+  const { plotTranslation } = useTranslationGraph("#desmos");
+  const [result, setResult] = useState<TranslationFormData | null>(null);
   const handleSolve = useCallback(
     (value: TranslationFormData | null) => {
       if (value === null) {
         return;
       }
-      clearGraph();
-
+      setResult(value);
       plotTranslation({ points: value.points, translate: value.translation });
     },
-
-    [clearGraph, plotTranslation]
+    [plotTranslation]
   );
 
   return (
@@ -50,7 +48,29 @@ function RouteComponent() {
         ),
         primary: (
           <Paper variant="outlined" sx={{ height: "100%", padding: 2 }}>
+            <Typography variant="h5" fontWeight={"700"}>
+              {`(การแปลงเรขาคณิต) การเลื่อนขนาน`}
+            </Typography>
             <TranslationForm onSubmit={handleSolve} />
+            <Collapsible
+              title={<Typography>{"result"}</Typography>}
+              content={
+                <Stack>
+                  <Typography component={"span"}>
+                    {"translation X:"}
+                    {result === null ? (
+                      <Typography>{`not ready`}</Typography>
+                    ) : (
+                      <Typography>
+                        {result.translation.x === "0"
+                          ? "none"
+                          : `${result.translation.x} units`}
+                      </Typography>
+                    )}
+                  </Typography>
+                </Stack>
+              }
+            />
           </Paper>
         ),
       }}

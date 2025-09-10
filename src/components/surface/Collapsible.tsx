@@ -17,8 +17,11 @@ export const Collapsible: FC<Props> = memo(({ content, title }) => {
       >
         {title}
         <Typography
+          component={"span"}
+          tabIndex={0}
           onClick={handleToggle}
           sx={{
+            width: "fit-content",
             cursor: "pointer",
             "&:hover": {
               textDecorationLine: "underline",
