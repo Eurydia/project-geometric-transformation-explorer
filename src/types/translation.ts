@@ -10,11 +10,14 @@ const NormalString = z
 export const TranslationFormDataSchema = z.object({
   points: z
     .object({ x: NormalString, y: NormalString })
+    .optional()
     .array()
     .max(4)
+    .optional()
     .default([{ x: "1", y: "1" }]),
   translation: z
     .object({ x: NormalString, y: NormalString })
+    .optional()
     .default({ x: "2", y: "3" }),
 });
 

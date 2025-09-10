@@ -1,3 +1,4 @@
+import { AttributionBlog } from "@/components/blogs/AttributionBlog";
 import { TranslationForm } from "@/components/form/translation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
 import { Collapsible } from "@/components/surface/Collapsible";
@@ -48,16 +49,27 @@ function RouteComponent() {
           </Stack>
         ),
         primary: (
-          <Paper variant="outlined" sx={{ height: "100%", padding: 2 }}>
+          <Paper
+            variant="outlined"
+            sx={{
+              height: "100%",
+              padding: 2,
+              overflowY: "scroll",
+              scrollbarWidth: "thin",
+            }}
+          >
             <Stack spacing={1}>
-              <Typography variant="h5" fontWeight={"700"}>
-                {`(การแปลงเรขาคณิต) การเลื่อนขนาน`}
+              <Typography component={"div"} variant="h5" fontWeight={"700"}>
+                {`(การแปลงทางเรขาคณิต)`}
+              </Typography>
+              <Typography variant="h5" component={"div"} fontWeight={700}>
+                {`การเลื่อนขนาน`}
               </Typography>
               <TranslationForm onSubmit={handleSolve} />
               <Collapsible
-                title={<Typography fontWeight={600}>{"ผลลัพท์"}</Typography>}
-                content={
-                  <Stack spacing={1}>
+                title={<Typography fontWeight={800}>{"ผลลัพท์"}</Typography>}
+                children={
+                  <Stack>
                     {result === null && (
                       <>
                         <Typography>{`ขนาดการเลื่อนขนาน: ไม่พร้อมแสดง`}</Typography>
@@ -68,7 +80,7 @@ function RouteComponent() {
                       <>
                         <MathJax>{`ขนาดการเลื่อนขนาน: $(${result.translation.x}, ${result.translation.y})$`}</MathJax>
                         <MathJax>
-                          {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: `}
+                          {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
                         </MathJax>
                         <MathJax>
                           {`$$
@@ -92,6 +104,22 @@ function RouteComponent() {
                   </Stack>
                 }
               />
+              <Collapsible
+                title={
+                  <Typography fontWeight={600}>สมบัติการเลื่อนขนาน</Typography>
+                }
+              >
+                <Typography>ว่าง</Typography>
+              </Collapsible>
+
+              <Collapsible
+                title={
+                  <Typography fontWeight={600}>สูตรการเลื่อนขนาน</Typography>
+                }
+              >
+                <Typography>ว่าง</Typography>
+              </Collapsible>
+              <AttributionBlog />
             </Stack>
           </Paper>
         ),

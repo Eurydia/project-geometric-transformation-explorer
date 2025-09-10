@@ -5,22 +5,13 @@ import { Collapsible } from "../surface/Collapsible";
 export const AttributionBlog: FC = memo(() => {
   return (
     <Collapsible
-      title={
-        <Typography
-          variant="h6"
-          component="div"
-        >
-          {`ข้อมูลเว็ปไซต์`}
-        </Typography>
-      }
-      content={
+      title={<Typography fontWeight={600}>{`ข้อมูลเว็ปไซต์`}</Typography>}
+      children={
         <Stack spacing={1}>
           <Typography>
-            {`เว็ปไซต์ถูกจัดทำและพัฒนาเพื่อให้เป็นสื่อการสอนของกลุ่มสาระการเรียนรู้คณิตศาสตร์ เรื่องการแปลงทางเรขาคณิต (การหมุน)`}
+            {`เว็ปไซต์ถูกจัดทำและพัฒนาเพื่อให้เป็นสื่อการสอนของกลุ่มสาระการเรียนรู้คณิตศาสตร์ เรื่องการแปลงทางเรขาคณิต`}
           </Typography>
-          <Typography fontWeight={700}>
-            {`พัฒนาและปรับปรุงโดย`}
-          </Typography>
+          <Typography fontWeight={600}>{`พัฒนาและปรับปรุงโดย`}</Typography>
           <Typography>{`นางสาวเจนจิรา แจ้งมากและ`}</Typography>
           <Typography>{`นายธนกร พุทธรักษา`}</Typography>
           <Typography component="div">

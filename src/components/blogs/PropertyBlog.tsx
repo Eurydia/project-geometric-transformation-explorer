@@ -1,12 +1,6 @@
 import prop12 from "@/assets/prop1+2.jpg";
 import prop3 from "@/assets/prop3.jpg";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
 import { memo, type FC } from "react";
 import { ExpandableImage } from "../data-display/ExpandableImage";
 import { Collapsible } from "../surface/Collapsible";
@@ -20,15 +14,8 @@ const PROPERTIES = [
 export const PropertyBlog: FC = memo(() => {
   return (
     <Collapsible
-      title={
-        <Typography
-          variant="h6"
-          component="div"
-        >
-          {`สมบัติการหมุน`}
-        </Typography>
-      }
-      content={
+      title={<Typography fontWeight={600}>{`สมบัติการหมุน`}</Typography>}
+      children={
         <Stack spacing={0.5}>
           <List
             sx={{

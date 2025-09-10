@@ -1,9 +1,4 @@
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
 import { memo, type FC } from "react";
 import { Collapsible } from "../surface/Collapsible";
@@ -25,15 +20,8 @@ const FORMULAE = [
 export const FormulaBlog: FC = memo(() => {
   return (
     <Collapsible
-      title={
-        <Typography
-          variant="h6"
-          component="div"
-        >
-          {`สูตรการหมุน`}
-        </Typography>
-      }
-      content={
+      title={<Typography fontWeight={600}>{`สูตรการหมุน`}</Typography>}
+      children={
         <List
           sx={{
             paddingLeft: 4,
@@ -42,10 +30,7 @@ export const FormulaBlog: FC = memo(() => {
         >
           {FORMULAE.map((formula, index) => {
             return (
-              <ListItem
-                key={`forumla-${index}`}
-                sx={{ display: "list-item" }}
-              >
+              <ListItem key={`forumla-${index}`} sx={{ display: "list-item" }}>
                 <ListItemText
                   slotProps={{
                     primary: { variant: "body1" },

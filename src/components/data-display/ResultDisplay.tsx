@@ -1,14 +1,6 @@
-import {
-  formatCoord,
-  formatNumber,
-} from "@/hooks/useRotationGroup";
+import { formatCoord, formatNumber } from "@/hooks/useRotationGroup";
 import type { Vec2D } from "@/types";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
 import { memo, useMemo, type FC } from "react";
 import { Collapsible } from "../surface/Collapsible";
@@ -69,65 +61,34 @@ export const ResultDisplay: FC<Props> = memo(({ data }) => {
     if (data === undefined) {
       return "$-$";
     }
-    return data.direction === -1
-      ? `ทวนเข็มนาฬิกา`
-      : `ตามเข็มนาฬิกา`;
+    return data.direction === -1 ? `ทวนเข็มนาฬิกา` : `ตามเข็มนาฬิกา`;
   }, [data]);
 
   return (
     <Collapsible
       title={
-        <Typography
-          variant="h6"
-          component="div"
-          fontWeight={700}
-        >
+        <Typography variant="h6" component="div" fontWeight={700}>
           {`ผลลัพธ์`}
         </Typography>
       }
-      content={
-        <List
-          dense
-          disablePadding
-        >
-          <ListItem
-            dense
-            disableGutters
-            disablePadding
-          >
+      children={
+        <List dense disablePadding>
+          <ListItem dense disableGutters disablePadding>
             <ListItemText disableTypography>
-              <MathJax dynamic>
-                {`จุดหมุน: $${center}$`}
-              </MathJax>
+              <MathJax dynamic>{`จุดหมุน: $${center}$`}</MathJax>
             </ListItemText>
           </ListItem>
-          <ListItem
-            dense
-            disableGutters
-            disablePadding
-          >
+          <ListItem dense disableGutters disablePadding>
             <ListItemText disableTypography>
-              <MathJax dynamic>
-                {`ขนาดของมุมที่หมุน: $${angle}$`}
-              </MathJax>
+              <MathJax dynamic>{`ขนาดของมุมที่หมุน: $${angle}$`}</MathJax>
             </ListItemText>
           </ListItem>
-          <ListItem
-            dense
-            disableGutters
-            disablePadding
-          >
+          <ListItem dense disableGutters disablePadding>
             <ListItemText disableTypography>
-              <MathJax dynamic>
-                {`ทิศทาง: ${direction}`}
-              </MathJax>
+              <MathJax dynamic>{`ทิศทาง: ${direction}`}</MathJax>
             </ListItemText>
           </ListItem>
-          <ListItem
-            dense
-            disableGutters
-            disablePadding
-          >
+          <ListItem dense disableGutters disablePadding>
             <ListItemText disableTypography>
               <MathJax dynamic>
                 {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ${resultItems}`}

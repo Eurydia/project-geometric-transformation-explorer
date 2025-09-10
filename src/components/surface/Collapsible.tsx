@@ -1,8 +1,8 @@
 import { Collapse, Stack, Typography } from "@mui/material";
 import { memo, useCallback, useState, type FC, type ReactNode } from "react";
 
-type Props = { title: ReactNode; content: ReactNode };
-export const Collapsible: FC<Props> = memo(({ content, title }) => {
+type Props = { title: ReactNode; children: ReactNode };
+export const Collapsible: FC<Props> = memo(({ children, title }) => {
   const [open, setOpen] = useState(false);
 
   const handleToggle = useCallback(() => setOpen((prev) => !prev), []);
@@ -32,7 +32,7 @@ export const Collapsible: FC<Props> = memo(({ content, title }) => {
         </Typography>
       </Stack>
 
-      <Collapse in={open}>{content}</Collapse>
+      <Collapse in={open}>{children}</Collapse>
     </Stack>
   );
 });

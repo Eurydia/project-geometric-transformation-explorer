@@ -2,7 +2,6 @@ import { blue, deepOrange, grey } from "@mui/material/colors";
 import { useCallback } from "react";
 import z from "zod";
 import { useDesmos } from "./useDesmos";
-import _ from "lodash";
 
 const StringOrNumber = z
   .union([z.string().pipe(z.transform((arg) => Number(arg))), z.number()])
@@ -19,47 +18,9 @@ const PlotTranslationOptionSchema = z.object({
   translate: Vec2DSchema,
 });
 
-const makePolygonExpr = (
-  d: Desmos.Calculator,
-  varName: string,
-  pointCount: number,
-  color: string
-) => {
-  d.setExpression({
-    latex: `P_{${varName}} =
-          \\left[
-            ${_.range(pointCount)
-              .map((index) => `${varName}_{${index}}`)
-              .join(",")}
-          \\right]`,
-    hidden: true,
-  });
-
-  d.setExpression({
-    latex: `M_{X${varName}} = \\operatorname{mean}((P_{${varName}}).x)`,
-    hidden: true,
-  });
-
-  d.setExpression({
-    latex: `M_{Y${varName}} = \\operatorname{mean}((P_{${varName}}).y)`,
-    hidden: true,
-  });
-
-  d.setExpression({
-    latex: `Q_{${varName}} =\\operatorname{arctan}((P_{${varName}}).y - M_{Y${varName}}, (P_{${varName}}).x - M_{X${varName}})`,
-    hidden: true,
-  });
-
-  d.setExpression({
-    latex: `\\operatorname{polygon}(\\operatorname{sort}(P_{${varName}},Q_{${varName}}))`,
-    dragMode: "NONE",
-    fill: true,
-    color,
-  });
-};
-
-export const useTranslationGraph = (selector: string) => {
+export const useReflectionGraph = (selector: string) => {
   const desmos = useDesmos(selector);
+
   const clearGraph = useCallback(() => {
     desmos?.removeExpressions(
       desmos
@@ -133,8 +94,65 @@ export const useTranslationGraph = (selector: string) => {
       }
 
       if (points.length > 1) {
-        makePolygonExpr(desmos, "A", points.length, blue["A400"]);
-        makePolygonExpr(desmos, "B", points.length, deepOrange["A400"]);
+        desmos.setExpression({
+          latex: `P_{A} =
+          \\left[
+            ${points.map((_, index) => `A_{${index}}`).join(",")}
+          \\right]`,
+          hidden: true,
+        });
+
+        desmos.setExpression({
+          latex: `M_{XA} = \\operatorname{mean}((P_{A}).x)`,
+          hidden: true,
+        });
+
+        desmos.setExpression({
+          latex: `M_{YA} = \\operatorname{mean}((P_{A}).y)`,
+          hidden: true,
+        });
+
+        desmos.setExpression({
+          latex: `Q_{A} =\\operatorname{arctan}((P_{A}).y - M_{YA}, (P_{A}).x - M_{XA})`,
+          hidden: true,
+        });
+
+        desmos.setExpression({
+          latex: `\\operatorname{polygon}(\\operatorname{sort}(P_{A},Q_{A}))`,
+          dragMode: "NONE",
+          fill: true,
+          color: blue["A200"],
+        });
+
+        desmos.setExpression({
+          latex: `P_{B} =
+          \\left[
+            ${points.map((_, index) => `B_{${index}}`).join(",")}
+          \\right]`,
+          hidden: true,
+        });
+
+        desmos.setExpression({
+          latex: `M_{XB} = \\operatorname{mean}((P_{B}).x)`,
+          hidden: true,
+        });
+
+        desmos.setExpression({
+          latex: `M_{YB} = \\operatorname{mean}((P_{B}).y)`,
+          hidden: true,
+        });
+
+        desmos.setExpression({
+          latex: `Q_{B} =\\operatorname{arctan}((P_{B}).y - M_{YB}, (P_{B}).x - M_{XB})`,
+          hidden: true,
+        });
+
+        desmos.setExpression({
+          latex: `\\operatorname{polygon}(\\operatorname{sort}(P_{B},Q_{B}))`,
+          dragMode: "NONE",
+          color: deepOrange["A400"],
+          fill: true,
+        });
       }
     },
     [clearGraph, desmos]
