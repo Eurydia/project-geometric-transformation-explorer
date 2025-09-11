@@ -28,10 +28,7 @@ export const formatCoord = (vec: Vec2D<number>) => {
   return `\\left(${x},${y}\\right)`;
 };
 
-export const parseVec = ({
-  x,
-  y,
-}: Vec2D<string>): Vec2D<number> => {
+export const parseVec = ({ x, y }: Vec2D<string>): Vec2D<number> => {
   return {
     x: Number(x),
     y: Number(y),
@@ -62,15 +59,10 @@ const computeRotation = (
 };
 
 export const useRotationGroup = () => {
-  const previousPointsRef = useRef<
-    { id: number; vec: Vec2D<string> }[]
-  >([]);
-  const pointIdRef = useRef(2);
+  const previousPointsRef = useRef<{ id: number; vec: Vec2D<string> }[]>([]);
   const [angle, setAngle] = useState("90");
   const [direction, setDirection] = useState(1);
-  const [points, setPoints] = useState<
-    { id: number; vec: Vec2D<string> }[]
-  >([
+  const [points, setPoints] = useState<{ id: number; vec: Vec2D<string> }[]>([
     {
       id: 1,
       vec: { x: "1", y: "0" },
@@ -107,9 +99,7 @@ export const useRotationGroup = () => {
       setPoints((prev) => {
         if (prev.some((point) => point.id === id)) {
           return prev.map((point) =>
-            point.id === id
-              ? { id, vec: structuredClone(vec) }
-              : point
+            point.id === id ? { id, vec: structuredClone(vec) } : point
           );
         }
         return prev;

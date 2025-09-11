@@ -32,5 +32,8 @@ export const theme = createTheme({
         disableRipple: true,
       },
     },
+    MuiPaper: {
+      defaultProps: { variant: "outlined" },
+    },
   },
 });
