@@ -35,5 +35,8 @@ export const theme = createTheme({
     MuiPaper: {
       defaultProps: { variant: "outlined" },
     },
+    MuiTypography: {
+      styleOverrides: { root: { textWrap: "pretty" } },
+    },
   },
 });

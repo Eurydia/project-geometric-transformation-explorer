@@ -1,18 +1,27 @@
-import { Button, Grid, Stack, Toolbar, Typography } from "@mui/material";
-import { Fragment, memo, type FC } from "react";
+import {
+  alpha,
+  Button,
+  Stack,
+  Toolbar,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { Fragment, memo, useMemo, type FC } from "react";
 import z from "zod/v4";
 import { MathJax } from "better-react-mathjax";
 import { NumberTextField } from "../form-input/NumberTextField";
 import { createFormHook } from "@tanstack/react-form";
 import { fieldContext, formContext } from "@/contexts/app-form-context";
-import { RemoveArrayItemButton } from "../form-input/TypographyButton";
+import { RemoveArrayItemButton } from "../form-input/form-remove-array-item-button";
 import { RotationAnglePresetInput } from "../form-input/rotation-angle-preset-input";
 import { RotationDirectionInput } from "../form-input/rotation-direction-input";
+import { AddArrayItemButton } from "../form-input/form-add-array-item-button";
 
 const { useAppForm } = createFormHook({
   fieldComponents: {
     NumberTextField,
     RemoveArrayItemButton,
+    AddArrayItemButton,
     RotationAnglePresetInput,
     RotationDirectionInput,
   },
@@ -57,8 +66,14 @@ export const CalculatorForm: FC<Props> = memo(({ onSubmit }) => {
         }
       },
     });
+  const theme = useTheme();
+
+  const alternateColor = useMemo(() => {
+    return alpha(theme.palette.primary.light, 0.1);
+  }, [theme.palette.primary.light]);
+
   return (
-    <Stack spacing={1}>
+    <Stack spacing={0.5}>
       <Toolbar>
         <Subscribe selector={({ isDefaultValue }) => ({ isDefaultValue })}>
           {({ isDefaultValue }) => (
@@ -73,84 +88,63 @@ export const CalculatorForm: FC<Props> = memo(({ onSubmit }) => {
           )}
         </Subscribe>
       </Toolbar>
-      <Grid container spacing={0.5} padding={1}>
-        <Grid size={{ lg: 4, xs: 12 }}>
-          <Typography>{`ทิศทางการหมุน`}</Typography>
-        </Grid>
-        <Grid size={{ lg: 8, xs: 12 }}>
-          <AppField name="direction">
-            {(field) => <field.RotationDirectionInput />}
+      <Stack spacing={0.5} padding={1}>
+        <Typography>{`ทิศทางการหมุน`}</Typography>
+        <AppField name="direction">
+          {(field) => <field.RotationDirectionInput />}
+        </AppField>
+      </Stack>
+      <Stack spacing={0.5} padding={1} sx={{ backgroundColor: alternateColor }}>
+        <Typography>{`ขนาดของมุมที่หมุน (องศา)`}</Typography>
+        <AppField name="angle">
+          {(field) => (
+            <Stack spacing={0.5}>
+              <field.NumberTextField />
+              <field.RotationAnglePresetInput />
+            </Stack>
+          )}
+        </AppField>
+      </Stack>
+      <Stack spacing={0.5} padding={1}>
+        <Typography>
+          <MathJax>{`จุดหมุน $(x,y)$`}</MathJax>
+        </Typography>
+        <Stack useFlexGap spacing={0.5} direction={"row"} flexWrap={"nowrap"}>
+          <AppField name="center.x">
+            {(field) => <field.NumberTextField />}
           </AppField>
-        </Grid>
-      </Grid>
-      <Grid container spacing={0.5} padding={1}>
-        <Grid size={{ xs: 12, lg: 4 }}>
-          <Typography>{`ขนาดของมุมที่หมุน (องศา)`}</Typography>
-        </Grid>
-        <Grid size={{ xs: 12, lg: 8 }}>
-          <AppField name="angle">
-            {(field) => (
-              <Stack spacing={0.5}>
-                <field.NumberTextField />
-                <field.RotationAnglePresetInput />
-              </Stack>
-            )}
+          <AppField name="center.y">
+            {(field) => <field.NumberTextField />}
           </AppField>
-        </Grid>
-      </Grid>
-      <Grid container spacing={0.5} padding={1}>
-        <Grid size={{ lg: 4, xs: 12 }}>
-          <Typography>
-            <MathJax>{`จุดหมุน $(x,y)$`}</MathJax>
-          </Typography>
-        </Grid>
-        <Grid size={{ lg: 8, xs: 12 }}>
-          <Stack useFlexGap spacing={0.5} direction={"row"} flexWrap={"nowrap"}>
-            <AppField name="center.x">
-              {(field) => <field.NumberTextField />}
-            </AppField>
-            <AppField name="center.y">
-              {(field) => <field.NumberTextField />}
-            </AppField>
-          </Stack>
-        </Grid>
-      </Grid>
+        </Stack>
+      </Stack>
       <Stack>
         <AppField name="points" mode="array">
           {(field) => (
             <Fragment>
               {field.state.value.map((_, index) => (
-                <Grid
+                <Stack
                   key={`point-${index}`}
                   spacing={0.5}
                   padding={1}
-                  container
+                  sx={{
+                    backgroundColor:
+                      index % 2 === 0 ? alternateColor : undefined,
+                  }}
                 >
-                  <Grid size={{ sm: 4, xs: 12 }}>
-                    <Stack
-                      width={"100%"}
-                      spacing={0.5}
-                      direction={{ xs: "row", sm: "column" }}
-                      useFlexGap
-                      justifyContent={{ xs: "space-between" }}
-                    >
-                      <Typography>
-                        <MathJax>{`พิกัดที่ ${index + 1}`}</MathJax>
-                      </Typography>
-                      <field.RemoveArrayItemButton index={index} />
-                    </Stack>
-                  </Grid>
-                  <Grid size={{ sm: "grow", xs: 12 }}>
-                    <Stack spacing={0.5} direction="row">
-                      <AppField name={`points[${index}].x`}>
-                        {(subField) => <subField.NumberTextField />}
-                      </AppField>
-                      <AppField name={`points[${index}].y`}>
-                        {(subField) => <subField.NumberTextField />}
-                      </AppField>
-                    </Stack>
-                  </Grid>
-                </Grid>
+                  <Stack direction={"row"} justifyContent={"space-between"}>
+                    <Typography>{`พิกัดที่ ${index + 1}`}</Typography>
+                    <field.RemoveArrayItemButton index={index} />
+                  </Stack>
+                  <Stack spacing={0.5} direction="row">
+                    <AppField name={`points[${index}].x`}>
+                      {(subField) => <subField.NumberTextField />}
+                    </AppField>
+                    <AppField name={`points[${index}].y`}>
+                      {(subField) => <subField.NumberTextField />}
+                    </AppField>
+                  </Stack>
+                </Stack>
               ))}
             </Fragment>
           )}
@@ -168,17 +162,9 @@ export const CalculatorForm: FC<Props> = memo(({ onSubmit }) => {
             </Button>
           )}
         </Subscribe>
-        <Subscribe selector={({ values }) => ({ values })}>
-          {({ values }) => (
-            <Button
-              disabled={values.points.length >= 4}
-              variant="outlined"
-              onClick={() => pushFieldValue("points", { x: "", y: "" })}
-            >
-              {`เพิ่มพิกัด`}
-            </Button>
-          )}
-        </Subscribe>
+        <AppField name="points">
+          {(field) => <field.AddArrayItemButton />}
+        </AppField>
       </Toolbar>
     </Stack>
   );

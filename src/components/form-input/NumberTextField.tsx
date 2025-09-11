@@ -1,8 +1,8 @@
 import { useFieldContext } from "@/contexts/app-form-context";
 import { OutlinedInput } from "@mui/material";
-import { memo, type FC } from "react";
+import { type FC } from "react";
 
-export const NumberTextField: FC = memo(() => {
+export const NumberTextField: FC = () => {
   const {
     state: {
       value,
@@ -27,4 +27,4 @@ export const NumberTextField: FC = memo(() => {
       }}
     />
   );
-});
+};

@@ -1,8 +1,8 @@
 import { useFieldContext } from "@/contexts/app-form-context";
-import { FormControlLabel, RadioGroup,Radio } from "@mui/material";
-import { memo, type FC } from "react";
+import { FormControlLabel, RadioGroup, Radio } from "@mui/material";
+import { type FC } from "react";
 
-export const RotationDirectionInput: FC = memo(() => {
+export const RotationDirectionInput: FC = () => {
   const {
     state: { value },
     handleChange,
@@ -22,4 +22,4 @@ export const RotationDirectionInput: FC = memo(() => {
       />
     </RadioGroup>
   );
-});
+};
