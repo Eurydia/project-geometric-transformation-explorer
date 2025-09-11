@@ -24,6 +24,7 @@ export const theme = createTheme({
     MuiButton: {
       defaultProps: {
         disableElevation: true,
+        disableTouchRipple: true,
       },
     },
     MuiIconButton: {

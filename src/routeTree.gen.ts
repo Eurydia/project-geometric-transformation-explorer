@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TranslationRouteImport } from './routes/translation'
+import { Route as ReflectionRouteImport } from './routes/reflection'
 import { Route as IndexRouteImport } from './routes/index'
 
 const TranslationRoute = TranslationRouteImport.update({
   id: '/translation',
   path: '/translation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReflectionRoute = ReflectionRouteImport.update({
+  id: '/reflection',
+  path: '/reflection',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,27 +31,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/reflection': typeof ReflectionRoute
   '/translation': typeof TranslationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/reflection': typeof ReflectionRoute
   '/translation': typeof TranslationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/reflection': typeof ReflectionRoute
   '/translation': typeof TranslationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/translation'
+  fullPaths: '/' | '/reflection' | '/translation'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/translation'
-  id: '__root__' | '/' | '/translation'
+  to: '/' | '/reflection' | '/translation'
+  id: '__root__' | '/' | '/reflection' | '/translation'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ReflectionRoute: typeof ReflectionRoute
   TranslationRoute: typeof TranslationRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/translation'
       fullPath: '/translation'
       preLoaderRoute: typeof TranslationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reflection': {
+      id: '/reflection'
+      path: '/reflection'
+      fullPath: '/reflection'
+      preLoaderRoute: typeof ReflectionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ReflectionRoute: ReflectionRoute,
   TranslationRoute: TranslationRoute,
 }
 export const routeTree = rootRouteImport

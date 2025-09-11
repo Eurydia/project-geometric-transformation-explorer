@@ -11,17 +11,29 @@ import {
   Typography,
 } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
-import {
-  TranslationFormDataSchema,
-  type TranslationFormData,
-} from "@/types/translation";
+import z from "zod/v4";
+
+const NumericString = z
+  .string()
+  .trim()
+  .nonempty()
+  .normalize()
+  .refine((arg) => !isNaN(Number(arg)));
+
+export const TranslationFormDataSchema = z.object({
+  points: z.object({ x: NumericString, y: NumericString }).array().max(4),
+  translation: z.object({ x: NumericString, y: NumericString }),
+});
 
 type Props = {
-  onSubmit: (v: TranslationFormData) => unknown;
+  onSubmit: (v: z.output<typeof TranslationFormDataSchema>) => unknown;
 };
 export const TranslationForm: FC<Props> = ({ onSubmit }) => {
   const { Field, handleSubmit, Subscribe, reset, pushFieldValue } = useForm({
-    defaultValues: TranslationFormDataSchema.parse({}),
+    defaultValues: {
+      points: [{ x: "1", y: "1" }],
+      translation: { x: "2", y: "1" },
+    } as z.input<typeof TranslationFormDataSchema>,
     validators: {
       onChange: TranslationFormDataSchema,
     },

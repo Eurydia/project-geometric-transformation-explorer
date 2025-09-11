@@ -12,8 +12,13 @@ export const AttributionBlog: FC = memo(() => {
             {`เว็ปไซต์ถูกจัดทำและพัฒนาเพื่อให้เป็นสื่อการสอนของกลุ่มสาระการเรียนรู้คณิตศาสตร์ เรื่องการแปลงทางเรขาคณิต`}
           </Typography>
           <Typography fontWeight={600}>{`พัฒนาและปรับปรุงโดย`}</Typography>
-          <Typography>{`นางสาวเจนจิรา แจ้งมากและ`}</Typography>
-          <Typography>{`นายธนกร พุทธรักษา`}</Typography>
+          <Stack>
+            <Typography>
+              {`นางสาวเจนจิรา แจ้งมากและ`}
+              <br />
+              {`นายธนกร พุทธรักษา`}
+            </Typography>
+          </Stack>
           <Typography component="div">
             {`(แก้ไขครั้งล่าสุดเมื่อ: 21 มิถุนายน พ.ศ. 2568)`}
           </Typography>

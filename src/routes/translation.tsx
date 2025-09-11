@@ -68,22 +68,20 @@ function RouteComponent() {
               <TranslationForm onSubmit={handleSolve} />
               <Collapsible
                 title={<Typography fontWeight={800}>{"ผลลัพท์"}</Typography>}
-                children={
-                  <Stack>
-                    {result === null && (
-                      <>
-                        <Typography>{`ขนาดการเลื่อนขนาน: ไม่พร้อมแสดง`}</Typography>
-                        <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ไม่พร้อมแสดง`}</MathJax>
-                      </>
-                    )}
-                    {result !== null && (
-                      <>
-                        <MathJax>{`ขนาดการเลื่อนขนาน: $(${result.translation.x}, ${result.translation.y})$`}</MathJax>
-                        <MathJax>
-                          {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-                        </MathJax>
-                        <MathJax>
-                          {`$$
+              >
+                <Stack>
+                  {result === null && (
+                    <>
+                      <Typography>{`ขนาดการเลื่อนขนาน: ไม่พร้อมแสดง`}</Typography>
+                      <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ไม่พร้อมแสดง`}</MathJax>
+                    </>
+                  )}
+                  {result !== null && (
+                    <>
+                      <MathJax>{`ขนาดการเลื่อนขนาน: $(${result.translation.x}, ${result.translation.y})$`}</MathJax>
+                      <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
+                      <MathJax>
+                        {`$$
                           \\begin{align*}
                         ${result.points
                           .map(({ x, y }, i) => {
@@ -98,12 +96,11 @@ function RouteComponent() {
                           })
                           .join("\\\\")}
                         \\end{align*}$$`}
-                        </MathJax>
-                      </>
-                    )}
-                  </Stack>
-                }
-              />
+                      </MathJax>
+                    </>
+                  )}
+                </Stack>
+              </Collapsible>
               <Collapsible
                 title={
                   <Typography fontWeight={600}>สมบัติการเลื่อนขนาน</Typography>
