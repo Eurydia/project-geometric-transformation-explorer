@@ -37,7 +37,7 @@ const NumericString = z
 
 const Coord2D = z.object({ x: NumericString, y: NumericString });
 
-const RotationFormDataSchema = z.object({
+export const RotationFormDataSchema = z.object({
   direction: NumericString,
   angle: NumericString,
   center: Coord2D,

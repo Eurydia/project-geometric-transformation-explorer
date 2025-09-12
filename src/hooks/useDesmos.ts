@@ -2,6 +2,14 @@ import { grey } from "@mui/material/colors";
 import _ from "lodash";
 import { useRef, useEffect, useCallback } from "react";
 
+type AddPointOptions = {
+  texName: string;
+  index?: string | number;
+  label: string;
+  tex: string;
+  color?: string;
+};
+
 export const useDesmos = (selector: string) => {
   const desmosRef = useRef<Desmos.Calculator>(undefined);
 
@@ -47,18 +55,16 @@ export const useDesmos = (selector: string) => {
   );
 
   const addPoint = useCallback(
-    (
-      name: string,
-      index: number,
-      label: string,
-      tex: string,
-      color: string
-    ) => {
+    ({ texName, index = undefined, label, tex, color }: AddPointOptions) => {
       if (desmosRef.current === undefined) {
         return;
       }
       const d = desmosRef.current;
-      const iden = (sym: string) => `${name}_{${index}${sym}}`;
+      const iden = (sym: string | undefined = undefined) =>
+        index === undefined && sym === undefined
+          ? texName
+          : `${texName}_{${index ?? ""}${sym ?? ""}}`;
+
       d.setExpressions([
         {
           latex: `${iden("t")} = ${tex}`,
@@ -77,7 +83,7 @@ export const useDesmos = (selector: string) => {
       const pos = `(\${${iden("x")}}, \${${iden("y")}} )`;
 
       d.setExpression({
-        latex: `${iden("")} = ${tex}`,
+        latex: `${iden()} = ${tex}`,
         label: `\`${label}${pos}\``,
         showLabel: true,
         points: true,

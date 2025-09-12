@@ -3,14 +3,27 @@ import { Paper, Stack, Typography } from "@mui/material";
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
 import { FormulaBlog } from "@/components/blogs/FormulaBlog";
 import { PropertyBlog } from "@/components/blogs/PropertyBlog";
-import { RotationForm } from "@/components/form/rotation-form";
+import {
+  RotationForm,
+  RotationFormDataSchema,
+} from "@/components/form/rotation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
+import { useState } from "react";
+import z from "zod/v4";
+import { useRotationGraph } from "@/hooks/useRotationGraph";
+import { useDesmos } from "@/hooks/useDesmos";
 
 export const Route = createFileRoute("/rotation")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const [result, setResult] = useState<z.output<
+    typeof RotationFormDataSchema
+  > | null>(null);
+
+  const { desmosRef, plotRotation } = useRotationGraph("#desmos");
+
   return (
     <SplitLayout
       slots={{
@@ -31,7 +44,7 @@ function RouteComponent() {
               <Typography variant="h5" component="div" fontWeight={700}>
                 {`การหมุน`}
               </Typography>
-              <RotationForm onSubmit={() => {}} />
+              <RotationForm onSubmit={plotRotation} />
               {/* <ResultDisplay data={result} /> */}
               <PropertyBlog />
               <FormulaBlog />
@@ -42,13 +55,12 @@ function RouteComponent() {
         secondary: (
           <Stack spacing={1} sx={{ height: "100%" }}>
             <Paper
-              variant="outlined"
               sx={{
                 height: "100%",
               }}
             >
               <div
-                id="desmos-graph"
+                id="desmos"
                 style={{
                   width: "100%",
                   height: "100%",
