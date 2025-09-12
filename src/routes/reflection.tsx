@@ -124,7 +124,7 @@ function RouteComponent() {
                       )}
                       {result.type === "linear" && (
                         <MathJax dynamic>
-                          {`เส้นการสะท้อน: $${result.value}$`}
+                          {`เส้นการสะท้อน: $${result.value.join("=")}$`}
                         </MathJax>
                       )}
                       <MathJax dynamic>
