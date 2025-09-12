@@ -1,19 +1,21 @@
+import { fieldContext, formContext } from "@/contexts/app-form-context";
 import {
   alpha,
-  Button,
-  FormControlLabel,
-  Grid,
   OutlinedInput,
-  Radio,
-  RadioGroup,
   Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useForm } from "@tanstack/react-form";
+import { createFormHook } from "@tanstack/react-form";
 import { MathJax } from "better-react-mathjax";
 import { Fragment, type FC } from "react";
 import z from "zod/v4";
+import { FormResetButton } from "../form-input/form-reset-button";
+import { FormSubmitButton } from "../form-input/form-submit-button";
+import { NumberTextField } from "../form-input/NumberTextField";
+import { ArrayItemAddButton } from "../form-input/array-item-add-button";
+import { ArrayItemRemoveButton } from "../form-input/arrat-item-remove-button";
+import { ReflectionEquationTypeInput } from "../form-input/reflection-equation-type-input";
 
 const NumericString = z
   .string()
@@ -62,94 +64,68 @@ export const ReflectionFormDataSchema = z.discriminatedUnion("type", [
   }),
 ]);
 
+const { useAppForm } = createFormHook({
+  fieldComponents: {
+    NumberTextField,
+    ArrayItemAddButton,
+    ArrayItemRemoveButton,
+    ReflectionEquationTypeInput,
+  },
+  formComponents: {
+    FormResetButton,
+    FormSubmitButton,
+  },
+  fieldContext: fieldContext,
+  formContext: formContext,
+});
+
 type Props = {
   onSubmit: (v: z.output<typeof ReflectionFormDataSchema>) => unknown;
 };
 export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
-  const { Field, Subscribe, handleSubmit, pushFieldValue, reset } = useForm({
-    defaultValues: {
-      type: "horizontal",
-      value: "2",
-      points: [{ x: "1", y: "1" }],
-    } as z.input<typeof ReflectionFormDataSchema>,
-    validators: { onChange: ReflectionFormDataSchema },
-    onSubmit: ({ value }) => {
-      const res = ReflectionFormDataSchema.safeParse(value);
-      if (res.success) {
-        onSubmit(res.data);
-      }
-    },
-  });
+  const { AppField, AppForm, FormResetButton, FormSubmitButton, Subscribe } =
+    useAppForm({
+      defaultValues: {
+        type: "horizontal",
+        value: "2",
+        points: [{ x: "1", y: "1" }],
+      } as z.input<typeof ReflectionFormDataSchema>,
+      validators: { onChange: ReflectionFormDataSchema },
+      onSubmit: ({ value }) => {
+        const res = ReflectionFormDataSchema.safeParse(value);
+        if (res.success) {
+          onSubmit(res.data);
+        }
+      },
+    });
 
   return (
     <Stack spacing={0.5}>
       <Toolbar>
-        <Subscribe selector={({ isDefaultValue }) => ({ isDefaultValue })}>
-          {({ isDefaultValue }) => (
-            <Button
-              disabled={isDefaultValue}
-              color="error"
-              variant="outlined"
-              onClick={() => reset()}
-            >
-              {`คืนค่าเริ่มต้น`}
-            </Button>
-          )}
-        </Subscribe>
+        <AppForm>
+          <FormResetButton />
+        </AppForm>
       </Toolbar>
-      <Grid container spacing={1}>
-        <Grid size={{ lg: 4, xs: 12 }}>
-          <Typography>ประเภทของเส้นสะท้อน</Typography>
-        </Grid>
-        <Grid size={{ lg: 8, xs: 12 }}>
-          <Field name="type">
-            {({ state, handleBlur, handleChange }) => (
-              <RadioGroup
-                value={state.value}
-                onChange={(_, value) =>
-                  handleChange(
-                    value as z.input<typeof ReflectionFormDataSchema>["type"]
-                  )
-                }
-                onBlur={handleBlur}
-              >
-                <FormControlLabel
-                  value={"horizontal"}
-                  control={<Radio />}
-                  label={<MathJax>{`แนวแกน $x$`}</MathJax>}
-                />
-                <FormControlLabel
-                  value={"vertical"}
-                  control={<Radio />}
-                  label={<MathJax>{`แนวแกน $y$`}</MathJax>}
-                />
-                <FormControlLabel
-                  value={"linear"}
-                  control={<Radio />}
-                  label="สมการเส้นตรง"
-                />
-              </RadioGroup>
-            )}
-          </Field>
-        </Grid>
-      </Grid>
+      <Stack>
+        <Typography>{`ประเภทของเส้นสะท้อน`}</Typography>
+        <AppField name="type">
+          {(field) => <field.ReflectionEquationTypeInput />}
+        </AppField>
+      </Stack>
       <Subscribe selector={({ values }) => ({ values })}>
-        {({ values }) =>
-          values.type === "linear" && (
-            <Grid
-              padding={1}
-              spacing={1}
-              container
-              sx={{
-                backgroundColor: ({ palette }) =>
-                  alpha(palette.primary.main, 0.08),
-              }}
-            >
-              <Grid size={{ lg: 4 }}>
+        {({ values }) => (
+          <Fragment>
+            {values.type === "linear" && (
+              <Stack
+                padding={1}
+                spacing={0.5}
+                sx={{
+                  backgroundColor: ({ palette }) =>
+                    alpha(palette.primary.main, 0.08),
+                }}
+              >
                 <Typography>สมการเส้นสะท้อน</Typography>
-              </Grid>
-              <Grid size={{ lg: 8 }}>
-                <Field name="value">
+                <AppField name="value">
                   {({ state, handleBlur, handleChange }) => (
                     <OutlinedInput
                       fullWidth
@@ -165,215 +141,88 @@ export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
                       }}
                     />
                   )}
-                </Field>
-              </Grid>
-            </Grid>
-          )
-        }
-      </Subscribe>
-      <Subscribe selector={({ values }) => ({ values })}>
-        {({ values }) =>
-          values.type === "vertical" && (
-            <Grid
-              padding={1}
-              spacing={1}
-              container
-              sx={{
-                backgroundColor: ({ palette }) =>
-                  alpha(palette.primary.main, 0.08),
-              }}
-            >
-              <Grid size={{ lg: 4 }}>
+                </AppField>
+              </Stack>
+            )}
+            {values.type === "vertical" && (
+              <Stack
+                padding={1}
+                spacing={0.5}
+                sx={{
+                  backgroundColor: ({ palette }) =>
+                    alpha(palette.primary.main, 0.08),
+                }}
+              >
                 <Typography>เส้นสะท้อน (แนวตั้ง)</Typography>
-              </Grid>
-              <Grid size={{ lg: 8 }}>
-                <Field name="value">
-                  {({ state, handleBlur, handleChange }) => (
-                    <OutlinedInput
-                      fullWidth
-                      placeholder="x=2"
-                      error={state.meta.errors.length > 0}
-                      value={state.value}
-                      onChange={(e) => handleChange(e.target.value)}
-                      onBlur={handleBlur}
-                      slotProps={{
-                        input: {
-                          sx: { fontFamily: "monospace" },
-                          type: "number",
-                          inputMode: "numeric",
-                        },
-                      }}
-                    />
-                  )}
-                </Field>
-              </Grid>
-            </Grid>
-          )
-        }
-      </Subscribe>
-      <Subscribe selector={({ values }) => ({ values })}>
-        {({ values }) =>
-          values.type === "horizontal" && (
-            <Grid
-              spacing={1}
-              container
-              sx={{
-                backgroundColor: ({ palette }) =>
-                  alpha(palette.primary.main, 0.08),
-              }}
-              padding={1}
-            >
-              <Grid size={{ lg: 4 }}>
+                <AppField name="value">
+                  {(field) => <field.NumberTextField />}
+                </AppField>
+              </Stack>
+            )}
+            {values.type === "horizontal" && (
+              <Stack
+                padding={1}
+                spacing={0.5}
+                sx={{
+                  backgroundColor: ({ palette }) =>
+                    alpha(palette.primary.main, 0.08),
+                }}
+              >
                 <Typography>เส้นสะท้อน (แนวนอน)</Typography>
-              </Grid>
-              <Grid size={{ lg: 8 }}>
-                <Field name="value">
-                  {({ state, handleBlur, handleChange }) => (
-                    <OutlinedInput
-                      fullWidth
-                      placeholder="y=2"
-                      error={state.meta.errors.length > 0}
-                      value={state.value}
-                      onChange={(e) => handleChange(e.target.value)}
-                      onBlur={handleBlur}
-                      slotProps={{
-                        input: {
-                          sx: { fontFamily: "monospace" },
-                          type: "number",
-                          inputMode: "numeric",
-                        },
-                      }}
-                    />
-                  )}
-                </Field>
-              </Grid>
-            </Grid>
-          )
-        }
+                <AppField name="value">
+                  {(field) => <field.NumberTextField />}
+                </AppField>
+              </Stack>
+            )}
+          </Fragment>
+        )}
       </Subscribe>
       <Stack>
-        <Field name="points" mode="array">
+        <AppField name="points" mode="array">
           {(field) => (
             <Fragment>
               {field.state.value.map((_, index) => (
-                <Grid
+                <Stack
                   key={`translate-point-${index}`}
                   spacing={0.5}
                   padding={1}
-                  container
                   sx={{
                     backgroundColor: ({ palette: { primary } }) =>
                       index % 2 === 0 ? undefined : alpha(primary.light, 0.08),
                   }}
                 >
-                  <Grid size={{ sm: 4, xs: 12 }}>
-                    <Stack
-                      width={"100%"}
-                      spacing={0.5}
-                      direction={{ xs: "row", sm: "column" }}
-                      useFlexGap
-                      justifyContent={{ xs: "space-between" }}
-                    >
-                      <Typography>
-                        <MathJax>{`พิกัดที่ ${index + 1}`}</MathJax>
-                      </Typography>
-                      <Typography
-                        sx={{
-                          cursor:
-                            field.state.value.length > 1
-                              ? "pointer"
-                              : undefined,
-                        }}
-                        color={
-                          field.state.value.length > 1
-                            ? "error"
-                            : "textDisabled"
-                        }
-                        component={"div"}
-                        tabIndex={0}
-                        onClick={() => {
-                          if (field.state.value.length > 1) {
-                            field.removeValue(index);
-                          }
-                        }}
-                        width={"fit-content"}
-                      >
-                        (ลบ)
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                  <Grid size={{ sm: "grow", xs: 12 }}>
-                    <Stack spacing={0.5} direction="row">
-                      <Field name={`points[${index}].x`}>
-                        {(subField) => (
-                          <OutlinedInput
-                            error={subField.state.meta.errors.length > 0}
-                            value={subField.state.value}
-                            onChange={(e) =>
-                              subField.handleChange(e.target.value)
-                            }
-                            onBlur={subField.handleBlur}
-                            slotProps={{
-                              input: {
-                                sx: { fontFamily: "monospace" },
-                                type: "number",
-                              },
-                            }}
-                            sx={{ flexBasis: 0, flexGrow: 1 }}
-                          />
-                        )}
-                      </Field>
-                      <Field name={`points[${index}].y`}>
-                        {(subField) => (
-                          <OutlinedInput
-                            error={subField.state.meta.errors.length > 0}
-                            value={subField.state.value}
-                            onChange={(e) =>
-                              subField.handleChange(e.target.value)
-                            }
-                            onBlur={subField.handleBlur}
-                            slotProps={{
-                              input: {
-                                sx: { fontFamily: "monospace" },
-                                type: "number",
-                              },
-                            }}
-                            sx={{ flexBasis: 0, flexGrow: 1 }}
-                          />
-                        )}
-                      </Field>
-                    </Stack>
-                  </Grid>
-                </Grid>
+                  <Stack
+                    useFlexGap
+                    spacing={0.5}
+                    direction={"row"}
+                    justifyContent={"space-between"}
+                  >
+                    <Typography>
+                      <MathJax>{`พิกัดที่ ${index + 1}`}</MathJax>
+                    </Typography>
+                    <field.ArrayItemRemoveButton index={index} />
+                  </Stack>
+                  <Stack spacing={0.5} direction="row">
+                    <AppField name={`points[${index}].x`}>
+                      {(subField) => <subField.NumberTextField />}
+                    </AppField>
+                    <AppField name={`points[${index}].y`}>
+                      {(subField) => <subField.NumberTextField />}
+                    </AppField>
+                  </Stack>
+                </Stack>
               ))}
             </Fragment>
           )}
-        </Field>
+        </AppField>
       </Stack>
       <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Subscribe selector={({ canSubmit }) => ({ canSubmit })}>
-          {({ canSubmit }) => (
-            <Button
-              variant="contained"
-              onClick={handleSubmit}
-              disabled={!canSubmit}
-            >
-              {`คำนวณ`}
-            </Button>
-          )}
-        </Subscribe>
-        <Subscribe selector={({ values }) => ({ values })}>
-          {({ values }) => (
-            <Button
-              disableTouchRipple
-              disabled={values.points.length >= 4}
-              variant="outlined"
-              onClick={() => pushFieldValue("points", { x: "", y: "" })}
-            >
-              {`เพิ่มพิกัด`}
-            </Button>
-          )}
-        </Subscribe>
+        <AppForm>
+          <FormSubmitButton />
+        </AppForm>
+        <AppField name="points">
+          {(field) => <field.ArrayItemAddButton />}
+        </AppField>
       </Toolbar>
     </Stack>
   );
