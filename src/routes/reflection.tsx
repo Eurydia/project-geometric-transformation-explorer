@@ -22,28 +22,6 @@ function RouteComponent() {
     typeof ReflectionFormDataSchema
   > | null>(null);
   const { plotReflection, desmosRef } = useReflectionGraph("#desmos");
-  const [image, setImage] = useState<Record<number, number[] | undefined>>({});
-
-  // # FRAGILE: handling with care
-  useEffect(() => {
-    if (desmosRef.current === undefined) {
-      return;
-    }
-    const ref = desmosRef.current;
-
-    for (const i of _.range(4)) {
-      const obs = ref.HelperExpression({ latex: `B_{${i}}` });
-      obs.observe("listValue", () => {
-        setImage((prev) => {
-          const next = { ...prev };
-          next[i] = [...obs.listValue];
-          return next;
-        });
-      });
-    }
-
-    return () => ref.destroy();
-  }, [desmosRef]);
 
   const handleSolve = useCallback(
     (v: z.output<typeof ReflectionFormDataSchema>) => {

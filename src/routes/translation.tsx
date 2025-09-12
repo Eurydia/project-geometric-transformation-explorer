@@ -17,7 +17,7 @@ export const Route = createFileRoute("/translation")({
 });
 
 function RouteComponent() {
-  const { desmos, plotTranslation } = useTranslationGraph("#desmos");
+  const { image, plotTranslation } = useTranslationGraph("#desmos");
 
   const [result, setResult] = useState<z.output<
     typeof TranslationFormDataSchema
@@ -35,22 +35,19 @@ function RouteComponent() {
     <SplitLayout
       slots={{
         secondary: (
-          <Stack spacing={1} sx={{ height: "100%" }}>
-            <Paper
-              variant="outlined"
-              sx={{
+          <Paper
+            sx={{
+              height: "100%",
+            }}
+          >
+            <div
+              id="desmos"
+              style={{
+                width: "100%",
                 height: "100%",
               }}
-            >
-              <div
-                id="desmos"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-            </Paper>
-          </Stack>
+            />
+          </Paper>
         ),
         primary: (
           <Paper

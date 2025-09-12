@@ -5,7 +5,8 @@ import type { RotationFormDataSchema } from "@/components/form/rotation-form";
 import { blue, deepOrange, grey } from "@mui/material/colors";
 
 export const useRotationGraph = (selector: string) => {
-  const { addPoint, addPolygon, clearGraph, desmosRef } = useDesmos(selector);
+  const { image, addPoint, addPolygon, clearGraph, desmosRef } =
+    useDesmos(selector);
 
   const plotRotation = useCallback(
     (v: z.output<typeof RotationFormDataSchema>) => {
@@ -103,6 +104,6 @@ export const useRotationGraph = (selector: string) => {
 
   return {
     plotRotation,
-    desmosRef,
+    image,
   };
 };

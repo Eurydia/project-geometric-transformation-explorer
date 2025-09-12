@@ -1,6 +1,6 @@
 import { grey } from "@mui/material/colors";
 import _ from "lodash";
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 
 type AddPointOptions = {
   texName: string;
@@ -12,6 +12,27 @@ type AddPointOptions = {
 
 export const useDesmos = (selector: string) => {
   const desmosRef = useRef<Desmos.Calculator>(undefined);
+  const [image, setImage] = useState<Record<number, number[] | undefined>>({});
+
+  // # FRAGILE: handling with care
+  useEffect(() => {
+    if (desmosRef.current === undefined) {
+      return;
+    }
+    const ref = desmosRef.current;
+
+    for (const i of _.range(4)) {
+      const obs = ref.HelperExpression({ latex: `B_{${i}}` });
+      obs.observe("listValue", () => {
+        setImage((prev) => {
+          const next = { ...prev };
+          next[i] = [...obs.listValue];
+          return next;
+        });
+      });
+    }
+    return () => ref.destroy();
+  }, [desmosRef]);
 
   const addPolygon = useCallback(
     (varName: string, pointCount: number, color: string) => {
@@ -154,5 +175,5 @@ export const useDesmos = (selector: string) => {
     }
   }, [desmosRef]);
 
-  return { desmosRef, clearGraph, addLine, addPoint, addPolygon };
+  return { image, desmosRef, clearGraph, addLine, addPoint, addPolygon };
 };

@@ -8,12 +8,11 @@ import {
   RotationFormDataSchema,
 } from "@/components/form/rotation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import z from "zod/v4";
 import { useRotationGraph } from "@/hooks/useRotationGraph";
 import { Collapsible } from "@/components/surface/Collapsible";
 import { MathJax } from "better-react-mathjax";
-import _ from "lodash";
 
 export const Route = createFileRoute("/rotation")({
   component: RouteComponent,
@@ -23,28 +22,7 @@ function RouteComponent() {
   const [result, setResult] = useState<z.output<
     typeof RotationFormDataSchema
   > | null>(null);
-  const [image, setImage] = useState<Record<number, number[] | undefined>>({});
-
-  const { desmosRef, plotRotation } = useRotationGraph("#desmos");
-
-  useEffect(() => {
-    if (desmosRef.current === undefined) {
-      return;
-    }
-    const ref = desmosRef.current;
-    for (const i of _.range(4)) {
-      const obs = ref.HelperExpression({ latex: `B_{${i}}` });
-      obs.observe("listValue", () => {
-        setImage((prev) => {
-          const next = { ...prev };
-          next[i] = [...obs.listValue];
-          return next;
-        });
-      });
-    }
-
-    return () => ref.destroy();
-  }, [desmosRef]);
+  const { plotRotation, image } = useRotationGraph("#desmos");
 
   const handleSolve = useCallback(
     (v: z.output<typeof RotationFormDataSchema>) => {

@@ -5,7 +5,7 @@ import { useDesmos } from "./useDesmos";
 import type { TranslationFormDataSchema } from "@/components/form/translation-form";
 
 export const useTranslationGraph = (selector: string) => {
-  const { addLine, addPoint, addPolygon, clearGraph, desmosRef } =
+  const { image, addLine, addPoint, addPolygon, clearGraph, desmosRef } =
     useDesmos(selector);
 
   const plotTranslation = useCallback(
@@ -60,7 +60,7 @@ export const useTranslationGraph = (selector: string) => {
   );
 
   return {
-    clearGraph,
     plotTranslation,
+    image,
   };
 };
