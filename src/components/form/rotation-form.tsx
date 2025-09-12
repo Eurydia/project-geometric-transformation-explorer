@@ -1,33 +1,31 @@
-import {
-  alpha,
-  Button,
-  Stack,
-  Toolbar,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { alpha, Stack, Toolbar, Typography, useTheme } from "@mui/material";
 import { Fragment, memo, useMemo, type FC } from "react";
 import z from "zod/v4";
 import { MathJax } from "better-react-mathjax";
-import { NumberTextField } from "../form-input/NumberTextField";
 import { createFormHook } from "@tanstack/react-form";
 import { fieldContext, formContext } from "@/contexts/app-form-context";
-import { RemoveArrayItemButton } from "../form-input/form-remove-array-item-button";
+import { NumberTextField } from "../form-input/NumberTextField";
 import { RotationAnglePresetInput } from "../form-input/rotation-angle-preset-input";
 import { RotationDirectionInput } from "../form-input/rotation-direction-input";
-import { AddArrayItemButton } from "../form-input/form-add-array-item-button";
+import { ArrayItemAddButton } from "../form-input/array-item-add-button";
+import { ArrayItemRemoveButton } from "../form-input/arrat-item-remove-button";
+import { FormResetButton } from "../form-input/form-reset-button";
+import { FormSubmitButton } from "../form-input/form-submit-button";
 
 const { useAppForm } = createFormHook({
+  fieldContext,
+  formContext,
   fieldComponents: {
     NumberTextField,
-    RemoveArrayItemButton,
-    AddArrayItemButton,
+    ArrayItemAddButton,
+    ArrayItemRemoveButton,
     RotationAnglePresetInput,
     RotationDirectionInput,
   },
-  formComponents: {},
-  fieldContext,
-  formContext,
+  formComponents: {
+    FormResetButton,
+    FormSubmitButton,
+  },
 });
 
 const NumericString = z
@@ -49,23 +47,22 @@ const RotationFormDataSchema = z.object({
 type Props = {
   onSubmit: (v: z.output<typeof RotationFormDataSchema>) => unknown;
 };
-export const CalculatorForm: FC<Props> = memo(({ onSubmit }) => {
-  const { handleSubmit, AppField, Subscribe, reset, pushFieldValue } =
-    useAppForm({
-      defaultValues: {
-        direction: "1",
-        angle: "90",
-        center: { x: "0", y: "0" },
-        points: [{ x: "1", y: "1" }],
-      } as z.input<typeof RotationFormDataSchema>,
-      validators: { onChange: RotationFormDataSchema },
-      onSubmit: ({ value }) => {
-        const r = RotationFormDataSchema.safeParse(value);
-        if (r.success) {
-          onSubmit(r.data);
-        }
-      },
-    });
+export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
+  const { AppForm, FormResetButton, FormSubmitButton, AppField } = useAppForm({
+    defaultValues: {
+      direction: "1",
+      angle: "90",
+      center: { x: "0", y: "0" },
+      points: [{ x: "1", y: "1" }],
+    } as z.input<typeof RotationFormDataSchema>,
+    validators: { onChange: RotationFormDataSchema },
+    onSubmit: ({ value }) => {
+      const r = RotationFormDataSchema.safeParse(value);
+      if (r.success) {
+        onSubmit(r.data);
+      }
+    },
+  });
   const theme = useTheme();
 
   const alternateColor = useMemo(() => {
@@ -75,18 +72,9 @@ export const CalculatorForm: FC<Props> = memo(({ onSubmit }) => {
   return (
     <Stack spacing={0.5}>
       <Toolbar>
-        <Subscribe selector={({ isDefaultValue }) => ({ isDefaultValue })}>
-          {({ isDefaultValue }) => (
-            <Button
-              disabled={isDefaultValue}
-              variant="outlined"
-              color="error"
-              onClick={() => reset()}
-            >
-              {`คืนค่าเริ่มต้น`}
-            </Button>
-          )}
-        </Subscribe>
+        <AppForm>
+          <FormResetButton />
+        </AppForm>
       </Toolbar>
       <Stack spacing={0.5} padding={1}>
         <Typography>{`ทิศทางการหมุน`}</Typography>
@@ -134,7 +122,7 @@ export const CalculatorForm: FC<Props> = memo(({ onSubmit }) => {
                 >
                   <Stack direction={"row"} justifyContent={"space-between"}>
                     <Typography>{`พิกัดที่ ${index + 1}`}</Typography>
-                    <field.RemoveArrayItemButton index={index} />
+                    <field.ArrayItemRemoveButton index={index} />
                   </Stack>
                   <Stack spacing={0.5} direction="row">
                     <AppField name={`points[${index}].x`}>
@@ -151,19 +139,11 @@ export const CalculatorForm: FC<Props> = memo(({ onSubmit }) => {
         </AppField>
       </Stack>
       <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Subscribe selector={({ canSubmit }) => ({ canSubmit })}>
-          {({ canSubmit }) => (
-            <Button
-              variant="contained"
-              onClick={handleSubmit}
-              disabled={!canSubmit}
-            >
-              {`คำนวณ`}
-            </Button>
-          )}
-        </Subscribe>
+        <AppForm>
+          <FormSubmitButton />
+        </AppForm>
         <AppField name="points">
-          {(field) => <field.AddArrayItemButton />}
+          {(field) => <field.ArrayItemAddButton />}
         </AppField>
       </Toolbar>
     </Stack>

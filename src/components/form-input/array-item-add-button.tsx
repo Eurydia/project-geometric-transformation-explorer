@@ -2,7 +2,7 @@ import { useFieldContext } from "@/contexts/app-form-context";
 import { Button } from "@mui/material";
 import type { FC } from "react";
 
-export const AddArrayItemButton: FC = () => {
+export const ArrayItemAddButton: FC = () => {
   const {
     state: { value },
     pushValue,

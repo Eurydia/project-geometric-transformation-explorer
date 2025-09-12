@@ -3,7 +3,7 @@ import { Paper, Stack, Typography } from "@mui/material";
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
 import { FormulaBlog } from "@/components/blogs/FormulaBlog";
 import { PropertyBlog } from "@/components/blogs/PropertyBlog";
-import { CalculatorForm } from "@/components/form/CalculatorForm";
+import { RotationForm } from "@/components/form/rotation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
 
 export const Route = createFileRoute("/rotation")({
@@ -31,7 +31,7 @@ function RouteComponent() {
               <Typography variant="h5" component="div" fontWeight={700}>
                 {`การหมุน`}
               </Typography>
-              <CalculatorForm onSubmit={() => {}} />
+              <RotationForm onSubmit={() => {}} />
               {/* <ResultDisplay data={result} /> */}
               <PropertyBlog />
               <FormulaBlog />

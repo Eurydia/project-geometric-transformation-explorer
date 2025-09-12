@@ -5,7 +5,7 @@ import { useMemo, type FC } from "react";
 type Props = {
   index: number;
 };
-export const RemoveArrayItemButton: FC<Props> = ({ index }) => {
+export const ArrayItemRemoveButton: FC<Props> = ({ index }) => {
   const {
     state: { value },
     removeValue,
