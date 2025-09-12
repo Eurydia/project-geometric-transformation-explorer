@@ -104,9 +104,9 @@ function RouteComponent() {
                 <Stack>
                   {result === null && (
                     <>
-                      <Typography>{`เส้นการสะท้อน: ไม่พร้อมแสดง`}</Typography>
+                      <Typography>{`เส้นการสะท้อน:`}</Typography>
                       <MathJax dynamic>
-                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ไม่พร้อมแสดง`}
+                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
                       </MathJax>
                     </>
                   )}
@@ -130,22 +130,30 @@ function RouteComponent() {
                       <MathJax dynamic>
                         {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
                       </MathJax>
-                      <MathJax dynamic>
+                      <MathJax
+                        dynamic
+                        style={{
+                          width: "100%",
+                          overflow: "auto",
+                          scrollbarWidth: "thin",
+                        }}
+                      >
                         {`$$
                           \\begin{array}{lll}
-                        ${result.points
-                          .map(({ x, y }, i) => {
-                            const char = String.fromCharCode(i + 65);
-                            const preImageTex = `${char}(${x}, ${y})`;
-                            const img = image[i];
-                            if (img === undefined) {
-                              return `${preImageTex} &\\rightarrow &${char}^{\\prime}(?,?)`;
-                            }
-                            const [ix, iy] = img;
-                            return `${preImageTex} &\\rightarrow &${char}^{\\prime}(${ix},${iy})`;
-                          })
-                          .join("\\\\")}
-                        \\end{array}$$`}
+                            ${result.points
+                              .map(({ x, y }, i) => {
+                                const char = String.fromCharCode(i + 65);
+                                const preImageTex = `${char}(${x}, ${y})`;
+                                const img = image[i];
+                                if (img === undefined) {
+                                  return `${preImageTex} &\\rightarrow &${char}^{\\prime}(?,?)`;
+                                }
+                                const [ix, iy] = img;
+                                return `${preImageTex} &\\rightarrow &${char}^{\\prime}(${ix},${iy})`;
+                              })
+                              .join("\\\\")}
+                          \\end{array}
+                        $$`}
                       </MathJax>
                     </>
                   )}

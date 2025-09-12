@@ -115,7 +115,14 @@ function RouteComponent() {
                       <MathJax dynamic>
                         {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
                       </MathJax>
-                      <MathJax dynamic>
+                      <MathJax
+                        dynamic
+                        style={{
+                          width: "100%",
+                          overflow: "auto",
+                          scrollbarWidth: "thin",
+                        }}
+                      >
                         {`$$
                           \\begin{array}{lll}
                             ${result.points

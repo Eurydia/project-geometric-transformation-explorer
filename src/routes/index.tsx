@@ -49,7 +49,7 @@ function RouteComponent() {
   return (
     <Fragment>
       <Box
-        paddingX={{ xs: 2, md: 0 }}
+        paddingX={{ xs: 2, lg: 0 }}
         paddingY={8}
         sx={{
           backgroundColor: palette.common.white,
@@ -71,7 +71,7 @@ function RouteComponent() {
         width="100%"
         maxWidth="lg"
         marginX={{ xs: 0, md: "auto" }}
-        paddingX={{ xs: 2, md: 0 }}
+        paddingX={{ xs: 2, lg: 0 }}
         paddingY={8}
       >
         <Grid container columns={{ xs: 1, md: 2 }} spacing={4}>

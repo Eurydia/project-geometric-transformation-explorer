@@ -107,7 +107,7 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
                     <AppField name={`points[${index}].x`}>
                       {(subField) => <subField.NumberTextField />}
                     </AppField>
-                    <AppField name={`points[${index}].x`}>
+                    <AppField name={`points[${index}].y`}>
                       {(subField) => <subField.NumberTextField />}
                     </AppField>
                   </Stack>
