@@ -27,11 +27,6 @@ export const theme = createTheme({
         disableTouchRipple: true,
       },
     },
-    MuiIconButton: {
-      defaultProps: {
-        disableRipple: true,
-      },
-    },
     MuiPaper: {
       defaultProps: { variant: "outlined" },
     },

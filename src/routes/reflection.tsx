@@ -7,7 +7,7 @@ import { SplitLayout } from "@/components/layouts/split-layout";
 import { Collapsible } from "@/components/surface/Collapsible";
 import { useReflectionGraph } from "@/hooks/useReflectionGraph";
 import { Stack, Paper, Typography } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { MathJax } from "better-react-mathjax";
 import { useCallback, useState } from "react";
 import type z from "zod";
@@ -60,6 +60,17 @@ function RouteComponent() {
             }}
           >
             <Stack spacing={2}>
+              <Typography
+                color="textPrimary"
+                sx={{ "&:hover": { textDecorationLine: "underline" } }}
+              >
+                <Link
+                  to="/"
+                  style={{ color: "inherit", textDecorationLine: "none" }}
+                >
+                  {`กลับหน้าแรก`}
+                </Link>
+              </Typography>
               <Typography component={"div"} variant="h5" fontWeight={700}>
                 {`(การแปลงทางเรขาคณิต)`}
               </Typography>

@@ -7,7 +7,7 @@ import { SplitLayout } from "@/components/layouts/split-layout";
 import { Collapsible } from "@/components/surface/Collapsible";
 import { useTranslationGraph } from "@/hooks/useTranslationGraph";
 import { Paper, Stack, Typography } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { MathJax } from "better-react-mathjax";
 import { useCallback, useState } from "react";
 import type z from "zod/v4";
@@ -55,11 +55,22 @@ function RouteComponent() {
             sx={{
               height: "100%",
               padding: 2,
-              overflowY: "scroll",
+              overflowY: "auto",
               scrollbarWidth: "thin",
             }}
           >
-            <Stack spacing={1}>
+            <Stack spacing={2}>
+              <Typography
+                color="textPrimary"
+                sx={{ "&:hover": { textDecorationLine: "underline" } }}
+              >
+                <Link
+                  to="/"
+                  style={{ color: "inherit", textDecorationLine: "none" }}
+                >
+                  {`กลับหน้าแรก`}
+                </Link>
+              </Typography>
               <Typography component={"div"} variant="h5" fontWeight={"700"}>
                 {`(การแปลงทางเรขาคณิต)`}
               </Typography>

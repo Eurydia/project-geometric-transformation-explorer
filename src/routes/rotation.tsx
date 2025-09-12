@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Paper, Stack, Typography } from "@mui/material";
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
 import { FormulaBlog } from "@/components/blogs/FormulaBlog";
@@ -45,6 +45,17 @@ function RouteComponent() {
             }}
           >
             <Stack spacing={2}>
+              <Typography
+                color="textPrimary"
+                sx={{ "&:hover": { textDecorationLine: "underline" } }}
+              >
+                <Link
+                  to="/"
+                  style={{ color: "inherit", textDecorationLine: "none" }}
+                >
+                  {`กลับหน้าแรก`}
+                </Link>
+              </Typography>
               <Typography variant="h5" component="div" fontWeight={700}>
                 {`(การแปลงทางเรขาคณิต)`}
               </Typography>

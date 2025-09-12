@@ -151,7 +151,7 @@ export const useDesmos = (selector: string) => {
     }
 
     desmosRef.current = Desmos.GraphingCalculator(root, {
-      // expressions: false, // hide the expression list
+      expressions: false, // hide the expression list
       keypad: false, // hide the on-screen keypad
       settingsMenu: false, // hide the wrench menu
     });

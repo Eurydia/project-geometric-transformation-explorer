@@ -58,14 +58,7 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
           )}
         </Subscribe>
       </Toolbar>
-      <Grid
-        padding={1}
-        container
-        spacing={0.5}
-        sx={{
-          backgroundColor: ({ palette }) => alpha(palette.primary.light, 0.08),
-        }}
-      >
+      <Grid padding={1} container spacing={0.5}>
         <Grid size={{ sm: 4, xs: 12 }}>
           <Typography>
             <MathJax>{`ขนาดการเลื่อนขนาน $(x,y)$`}</MathJax>
