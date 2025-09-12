@@ -50,7 +50,6 @@ function RouteComponent() {
     },
     [plotRotation]
   );
-  console.debug(image);
   return (
     <SplitLayout
       slots={{

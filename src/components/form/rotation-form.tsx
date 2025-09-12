@@ -95,7 +95,7 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
       </Stack>
       <Stack spacing={0.5} padding={1}>
         <Typography>
-          <MathJax>{`จุดหมุน $(x,y)$`}</MathJax>
+          <MathJax dynamic>{`จุดหมุน $(x,y)$`}</MathJax>
         </Typography>
         <Stack useFlexGap spacing={0.5} direction={"row"} flexWrap={"nowrap"}>
           <AppField name="center.x">
