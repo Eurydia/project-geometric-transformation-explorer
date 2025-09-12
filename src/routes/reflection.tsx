@@ -69,7 +69,6 @@ function RouteComponent() {
         ),
         primary: (
           <Paper
-            variant="outlined"
             sx={{
               height: "100%",
               padding: 2,
@@ -90,12 +89,14 @@ function RouteComponent() {
                   {`กลับหน้าแรก`}
                 </Link>
               </Typography>
-              <Typography component={"div"} variant="h5" fontWeight={700}>
-                {`(การแปลงทางเรขาคณิต)`}
-              </Typography>
-              <Typography variant="h5" component={"div"} fontWeight={700}>
-                {`การสะท้อน`}
-              </Typography>
+              <Stack spacing={0.5}>
+                <Typography variant="h5" component={"div"} fontWeight={700}>
+                  {`(การแปลงทางเรขาคณิต)`}
+                </Typography>
+                <Typography variant="h5" component={"div"} fontWeight={700}>
+                  {`การสะท้อน`}
+                </Typography>
+              </Stack>
               <ReflectionForm onSubmit={handleSolve} />
               <Collapsible
                 title={<Typography fontWeight={800}>{"ผลลัพท์"}</Typography>}
@@ -104,22 +105,32 @@ function RouteComponent() {
                   {result === null && (
                     <>
                       <Typography>{`เส้นการสะท้อน: ไม่พร้อมแสดง`}</Typography>
-                      <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ไม่พร้อมแสดง`}</MathJax>
+                      <MathJax dynamic>
+                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ไม่พร้อมแสดง`}
+                      </MathJax>
                     </>
                   )}
                   {result !== null && (
                     <>
                       {result.type === "horizontal" && (
-                        <MathJax>{`เส้นการสะท้อน: $y=${result.value}$`}</MathJax>
+                        <MathJax dynamic>
+                          {`เส้นการสะท้อน: $y=${result.value}$`}
+                        </MathJax>
                       )}
                       {result.type === "vertical" && (
-                        <MathJax>{`เส้นการสะท้อน: $x=${result.value}$`}</MathJax>
+                        <MathJax dynamic>
+                          {`เส้นการสะท้อน: $x=${result.value}$`}
+                        </MathJax>
                       )}
                       {result.type === "linear" && (
-                        <MathJax>{`เส้นการสะท้อน: $${result.value}$`}</MathJax>
+                        <MathJax dynamic>
+                          {`เส้นการสะท้อน: $${result.value}$`}
+                        </MathJax>
                       )}
-                      <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
-                      <MathJax>
+                      <MathJax dynamic>
+                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
+                      </MathJax>
+                      <MathJax dynamic>
                         {`$$
                           \\begin{array}{lll}
                         ${result.points

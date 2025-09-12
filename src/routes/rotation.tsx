@@ -56,11 +56,11 @@ function RouteComponent() {
         primary: (
           <Paper
             sx={{
-              height: "100%",
               padding: 2,
               overflowY: "auto",
               scrollbarWidth: "thin",
               scrollbarGutter: "stable",
+              maxHeight: "100%",
             }}
           >
             <Stack spacing={2}>
@@ -75,12 +75,14 @@ function RouteComponent() {
                   {`กลับหน้าแรก`}
                 </Link>
               </Typography>
-              <Typography variant="h5" component="div" fontWeight={700}>
-                {`(การแปลงทางเรขาคณิต)`}
-              </Typography>
-              <Typography variant="h5" component="div" fontWeight={700}>
-                {`การหมุน`}
-              </Typography>
+              <Stack spacing={0.5}>
+                <Typography variant="h5" component="div" fontWeight={700}>
+                  {`(การแปลงทางเรขาคณิต)`}
+                </Typography>
+                <Typography variant="h5" component="div" fontWeight={700}>
+                  {`การหมุน`}
+                </Typography>
+              </Stack>
               <RotationForm onSubmit={handleSolve} />
               <Collapsible
                 title={<Typography fontWeight={800}>{"ผลลัพท์"}</Typography>}
@@ -88,39 +90,48 @@ function RouteComponent() {
                 <Stack>
                   {result === null && (
                     <>
-                      <Typography>{`จุดหมุน: ไม่พร้อมแสดง`}</Typography>
-                      <Typography>{`ขนาดของมุมที่หมุน: ไม่พร้อมแสดง`}</Typography>
-                      <Typography>{`ทิศทาง: ไม่พร้อมแสดง`}</Typography>
-                      <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ไม่พร้อมแสดง`}</MathJax>
+                      <Typography>{`จุดหมุน:`}</Typography>
+                      <Typography>{`ขนาดของมุมที่หมุน:`}</Typography>
+                      <Typography>{`ทิศทาง:`}</Typography>
+                      <MathJax dynamic>
+                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
+                      </MathJax>
                     </>
                   )}
                   {result !== null && (
                     <>
-                      <MathJax>{`จุดหมุน: $(${result.center.x} , ${result.center.y})$`}</MathJax>
-                      <MathJax>{`ขนาดของมุมที่หมุน: $${result.angle}^{\\circ}$`}</MathJax>
+                      <MathJax dynamic>
+                        {`จุดหมุน: $(${result.center.x} , ${result.center.y})$`}
+                      </MathJax>
+                      <MathJax dynamic>
+                        {`ขนาดของมุมที่หมุน: $${result.angle}^{\\circ}$`}
+                      </MathJax>
                       {result.direction === -1 && (
-                        <MathJax>{`ทิศทาง: ทวนเข็มนาฬิกา`}</MathJax>
+                        <MathJax dynamic>{`ทิศทาง: ทวนเข็มนาฬิกา`}</MathJax>
                       )}
                       {result.direction === 1 && (
-                        <MathJax>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
+                        <MathJax dynamic>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
                       )}
-                      <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
-                      <MathJax>
+                      <MathJax dynamic>
+                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
+                      </MathJax>
+                      <MathJax dynamic>
                         {`$$
                           \\begin{array}{lll}
-                        ${result.points
-                          .map(({ x, y }, i) => {
-                            const char = String.fromCharCode(i + 65);
-                            const preImageTex = `${char}(${x}, ${y})`;
-                            const img = image[i];
-                            if (img === undefined) {
-                              return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(?,?) `;
-                            }
-                            const [ix, iy] = img;
-                            return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(${ix},${iy}) `;
-                          })
-                          .join("\\\\")}
-                        \\end{array}$$`}
+                            ${result.points
+                              .map(({ x, y }, i) => {
+                                const char = String.fromCharCode(i + 65);
+                                const preImageTex = `${char}(${x}, ${y})`;
+                                const img = image[i];
+                                if (img === undefined) {
+                                  return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(?,?) `;
+                                }
+                                const [ix, iy] = img;
+                                return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(${ix},${iy}) `;
+                              })
+                              .join("\\\\")}
+                          \\end{array}
+                        $$`}
                       </MathJax>
                     </>
                   )}

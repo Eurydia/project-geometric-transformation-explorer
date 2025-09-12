@@ -3,8 +3,9 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
 import type z from "zod/v4";
 import type { ReflectionFormDataSchema } from "../form/reflection-form";
+import type { FC } from "react";
 
-export const ReflectionEquationTypeInput = () => {
+export const ReflectionEquationTypeInput: FC = () => {
   const {
     state: { value },
     handleChange,
@@ -21,12 +22,12 @@ export const ReflectionEquationTypeInput = () => {
       <FormControlLabel
         value={"horizontal"}
         control={<Radio />}
-        label={<MathJax>{`แนวแกน $x$`}</MathJax>}
+        label={<MathJax dynamic>{`แนวแกน $x$`}</MathJax>}
       />
       <FormControlLabel
         value={"vertical"}
         control={<Radio />}
-        label={<MathJax>{`แนวแกน $y$`}</MathJax>}
+        label={<MathJax dynamic>{`แนวแกน $y$`}</MathJax>}
       />
       <FormControlLabel
         value={"linear"}

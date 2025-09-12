@@ -9,11 +9,11 @@ type Props = {
 };
 export const SplitLayout: FC<Props> = ({ slots: { primary, secondary } }) => {
   return (
-    <Grid container spacing={2} sx={{ padding: 2, height: { lg: "100vh" } }}>
+    <Grid container spacing={2} sx={{ padding: 2, height: { md: "100vh" } }}>
       <Grid
         size={{ md: 4, xs: 12 }}
         sx={{
-          maxHeight: { md: "100%" },
+          maxHeight: "100%",
         }}
       >
         {primary}
@@ -21,7 +21,7 @@ export const SplitLayout: FC<Props> = ({ slots: { primary, secondary } }) => {
       <Grid
         size={{ md: 8, xs: 12 }}
         sx={{
-          height: { xs: "50vh", md: "100%" },
+          height: { xs: "70vh", md: "100%" },
         }}
       >
         {secondary}

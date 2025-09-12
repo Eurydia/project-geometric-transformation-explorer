@@ -66,7 +66,7 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
       </Toolbar>
       <Stack spacing={0.5} padding={1}>
         <Typography>
-          <MathJax>{`ขนาดการเลื่อนขนาน $(x,y)$`}</MathJax>
+          <MathJax dynamic>{`ขนาดการเลื่อนขนาน $(x,y)$`}</MathJax>
         </Typography>
         <Stack useFlexGap spacing={0.5} direction={"row"} flexWrap={"nowrap"}>
           <AppField name="translation.x">

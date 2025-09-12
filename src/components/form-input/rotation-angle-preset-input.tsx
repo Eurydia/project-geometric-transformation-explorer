@@ -2,6 +2,7 @@ import { Button, ButtonGroup } from "@mui/material";
 import { type FC } from "react";
 import { useFieldContext } from "@/contexts/app-form-context";
 import _ from "lodash";
+import { MathJax } from "better-react-mathjax";
 
 export const RotationAnglePresetInput: FC = () => {
   const { handleBlur, handleChange } = useFieldContext<string>();
@@ -13,7 +14,7 @@ export const RotationAnglePresetInput: FC = () => {
           onBlur={handleBlur}
           onClick={() => handleChange((90 * (index + 1)).toString())}
         >
-          {(index + 1) * 90}
+          <MathJax dynamic>{`$${(index + 1) * 90}^{\\circ}$`}</MathJax>
         </Button>
       ))}
     </ButtonGroup>

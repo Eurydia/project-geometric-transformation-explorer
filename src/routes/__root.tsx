@@ -25,7 +25,6 @@ const RouteComponent = () => (
         },
         ignoreHtmlClass: "no-mathjax",
       }}
-      hideUntilTypeset="every"
     >
       <ThemeProvider theme={theme}>
         {globalStyles}

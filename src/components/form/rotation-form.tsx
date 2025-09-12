@@ -83,7 +83,9 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
         </AppField>
       </Stack>
       <Stack spacing={0.5} padding={1} sx={{ backgroundColor: alternateColor }}>
-        <Typography>{`ขนาดของมุมที่หมุน (องศา)`}</Typography>
+        <Typography sx={{ whiteSpace: "normal", textWrap: "wrap" }}>
+          {`ขนาดของมุมที่หมุน (องศา)`}
+        </Typography>
         <AppField name="angle">
           {(field) => (
             <Stack spacing={0.5}>

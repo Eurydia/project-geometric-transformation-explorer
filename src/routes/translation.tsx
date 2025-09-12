@@ -90,12 +90,14 @@ function RouteComponent() {
                   {`กลับหน้าแรก`}
                 </Link>
               </Typography>
-              <Typography component={"div"} variant="h5" fontWeight={"700"}>
-                {`(การแปลงทางเรขาคณิต)`}
-              </Typography>
-              <Typography variant="h5" component={"div"} fontWeight={700}>
-                {`การเลื่อนขนาน`}
-              </Typography>
+              <Stack spacing={0.5}>
+                <Typography component={"div"} variant="h5" fontWeight={700}>
+                  {`(การแปลงทางเรขาคณิต)`}
+                </Typography>
+                <Typography variant="h5" component={"div"} fontWeight={700}>
+                  {`การเลื่อนขนาน`}
+                </Typography>
+              </Stack>
               <TranslationForm onSubmit={handleSolve} />
               <Collapsible
                 title={<Typography fontWeight={800}>{"ผลลัพท์"}</Typography>}
@@ -104,16 +106,21 @@ function RouteComponent() {
                   {result === null && (
                     <>
                       <Typography>{`ขนาดการเลื่อนขนาน: ไม่พร้อมแสดง`}</Typography>
-                      <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ไม่พร้อมแสดง`}</MathJax>
+                      <MathJax dynamic>
+                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่: ไม่พร้อมแสดง`}
+                      </MathJax>
                     </>
                   )}
                   {result !== null && (
                     <>
-                      <MathJax>{`ขนาดการเลื่อนขนาน: $(${result.translation.x}, ${result.translation.y})$`}</MathJax>
-                      <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
-                      <MathJax>
-                        {`$$
-                          \\begin{array}{lll}
+                      <MathJax dynamic>
+                        {`ขนาดการเลื่อนขนาน: $(${result.translation.x}, ${result.translation.y})$`}
+                      </MathJax>
+                      <MathJax dynamic>
+                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
+                      </MathJax>
+                      <MathJax dynamic>
+                        {`$$\\begin{array}{lll}
                         ${result.points
                           .map(({ x, y }, i) => {
                             const char = String.fromCharCode(i + 65);
