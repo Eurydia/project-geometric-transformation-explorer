@@ -1,23 +1,13 @@
 import { formatCoord, formatNumber } from "@/hooks/useRotationGroup";
-import type { Vec2D } from "@/types";
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
 import { memo, useMemo, type FC } from "react";
 import { Collapsible } from "../surface/Collapsible";
+import z from "zod/v4";
+import type { RotationFormDataSchema } from "../form/rotation-form";
 
 type Props = {
-  data:
-    | {
-        center: Vec2D<number>;
-        result: {
-          id: number;
-          preimage: Vec2D<number>;
-          image: Vec2D<number>;
-        }[];
-        angle: number;
-        direction: number;
-      }
-    | undefined;
+  data: z.output<typeof RotationFormDataSchema> | null;
 };
 export const ResultDisplay: FC<Props> = memo(({ data }) => {
   const resultItems = useMemo(() => {

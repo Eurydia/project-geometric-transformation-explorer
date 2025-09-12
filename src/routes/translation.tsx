@@ -1,28 +1,32 @@
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
-import { TranslationForm } from "@/components/form/translation-form";
+import {
+  TranslationForm,
+  TranslationFormDataSchema,
+} from "@/components/form/translation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
 import { Collapsible } from "@/components/surface/Collapsible";
 import { useTranslationGraph } from "@/hooks/useTranslationGraph";
-import { type TranslationFormData } from "@/types/translation";
 import { Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { MathJax } from "better-react-mathjax";
 import { useCallback, useState } from "react";
+import type z from "zod/v4";
 
 export const Route = createFileRoute("/translation")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { plotTranslation } = useTranslationGraph("#desmos");
-  const [result, setResult] = useState<TranslationFormData | null>(null);
+  const { desmos, plotTranslation } = useTranslationGraph("#desmos");
+
+  const [result, setResult] = useState<z.output<
+    typeof TranslationFormDataSchema
+  > | null>(null);
+
   const handleSolve = useCallback(
-    (value: TranslationFormData | null) => {
-      if (value === null) {
-        return;
-      }
+    (value: z.output<typeof TranslationFormDataSchema>) => {
       setResult(value);
-      plotTranslation({ points: value.points, translate: value.translation });
+      plotTranslation(value);
     },
     [plotTranslation]
   );
@@ -82,20 +86,20 @@ function RouteComponent() {
                       <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
                       <MathJax>
                         {`$$
-                          \\begin{align*}
+                          \\begin{array}{lll}
                         ${result.points
                           .map(({ x, y }, i) => {
-                            const dx = Number(result.translation.x);
-                            const dy = Number(result.translation.y);
                             const char = String.fromCharCode(i + 65);
-                            const preImage = `${char}(${x}, ${y})`;
-                            const image = `${char}^{\\prime}(${
-                              Number(x) + dx
-                            }, ${Number(y) + dy})`;
-                            return `${preImage} &\\rightarrow ${image}`;
+                            const preImageTex = `${char}(${x}, ${y})`;
+                            const img = image[i];
+                            if (img === undefined) {
+                              return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(?,?) `;
+                            }
+                            const [ix, iy] = img;
+                            return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(${ix},${iy}) `;
                           })
                           .join("\\\\")}
-                        \\end{align*}$$`}
+                        \\end{array}$$`}
                       </MathJax>
                     </>
                   )}

@@ -90,6 +90,7 @@ export const useDesmos = (selector: string) => {
         color,
         dragMode: "NONE",
       });
+      return iden();
     },
     []
   );

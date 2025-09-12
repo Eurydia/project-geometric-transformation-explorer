@@ -1,143 +1,62 @@
-import { blue, deepOrange, grey } from "@mui/material/colors";
+import { blue, deepOrange } from "@mui/material/colors";
 import { useCallback } from "react";
-import z from "zod";
+import z from "zod/v4";
 import { useDesmos } from "./useDesmos";
-import _ from "lodash";
-
-const StringOrNumber = z
-  .union([z.string().pipe(z.transform((arg) => Number(arg))), z.number()])
-  .refine((arg) => !isNaN(arg))
-  .pipe(z.transform((arg) => arg.toString()));
-
-const Vec2DSchema = z.object({
-  x: StringOrNumber,
-  y: StringOrNumber,
-});
-
-const PlotTranslationOptionSchema = z.object({
-  points: Vec2DSchema.array(),
-  translate: Vec2DSchema,
-});
-
-const makePolygonExpr = (
-  d: Desmos.Calculator,
-  varName: string,
-  pointCount: number,
-  color: string
-) => {
-  d.setExpression({
-    latex: `P_{${varName}} =
-          \\left[
-            ${_.range(pointCount)
-              .map((index) => `${varName}_{${index}}`)
-              .join(",")}
-          \\right]`,
-    hidden: true,
-  });
-
-  d.setExpression({
-    latex: `M_{X${varName}} = \\operatorname{mean}((P_{${varName}}).x)`,
-    hidden: true,
-  });
-
-  d.setExpression({
-    latex: `M_{Y${varName}} = \\operatorname{mean}((P_{${varName}}).y)`,
-    hidden: true,
-  });
-
-  d.setExpression({
-    latex: `Q_{${varName}} =\\operatorname{arctan}((P_{${varName}}).y - M_{Y${varName}}, (P_{${varName}}).x - M_{X${varName}})`,
-    hidden: true,
-  });
-
-  d.setExpression({
-    latex: `\\operatorname{polygon}(\\operatorname{sort}(P_{${varName}},Q_{${varName}}))`,
-    dragMode: "NONE",
-    fill: true,
-    color,
-  });
-};
+import type { TranslationFormDataSchema } from "@/components/form/translation-form";
 
 export const useTranslationGraph = (selector: string) => {
-  const desmos = useDesmos(selector);
-  const clearGraph = useCallback(() => {
-    desmos?.removeExpressions(
-      desmos
-        .getExpressions()
-        .filter(({ id }) => id !== undefined)
-        .map(({ id }) => ({ id: id! }))
-    );
-  }, [desmos]);
+  const { addLine, addPoint, addPolygon, clearGraph, desmosRef } =
+    useDesmos(selector);
 
   const plotTranslation = useCallback(
-    (options: z.input<typeof PlotTranslationOptionSchema>) => {
-      if (desmos === undefined) {
+    (options: z.output<typeof TranslationFormDataSchema>) => {
+      if (desmosRef.current === undefined) {
         return;
       }
-      const result = PlotTranslationOptionSchema.safeParse(options);
-      if (!result.success) {
-        return;
-      }
+
       clearGraph();
-      const { points, translate } = result.data;
 
-      const pointsLatex = points.map(({ x, y }) => `(${x},${y})`);
-      const pointsImageLatex = points.map(
-        ({ x, y }) => `(${+x + +translate.x},${+y + +translate.y})`
-      );
+      const d = desmosRef.current;
+      const { points, translation } = options;
 
-      desmos.setExpression({
-        latex: `t(x,y)=(x+${translate.x},y+${translate.y})`,
-      });
+      d.setExpressions([
+        {
+          latex: `T(x,y) = (  
+              x + ${translation.x} , 
+              y + ${translation.y}
+          )`,
+          hidden: true,
+        },
+      ]);
 
-      for (const [i, p] of pointsLatex.entries()) {
-        desmos.setExpression({
-          type: "table",
-          columns: [
-            {
-              latex: "x",
-              values: [`(A_{${i}}).x`, `(B_{${i}}).x`],
-              lines: true,
-              points: false,
-              color: grey["A400"],
-              lineStyle: "DASHED",
-            },
-            {
-              latex: "y",
-              values: [`(A_{${i}}).y`, `(B_{${i}}).y`],
-              lines: true,
-              color: grey["A400"],
-              points: false,
-              lineStyle: "DASHED",
-            },
-          ],
-        });
-        desmos.setExpression({
-          latex: `A_{${i}}=${p}`,
-          label: `\`${String.fromCharCode(65 + i)}${p}\``,
-          showLabel: true,
-          dragMode: "NONE",
-          color: blue["A200"],
-          points: true,
+      for (const [i, p] of points.entries()) {
+        const labelSym = String.fromCharCode(65 + i);
+
+        addLine([`A_{${i}}`, `B_{${i}}`]);
+
+        const texName = addPoint({
+          index: i,
+          texName: "A",
+          tex: `(${p.x}, ${p.y})`,
+          label: labelSym,
+          color: blue["A400"],
         });
 
-        desmos.setExpression({
-          latex: `B_{${i}}=t((A_{${i}}).x,(A_{${i}}).y)`,
-          label: `\`${String.fromCharCode(65 + i)}^{\\prime}${
-            pointsImageLatex[i]
-          }\``,
-          showLabel: true,
+        addPoint({
+          index: i,
+          texName: "B",
+          tex: `(${texName}.x, ${texName}.y)`,
+          label: labelSym,
           color: deepOrange["A400"],
-          points: true,
         });
       }
 
       if (points.length > 1) {
-        makePolygonExpr(desmos, "A", points.length, blue["A400"]);
-        makePolygonExpr(desmos, "B", points.length, deepOrange["A400"]);
+        addPolygon("A", points.length, blue["A400"]);
+        addPolygon("B", points.length, deepOrange["A400"]);
       }
     },
-    [clearGraph, desmos]
+    [addLine, addPoint, addPolygon, clearGraph, desmosRef]
   );
 
   return {
