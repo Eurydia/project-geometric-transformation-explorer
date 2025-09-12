@@ -9,7 +9,7 @@ import { useTranslationGraph } from "@/hooks/useTranslationGraph";
 import { Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MathJax } from "better-react-mathjax";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type z from "zod/v4";
 
 export const Route = createFileRoute("/translation")({
@@ -17,8 +17,27 @@ export const Route = createFileRoute("/translation")({
 });
 
 function RouteComponent() {
-  const { image, plotTranslation } = useTranslationGraph("#desmos");
+  const { desmosRef, plotTranslation } = useTranslationGraph("#desmos");
+  const [image, setImage] = useState<Record<number, number[] | undefined>>({});
 
+  useEffect(() => {
+    if (desmosRef.current === undefined) {
+      return;
+    }
+    const ref = desmosRef.current;
+
+    for (let i = 0; i < 4; i++) {
+      const obs = ref.HelperExpression({ latex: `B_{${i}}` });
+      obs.observe("listValue", () => {
+        setImage((prev) => {
+          const next = { ...prev };
+          next[i] = [...obs.listValue];
+          return next;
+        });
+      });
+    }
+    return () => ref.destroy();
+  }, [desmosRef]);
   const [result, setResult] = useState<z.output<
     typeof TranslationFormDataSchema
   > | null>(null);

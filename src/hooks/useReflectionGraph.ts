@@ -5,7 +5,7 @@ import type { ReflectionFormDataSchema } from "@/components/form/reflection-form
 import { blue, deepOrange, grey } from "@mui/material/colors";
 
 export const useReflectionGraph = (selector: string) => {
-  const { image, clearGraph, desmosRef, addLine, addPoint, addPolygon } =
+  const { clearGraph, desmosRef, addLine, addPoint, addPolygon } =
     useDesmos(selector);
 
   const plotVertical = useCallback((d: Desmos.Calculator, value: number) => {
@@ -137,6 +137,6 @@ export const useReflectionGraph = (selector: string) => {
 
   return {
     plotReflection,
-    image,
+    desmosRef,
   };
 };

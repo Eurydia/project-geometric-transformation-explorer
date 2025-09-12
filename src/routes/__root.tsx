@@ -1,13 +1,5 @@
 import { theme } from "@/theme";
-import { ArchitectureRounded } from "@mui/icons-material";
-import {
-  ThemeProvider,
-  CssBaseline,
-  GlobalStyles,
-  Box,
-  IconButton,
-  Toolbar,
-} from "@mui/material";
+import { ThemeProvider, CssBaseline, GlobalStyles } from "@mui/material";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { MathJaxContext } from "better-react-mathjax";

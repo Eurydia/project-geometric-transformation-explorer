@@ -8,7 +8,7 @@ import {
   RotationFormDataSchema,
 } from "@/components/form/rotation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import z from "zod/v4";
 import { useRotationGraph } from "@/hooks/useRotationGraph";
 import { Collapsible } from "@/components/surface/Collapsible";
@@ -22,8 +22,27 @@ function RouteComponent() {
   const [result, setResult] = useState<z.output<
     typeof RotationFormDataSchema
   > | null>(null);
-  const { plotRotation, image } = useRotationGraph("#desmos");
+  const { plotRotation, desmosRef } = useRotationGraph("#desmos");
+  const [image, setImage] = useState<Record<number, number[] | undefined>>({});
 
+  useEffect(() => {
+    if (desmosRef.current === undefined) {
+      return;
+    }
+    const ref = desmosRef.current;
+
+    for (let i = 0; i < 4; i++) {
+      const obs = ref.HelperExpression({ latex: `B_{${i}}` });
+      obs.observe("listValue", () => {
+        setImage((prev) => {
+          const next = { ...prev };
+          next[i] = [...obs.listValue];
+          return next;
+        });
+      });
+    }
+    return () => ref.destroy();
+  }, [desmosRef]);
   const handleSolve = useCallback(
     (v: z.output<typeof RotationFormDataSchema>) => {
       setResult(v);
@@ -31,6 +50,7 @@ function RouteComponent() {
     },
     [plotRotation]
   );
+  console.debug(image);
   return (
     <SplitLayout
       slots={{

@@ -96,7 +96,7 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
                     spacing={0.5}
                     direction={"row"}
                     useFlexGap
-                    justifyContent={{ xs: "space-between" }}
+                    justifyContent={"space-between"}
                   >
                     <Typography>
                       <MathJax>{`พิกัดที่ ${index + 1}`}</MathJax>

@@ -9,7 +9,7 @@ import { useReflectionGraph } from "@/hooks/useReflectionGraph";
 import { Stack, Paper, Typography } from "@mui/material";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MathJax } from "better-react-mathjax";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type z from "zod";
 
 export const Route = createFileRoute("/reflection")({
@@ -20,8 +20,27 @@ function RouteComponent() {
   const [result, setResult] = useState<z.output<
     typeof ReflectionFormDataSchema
   > | null>(null);
-  const { plotReflection, image } = useReflectionGraph("#desmos");
+  const { plotReflection, desmosRef } = useReflectionGraph("#desmos");
+  const [image, setImage] = useState<Record<number, number[] | undefined>>({});
 
+  useEffect(() => {
+    if (desmosRef.current === undefined) {
+      return;
+    }
+    const ref = desmosRef.current;
+
+    for (let i = 0; i < 4; i++) {
+      const obs = ref.HelperExpression({ latex: `B_{${i}}` });
+      obs.observe("listValue", () => {
+        setImage((prev) => {
+          const next = { ...prev };
+          next[i] = [...obs.listValue];
+          return next;
+        });
+      });
+    }
+    return () => ref.destroy();
+  }, [desmosRef]);
   const handleSolve = useCallback(
     (v: z.output<typeof ReflectionFormDataSchema>) => {
       setResult(v);
