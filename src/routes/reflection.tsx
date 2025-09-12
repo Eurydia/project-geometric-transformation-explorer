@@ -9,8 +9,7 @@ import { useReflectionGraph } from "@/hooks/useReflectionGraph";
 import { Stack, Paper, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { MathJax } from "better-react-mathjax";
-import _ from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import type z from "zod";
 
 export const Route = createFileRoute("/reflection")({
@@ -21,7 +20,7 @@ function RouteComponent() {
   const [result, setResult] = useState<z.output<
     typeof ReflectionFormDataSchema
   > | null>(null);
-  const { plotReflection, desmosRef } = useReflectionGraph("#desmos");
+  const { plotReflection, image } = useReflectionGraph("#desmos");
 
   const handleSolve = useCallback(
     (v: z.output<typeof ReflectionFormDataSchema>) => {
@@ -35,22 +34,19 @@ function RouteComponent() {
     <SplitLayout
       slots={{
         secondary: (
-          <Stack spacing={1} sx={{ height: "100%" }}>
-            <Paper
-              variant="outlined"
-              sx={{
+          <Paper
+            sx={{
+              height: "100%",
+            }}
+          >
+            <div
+              id="desmos"
+              style={{
+                width: "100%",
                 height: "100%",
               }}
-            >
-              <div
-                id="desmos"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-            </Paper>
-          </Stack>
+            />
+          </Paper>
         ),
         primary: (
           <Paper
@@ -95,20 +91,20 @@ function RouteComponent() {
                       <MathJax>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
                       <MathJax>
                         {`$$
-                          \\begin{align*}
+                          \\begin{array}{lll}
                         ${result.points
                           .map(({ x, y }, i) => {
                             const char = String.fromCharCode(i + 65);
                             const preImageTex = `${char}(${x}, ${y})`;
                             const img = image[i];
                             if (img === undefined) {
-                              return `${preImageTex} &\\rightarrow ${char}^{\\prime}(?,?)`;
+                              return `${preImageTex} &\\rightarrow &${char}^{\\prime}(?,?)`;
                             }
                             const [ix, iy] = img;
-                            return `${preImageTex} &\\rightarrow ${char}^{\\prime}(${ix},${iy})`;
+                            return `${preImageTex} &\\rightarrow &${char}^{\\prime}(${ix},${iy})`;
                           })
                           .join("\\\\")}
-                        \\end{align*}$$`}
+                        \\end{array}$$`}
                       </MathJax>
                     </>
                   )}

@@ -45,8 +45,11 @@ export const useTranslationGraph = (selector: string) => {
         addPoint({
           index: i,
           texName: "B",
-          tex: `(${texName}.x, ${texName}.y)`,
-          label: labelSym,
+          tex: `T(
+            ${texName}.x, 
+            ${texName}.y
+          )`,
+          label: `${labelSym}^{\\prime}`,
           color: deepOrange["A400"],
         });
       }

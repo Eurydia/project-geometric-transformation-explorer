@@ -11,7 +11,10 @@ export const useReflectionGraph = (selector: string) => {
   const plotVertical = useCallback((d: Desmos.Calculator, value: number) => {
     d.setExpressions([
       {
-        latex: `T(x,y)=((2)(${value}) - x,y)`,
+        latex: `T(x,y) = ( 
+          (2)(${value}) - x ,
+          y
+        )`,
         hidden: true,
       },
       {
@@ -27,7 +30,10 @@ export const useReflectionGraph = (selector: string) => {
   const plotHorizontal = useCallback((d: Desmos.Calculator, value: number) => {
     d.setExpressions([
       {
-        latex: `T(x,y)=(x, (2)(${value})-y)`,
+        latex: `T(x,y) = (
+          x , 
+          (2)(${value}) - y
+        )`,
         hidden: true,
       },
       {
@@ -90,15 +96,26 @@ export const useReflectionGraph = (selector: string) => {
 
       for (const [i, p] of points.entries()) {
         const sym = String.fromCharCode(65 + i);
+
         addLine([`A_{${i}}`, `B_{${i}}`]);
-        addPoint(`A`, i, sym, `(${p.x},${p.y})`, blue["A400"]);
-        addPoint(
-          `B`,
-          i,
-          `${sym}\\prime`,
-          `T(      (A_{${i}}).x   ,  (A_{${i}}).y   )`,
-          deepOrange["A400"]
-        );
+
+        addPoint({
+          index: i,
+          texName: `A`,
+          tex: `(${p.x},${p.y})`,
+          label: sym,
+          color: blue["A400"],
+        });
+        addPoint({
+          index: i,
+          texName: `B`,
+          tex: `T(
+            (A_{${i}}).x, 
+            (A_{${i}}).y   
+          )`,
+          label: `${sym}\\prime`,
+          color: deepOrange["A400"],
+        });
       }
 
       if (points.length > 1) {
@@ -120,7 +137,6 @@ export const useReflectionGraph = (selector: string) => {
 
   return {
     plotReflection,
-    desmosRef,
     image,
   };
 };

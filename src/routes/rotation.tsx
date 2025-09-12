@@ -103,21 +103,19 @@ function RouteComponent() {
           </Paper>
         ),
         secondary: (
-          <Stack spacing={1} sx={{ height: "100%" }}>
-            <Paper
-              sx={{
+          <Paper
+            sx={{
+              height: "100%",
+            }}
+          >
+            <div
+              id="desmos"
+              style={{
+                width: "100%",
                 height: "100%",
               }}
-            >
-              <div
-                id="desmos"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-            </Paper>
-          </Stack>
+            />
+          </Paper>
         ),
       }}
     />
