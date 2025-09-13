@@ -1,4 +1,6 @@
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
+import { ReflectionFormulaBlog } from "@/components/blogs/reflection-formula-blog";
+import { ReflectionPropertyBlog } from "@/components/blogs/reflection-property-blog";
 import {
   ReflectionForm,
   ReflectionFormDataSchema,
@@ -164,13 +166,12 @@ function RouteComponent() {
                   <Typography fontWeight={600}>สมบัติการสะท้อน</Typography>
                 }
               >
-                <Typography>ว่าง</Typography>
+                <ReflectionPropertyBlog />
               </Collapsible>
-
               <Collapsible
                 title={<Typography fontWeight={600}>สูตรการสะท้อน</Typography>}
               >
-                <Typography>ว่าง</Typography>
+                <ReflectionFormulaBlog />
               </Collapsible>
               <AttributionBlog />
             </Stack>
