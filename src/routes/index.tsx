@@ -130,9 +130,6 @@ function RouteComponent() {
                       >
                         {label}
                       </Typography>
-                      <Typography variant="h6" component={"div"}>
-                        {`คำอธิบายเพิ่มเติม`}
-                      </Typography>
                     </Stack>
                   </Stack>
                 </CardActionArea>
