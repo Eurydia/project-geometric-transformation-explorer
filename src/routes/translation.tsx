@@ -1,6 +1,7 @@
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
 import { TranslationFormulaBlog } from "@/components/blogs/translation-formula-blog";
 import { TranslationPropertyBlog } from "@/components/blogs/translation-property-blog";
+import { CoordinateResultDisplay } from "@/components/data-display/result-display";
 import {
   TranslationForm,
   TranslationFormDataSchema,
@@ -103,12 +104,12 @@ function RouteComponent() {
               </Stack>
               <TranslationForm onSubmit={handleSolve} />
               <Collapsible
-                title={<Typography fontWeight={800}>{"ผลลัพธ์"}</Typography>}
+                title={<Typography fontWeight={700}>{"ผลลัพธ์"}</Typography>}
               >
                 <Stack>
                   {result === null && (
                     <>
-                      <Typography>{`ขนาดการเลื่อนขนาน:`}</Typography>
+                      <Typography>{`เวกเตอร์ของการเลื่อนขนาน:`}</Typography>
                       <MathJax dynamic>
                         {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
                       </MathJax>
@@ -117,43 +118,24 @@ function RouteComponent() {
                   {result !== null && (
                     <>
                       <MathJax dynamic>
-                        {`ขนาดการเลื่อนขนาน: $(${result.translation.x}, ${result.translation.y})$`}
+                        {`เวกเตอร์ของการเลื่อนขนาน: $\\begin{bmatrix} ${result.translation.x} \\\\ ${result.translation.y}\\end{bmatrix}$`}
                       </MathJax>
                       <MathJax dynamic>
                         {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
                       </MathJax>
-                      <MathJax
-                        dynamic
-                        style={{
-                          width: "100%",
-                          overflowX: "auto",
-                          scrollbarWidth: "thin",
-                        }}
-                      >
-                        {`$$
-                          \\begin{array}{lll}
-                            ${result.points
-                              .map(({ x, y }, i) => {
-                                const char = String.fromCharCode(i + 65);
-                                const preImageTex = `${char}(${x}, ${y})`;
-                                const img = image[i];
-                                if (img === undefined) {
-                                  return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(?,?) `;
-                                }
-                                const [ix, iy] = img;
-                                return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(${ix},${iy}) `;
-                              })
-                              .join("\\\\")}
-                          \\end{array}
-                        $$`}
-                      </MathJax>
+                      <CoordinateResultDisplay
+                        preImages={result.points}
+                        imageMap={image}
+                      />
                     </>
                   )}
                 </Stack>
               </Collapsible>
               <Collapsible
                 title={
-                  <Typography fontWeight={600}>สมบัติการเลื่อนขนาน</Typography>
+                  <Typography fontWeight={600}>
+                    {`สมบัติการเลื่อนขนาน`}
+                  </Typography>
                 }
               >
                 <TranslationPropertyBlog />
@@ -161,7 +143,9 @@ function RouteComponent() {
 
               <Collapsible
                 title={
-                  <Typography fontWeight={600}>สูตรการเลื่อนขนาน</Typography>
+                  <Typography fontWeight={600}>
+                    {`สูตรการเลื่อนขนาน`}
+                  </Typography>
                 }
               >
                 <TranslationFormulaBlog />

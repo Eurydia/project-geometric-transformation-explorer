@@ -125,17 +125,17 @@ function RouteComponent() {
               </Collapsible>
               <Collapsible
                 title={
-                  <Typography fontWeight={600}>{`สูตรการหมุน`}</Typography>
-                }
-              >
-                <RotationPropertyBlog />
-              </Collapsible>
-              <Collapsible
-                title={
                   <Typography fontWeight={600}>{`สมบัติการหมุน`}</Typography>
                 }
               >
                 <RotationFormulaBlog />
+              </Collapsible>
+              <Collapsible
+                title={
+                  <Typography fontWeight={600}>{`สูตรการหมุน`}</Typography>
+                }
+              >
+                <RotationPropertyBlog />
               </Collapsible>
             </Stack>
           </Paper>
