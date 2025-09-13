@@ -1,8 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Paper, Stack, Typography } from "@mui/material";
-import { AttributionBlog } from "@/components/blogs/AttributionBlog";
-import { FormulaBlog } from "@/components/blogs/FormulaBlog";
-import { PropertyBlog } from "@/components/blogs/PropertyBlog";
 import {
   RotationForm,
   RotationFormDataSchema,
@@ -13,6 +10,9 @@ import z from "zod/v4";
 import { useRotationGraph } from "@/hooks/useRotationGraph";
 import { Collapsible } from "@/components/surface/Collapsible";
 import { MathJax } from "better-react-mathjax";
+import { CoordinateResultDisplay } from "@/components/data-display/result-display";
+import { RotationPropertyBlog } from "@/components/blogs/rotation-property-blog";
+import { RotationFormulaBlog } from "@/components/blogs/rotation-formula-blog";
 
 export const Route = createFileRoute("/rotation")({
   component: RouteComponent,
@@ -85,7 +85,7 @@ function RouteComponent() {
               </Stack>
               <RotationForm onSubmit={handleSolve} />
               <Collapsible
-                title={<Typography fontWeight={800}>{"ผลลัพธ์"}</Typography>}
+                title={<Typography fontWeight={700}>{"ผลลัพธ์"}</Typography>}
               >
                 <Stack>
                   {result === null && (
@@ -93,9 +93,9 @@ function RouteComponent() {
                       <Typography>{`จุดหมุน:`}</Typography>
                       <Typography>{`ขนาดของมุมที่หมุน:`}</Typography>
                       <Typography>{`ทิศทาง:`}</Typography>
-                      <MathJax dynamic>
-                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-                      </MathJax>
+                      <MathJax
+                        dynamic
+                      >{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
                     </>
                   )}
                   {result !== null && (
@@ -112,41 +112,31 @@ function RouteComponent() {
                       {result.direction === 1 && (
                         <MathJax dynamic>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
                       )}
-                      <MathJax dynamic>
-                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-                      </MathJax>
                       <MathJax
                         dynamic
-                        style={{
-                          width: "100%",
-                          overflow: "auto",
-                          scrollbarWidth: "thin",
-                        }}
-                      >
-                        {`$$
-                          \\begin{array}{lll}
-                            ${result.points
-                              .map(({ x, y }, i) => {
-                                const char = String.fromCharCode(i + 65);
-                                const preImageTex = `${char}(${x}, ${y})`;
-                                const img = image[i];
-                                if (img === undefined) {
-                                  return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(?,?) `;
-                                }
-                                const [ix, iy] = img;
-                                return `${preImageTex} &\\rightarrow & ${char}^{\\prime}(${ix},${iy}) `;
-                              })
-                              .join("\\\\")}
-                          \\end{array}
-                        $$`}
-                      </MathJax>
+                      >{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
+                      <CoordinateResultDisplay
+                        preImages={result.points}
+                        imageMap={image}
+                      />
                     </>
                   )}
                 </Stack>
               </Collapsible>
-              <PropertyBlog />
-              <FormulaBlog />
-              <AttributionBlog />
+              <Collapsible
+                title={
+                  <Typography fontWeight={600}>{`สูตรการหมุน`}</Typography>
+                }
+              >
+                <RotationPropertyBlog />
+              </Collapsible>
+              <Collapsible
+                title={
+                  <Typography fontWeight={600}>{`สมบัติการหมุน`}</Typography>
+                }
+              >
+                <RotationFormulaBlog />
+              </Collapsible>
             </Stack>
           </Paper>
         ),
