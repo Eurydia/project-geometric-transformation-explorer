@@ -97,7 +97,7 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
       </Stack>
       <Stack spacing={0.5} padding={1}>
         <Typography>
-          <MathJax dynamic>{`จุดหมุน $(x,y)$`}</MathJax>
+          <MathJax dynamic>{`จุดหมุน $(a,b)$`}</MathJax>
         </Typography>
         <Stack useFlexGap spacing={0.5} direction={"row"} flexWrap={"nowrap"}>
           <AppField name="center.x">
@@ -123,7 +123,12 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
                   }}
                 >
                   <Stack direction={"row"} justifyContent={"space-between"}>
-                    <Typography>{`พิกัดที่ ${index + 1}`}</Typography>
+                    <Typography>
+                      <MathJax>
+                        {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}
+                        {index !== 0 && `พิกัดที่ ${index + 1}`}
+                      </MathJax>
+                    </Typography>
                     <field.ArrayItemRemoveButton index={index} />
                   </Stack>
                   <Stack spacing={0.5} direction="row">

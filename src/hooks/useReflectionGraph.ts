@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import z from "zod";
 import { useDesmos } from "./useDesmos";
 import type { ReflectionFormDataSchema } from "@/components/form/reflection-form";
-import { blue, deepOrange, grey } from "@mui/material/colors";
+import { blue, blueGrey, deepOrange } from "@mui/material/colors";
 
 export const useReflectionGraph = (selector: string) => {
   const { clearGraph, desmosRef, addLine, addPoint, addPolygon } =
@@ -19,10 +19,9 @@ export const useReflectionGraph = (selector: string) => {
       },
       {
         latex: `x=${value}`,
-        color: grey["A400"],
+        color: blueGrey["A200"],
         lines: true,
-        lineStyle: "DASHED",
-        lineWidth: 3,
+        lineWidth: 4,
       },
     ]);
   }, []);
@@ -38,10 +37,9 @@ export const useReflectionGraph = (selector: string) => {
       },
       {
         latex: `y=${value}`,
-        color: grey["A400"],
+        color: blueGrey["A200"],
         lines: true,
-        lineStyle: "DASHED",
-        lineWidth: 3,
+        lineWidth: 4,
       },
     ]);
   }, []);
@@ -63,10 +61,9 @@ export const useReflectionGraph = (selector: string) => {
         },
         {
           latex: `${lhs}=${rhs}`,
+          color: blueGrey["A200"],
           lines: true,
-          lineStyle: "DASHED",
-          lineWidth: 3,
-          color: grey["A400"],
+          lineWidth: 4,
         },
       ]);
     },

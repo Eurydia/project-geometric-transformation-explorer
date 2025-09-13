@@ -106,18 +106,18 @@ export const useDesmos = (selector: string) => {
         {
           latex: "x",
           values: names.map((name) => `(${name}).x`),
-          lines: true,
           points: false,
-          color: grey["A400"],
+          lines: true,
           lineStyle: "DASHED",
+          color: grey["A400"],
         },
         {
           latex: "y",
           values: names.map((name) => `(${name}).y`),
-          lines: true,
-          color: grey["A400"],
           points: false,
+          lines: true,
           lineStyle: "DASHED",
+          color: grey["A400"],
         },
       ],
     });

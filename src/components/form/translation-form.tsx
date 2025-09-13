@@ -91,13 +91,7 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
                       index % 2 === 1 ? undefined : alpha(primary.light, 0.08),
                   }}
                 >
-                  <Stack
-                    width={"100%"}
-                    spacing={0.5}
-                    direction={"row"}
-                    useFlexGap
-                    justifyContent={"space-between"}
-                  >
+                  <Stack direction={"row"} justifyContent={"space-between"}>
                     <Typography>
                       <MathJax dynamic>
                         {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}

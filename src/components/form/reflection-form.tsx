@@ -87,7 +87,7 @@ export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
     useAppForm({
       defaultValues: {
         type: "horizontal",
-        value: "2",
+        value: "0",
         points: [{ x: "1", y: "1" }],
       } as z.input<typeof ReflectionFormDataSchema>,
       validators: { onChange: ReflectionFormDataSchema },
@@ -191,14 +191,12 @@ export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
                       index % 2 === 0 ? undefined : alpha(primary.light, 0.08),
                   }}
                 >
-                  <Stack
-                    useFlexGap
-                    spacing={0.5}
-                    direction={"row"}
-                    justifyContent={"space-between"}
-                  >
+                  <Stack direction={"row"} justifyContent={"space-between"}>
                     <Typography>
-                      <MathJax>{`พิกัดที่ ${index + 1}`}</MathJax>
+                      <MathJax>
+                        {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}
+                        {index !== 0 && `พิกัดที่ ${index + 1}`}
+                      </MathJax>
                     </Typography>
                     <field.ArrayItemRemoveButton index={index} />
                   </Stack>

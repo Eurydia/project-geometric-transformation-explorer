@@ -19,7 +19,7 @@ export const AttributionBlog: FC = memo(() => {
               {`นายธนกร พุทธรักษา`}
             </Typography>
           </Stack>
-          <Typography component="div">
+          <Typography>
             {`(แก้ไขครั้งล่าสุดเมื่อ: 21 มิถุนายน พ.ศ. 2568)`}
           </Typography>
         </Stack>
