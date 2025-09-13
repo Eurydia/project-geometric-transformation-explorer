@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  ArchitectureRounded,
   FlipRounded,
   RotateRightRounded,
   TextRotationNoneRounded,
@@ -55,17 +56,28 @@ function RouteComponent() {
           backgroundColor: palette.common.white,
         }}
       >
-        <Typography
-          variant="h3"
-          fontWeight={700}
+        <Stack
+          direction={"row"}
+          spacing={1}
           maxWidth="lg"
           marginX={"auto"}
-          sx={{
-            textWrap: "pretty",
-          }}
+          alignItems={"center"}
         >
-          {`การแปลงเรขาคณิต`}
-        </Typography>
+          <ArchitectureRounded
+            fontSize="inherit"
+            sx={{ fontSize: ({ typography }) => typography.h3.fontSize }}
+          />
+          <Typography
+            component={"div"}
+            variant="h3"
+            fontWeight={700}
+            sx={{
+              textWrap: "pretty",
+            }}
+          >
+            {`การแปลงทางเรขาคณิต`}
+          </Typography>
+        </Stack>
       </Box>
       <Box
         width="100%"

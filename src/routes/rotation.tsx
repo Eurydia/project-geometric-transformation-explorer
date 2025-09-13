@@ -85,7 +85,7 @@ function RouteComponent() {
               </Stack>
               <RotationForm onSubmit={handleSolve} />
               <Collapsible
-                title={<Typography fontWeight={800}>{"ผลลัพท์"}</Typography>}
+                title={<Typography fontWeight={800}>{"ผลลัพธ์"}</Typography>}
               >
                 <Stack>
                   {result === null && (
