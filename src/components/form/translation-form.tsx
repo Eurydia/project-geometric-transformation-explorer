@@ -66,7 +66,7 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
       </Toolbar>
       <Stack spacing={0.5} padding={1}>
         <Typography>
-          <MathJax dynamic>{`ขนาดการเลื่อนขนาน $(x,y)$`}</MathJax>
+          <MathJax dynamic>{`เวกเตอร์ของการเลื่อนขนาน $(a,b)$`}</MathJax>
         </Typography>
         <Stack useFlexGap spacing={0.5} direction={"row"} flexWrap={"nowrap"}>
           <AppField name="translation.x">
@@ -99,7 +99,10 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
                     justifyContent={"space-between"}
                   >
                     <Typography>
-                      <MathJax>{`พิกัดที่ ${index + 1}`}</MathJax>
+                      <MathJax dynamic>
+                        {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}
+                        {index !== 0 && `พิกัดที่ ${index + 1}`}
+                      </MathJax>
                     </Typography>
                     <field.ArrayItemRemoveButton index={index} />
                   </Stack>

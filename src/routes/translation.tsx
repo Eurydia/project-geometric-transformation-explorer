@@ -1,4 +1,6 @@
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
+import { TranslationFormulaBlog } from "@/components/blogs/translation-formula-blog";
+import { TranslationPropertyBlog } from "@/components/blogs/translation-property-blog";
 import {
   TranslationForm,
   TranslationFormDataSchema,
@@ -76,6 +78,7 @@ function RouteComponent() {
               padding: 2,
               overflowY: "auto",
               scrollbarWidth: "thin",
+              scrollbarGutter: "stable",
             }}
           >
             <Stack spacing={2}>
@@ -123,7 +126,7 @@ function RouteComponent() {
                         dynamic
                         style={{
                           width: "100%",
-                          overflow: "auto",
+                          overflowX: "auto",
                           scrollbarWidth: "thin",
                         }}
                       >
@@ -153,7 +156,7 @@ function RouteComponent() {
                   <Typography fontWeight={600}>สมบัติการเลื่อนขนาน</Typography>
                 }
               >
-                <Typography>ว่าง</Typography>
+                <TranslationPropertyBlog />
               </Collapsible>
 
               <Collapsible
@@ -161,7 +164,7 @@ function RouteComponent() {
                   <Typography fontWeight={600}>สูตรการเลื่อนขนาน</Typography>
                 }
               >
-                <Typography>ว่าง</Typography>
+                <TranslationFormulaBlog />
               </Collapsible>
               <AttributionBlog />
             </Stack>
