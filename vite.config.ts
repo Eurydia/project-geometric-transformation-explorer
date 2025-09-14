@@ -13,5 +13,5 @@ export default defineConfig({
     }),
     react(),
   ],
-  base: "/geometric-transformation-explorer/",
+  base: "/project-geometric-transformation-explorer/",
 });
