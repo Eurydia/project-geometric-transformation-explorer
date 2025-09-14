@@ -83,21 +83,27 @@ type Props = {
   onSubmit: (v: z.output<typeof ReflectionFormDataSchema>) => unknown;
 };
 export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
-  const { AppField, AppForm, FormResetButton, FormSubmitButton, Subscribe } =
-    useAppForm({
-      defaultValues: {
-        type: "horizontal",
-        value: "0",
-        points: [{ x: "1", y: "1" }],
-      } as z.input<typeof ReflectionFormDataSchema>,
-      validators: { onChange: ReflectionFormDataSchema },
-      onSubmit: ({ value }) => {
-        const res = ReflectionFormDataSchema.safeParse(value);
-        if (res.success) {
-          onSubmit(res.data);
-        }
-      },
-    });
+  const {
+    setFieldValue,
+    AppField,
+    AppForm,
+    FormResetButton,
+    FormSubmitButton,
+    Subscribe,
+  } = useAppForm({
+    defaultValues: {
+      type: "horizontal",
+      value: "0",
+      points: [{ x: "1", y: "1" }],
+    } as z.input<typeof ReflectionFormDataSchema>,
+    validators: { onChange: ReflectionFormDataSchema },
+    onSubmit: ({ value }) => {
+      const res = ReflectionFormDataSchema.safeParse(value);
+      if (res.success) {
+        onSubmit(res.data);
+      }
+    },
+  });
 
   return (
     <Stack spacing={0.5}>
@@ -108,7 +114,18 @@ export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
       </Toolbar>
       <Stack>
         <Typography>{`ประเภทของเส้นสะท้อน`}</Typography>
-        <AppField name="type">
+        <AppField
+          name="type"
+          listeners={{
+            onChange: ({ value }) => {
+              if (value === "linear") {
+                setFieldValue("value", "y=x");
+              } else {
+                setFieldValue("value", "0");
+              }
+            },
+          }}
+        >
           {(field) => <field.ReflectionEquationTypeInput />}
         </AppField>
       </Stack>
