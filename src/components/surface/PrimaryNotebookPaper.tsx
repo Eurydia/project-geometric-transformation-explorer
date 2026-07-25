@@ -24,10 +24,6 @@ export const PrimaryNotebookPaper: FC<PropsWithChildren> = ({ children }) => (
         borderStyle: "solid",
         borderColor: t.alpha(t.palette.scrapbook.ink, 0.66),
         borderRadius: t.spacing(0.875),
-        boxShadow: [
-          `${t.spacing(1)} ${t.spacing(1.25)} 0 ${t.alpha(t.palette.scrapbook.ink, 0.13)}`,
-          `0 ${t.spacing(3)} ${t.spacing(5)} ${t.alpha(t.palette.scrapbook.shadow, 0.13)}`,
-        ].join(","),
       })}
     >
       {children}

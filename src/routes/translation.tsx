@@ -46,77 +46,70 @@ function RouteComponent() {
 
   return (
     <SplitLayout
-      slots={{
-        secondary: <Box id="desmos" sx={{ width: "100%", height: "100%" }} />,
-        primary: (
-          <Stack spacing={3}>
-            <RouterLink
-              to="/"
-              color="textPrimary"
-              sx={{
-                width: "fit-content",
-              }}
-            >
-              {`กลับหน้าแรก`}
-            </RouterLink>
-            <Stack spacing={0.5}>
-              <Typography component="div" variant="h5" sx={{ fontWeight: 700 }}>
-                {`(การแปลงทางเรขาคณิต)`}
-              </Typography>
-              <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
-                {`การเลื่อนขนาน`}
-              </Typography>
+      secondary={<Box id="desmos" sx={{ width: "100%", height: "100%" }} />}
+    >
+      <Stack spacing={3}>
+        <RouterLink
+          to="/"
+          color="textPrimary"
+          sx={{
+            width: "fit-content",
+          }}
+        >
+          {`กลับหน้าแรก`}
+        </RouterLink>
+        <Stack spacing={0.5}>
+          <Typography component="div" variant="h5" sx={{ fontWeight: 700 }}>
+            {`(การแปลงทางเรขาคณิต)`}
+          </Typography>
+          <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
+            {`การเลื่อนขนาน`}
+          </Typography>
+        </Stack>
+        <TranslationForm
+          form={form}
+          fields={{ points: "points", translation: "translation" }}
+        />
+        <Collapsible
+          title={<Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>}
+        >
+          {result === null ? (
+            <Typography color="textSecondary" sx={{ fontStyle: "italic" }}>
+              {`ไม่มีข้อมูลให้แสดง`}
+            </Typography>
+          ) : (
+            <Stack>
+              <MathJax dynamic>
+                {`เวกเตอร์ของการเลื่อนขนาน: $\\begin{bmatrix} ${result.translation.x} \\\\ ${result.translation.y}\\end{bmatrix}$`}
+              </MathJax>
+              <MathJax dynamic>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
+              <CoordinateResultDisplay
+                preImages={result.points}
+                imageMap={image}
+              />
             </Stack>
-            <TranslationForm
-              form={form}
-              fields={{ points: "points", translation: "translation" }}
-            />
-            <Collapsible
-              title={
-                <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
-              }
-            >
-              {result === null ? (
-                <Typography color="textSecondary" sx={{ fontStyle: "italic" }}>
-                  {`ไม่มีข้อมูลให้แสดง`}
-                </Typography>
-              ) : (
-                <Stack>
-                  <MathJax dynamic>
-                    {`เวกเตอร์ของการเลื่อนขนาน: $\\begin{bmatrix} ${result.translation.x} \\\\ ${result.translation.y}\\end{bmatrix}$`}
-                  </MathJax>
-                  <MathJax dynamic>
-                    {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-                  </MathJax>
-                  <CoordinateResultDisplay
-                    preImages={result.points}
-                    imageMap={image}
-                  />
-                </Stack>
-              )}
-            </Collapsible>
-            <Collapsible
-              title={
-                <Typography sx={{ fontWeight: 700 }}>
-                  {`สมบัติการเลื่อนขนาน`}
-                </Typography>
-              }
-            >
-              <TranslationPropertyBlog />
-            </Collapsible>
-            <Collapsible
-              title={
-                <Typography sx={{ fontWeight: 700 }}>
-                  {`สูตรการเลื่อนขนาน`}
-                </Typography>
-              }
-            >
-              <TranslationFormulaBlog />
-            </Collapsible>
-            <AttributionBlog />
-          </Stack>
-        ),
-      }}
-    />
+          )}
+        </Collapsible>
+        <Collapsible
+          title={
+            <Typography sx={{ fontWeight: 700 }}>
+              {`สมบัติการเลื่อนขนาน`}
+            </Typography>
+          }
+        >
+          <TranslationPropertyBlog />
+        </Collapsible>
+        <Collapsible
+          title={
+            <Typography sx={{ fontWeight: 700 }}>
+              {`สูตรการเลื่อนขนาน`}
+            </Typography>
+          }
+        >
+          <TranslationFormulaBlog />
+        </Collapsible>
+        <AttributionBlog />
+      </Stack>
+    </SplitLayout>
   );
 }

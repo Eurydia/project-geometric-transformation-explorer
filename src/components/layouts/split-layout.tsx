@@ -2,42 +2,37 @@ import { GraphNotebookPaper } from "@/components/surface/GraphNotebookPaper";
 import { PrimaryNotebookPaper } from "@/components/surface/PrimaryNotebookPaper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import type { FC, ReactNode } from "react";
+import type { FC, PropsWithChildren, ReactNode } from "react";
 
-type Props = {
-  slots: {
+export const SplitLayout: FC<
+  PropsWithChildren<{
     secondary: ReactNode;
-    primary: ReactNode;
-  };
-};
-export const SplitLayout: FC<Props> = ({ slots: { primary, secondary } }) => {
+  }>
+> = (props) => {
   return (
-    <Box sx={{ minHeight: "100vh" }}>
+    <Box sx={{ overflow: { xs: "auto", md: "unset" } }}>
       <Grid
         container
         columns={12}
         spacing={{ xs: 3, md: 4 }}
-        sx={(t) => ({
+        sx={(theme) => ({
           width: "100%",
+          height: "100vh",
           padding: {
-            xs: t.spacing(2),
-            sm: t.spacing(3),
-            lg: t.spacing(5),
+            xs: theme.spacing(2),
+            sm: theme.spacing(3),
+            lg: theme.spacing(5),
           },
-          filter: `drop-shadow(0 ${t.spacing(2.5)} ${t.spacing(3)} ${t.alpha(t.palette.scrapbook.shadow, 0.1)})`,
         })}
       >
-        <Grid
-          size={{ xs: 12, md: 5, lg: 4 }}
-          sx={{ maxHeight: { md: "100vh" } }}
-        >
-          <PrimaryNotebookPaper>{primary}</PrimaryNotebookPaper>
+        <Grid size={{ xs: 12, md: 5, lg: 4 }} sx={{ height: { md: "100%" } }}>
+          <PrimaryNotebookPaper>{props.children}</PrimaryNotebookPaper>
         </Grid>
         <Grid
           size={{ xs: 12, md: 7, lg: 8 }}
           sx={{ height: { xs: "70vh", md: "100%" } }}
         >
-          <GraphNotebookPaper>{secondary}</GraphNotebookPaper>
+          <GraphNotebookPaper>{props.secondary}</GraphNotebookPaper>
         </Grid>
       </Grid>
     </Box>

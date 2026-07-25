@@ -25,16 +25,19 @@ export const ReflectionEquationTypeInput: FC = () => {
         value={"horizontal"}
         control={<Radio />}
         label={<MathJax dynamic>{`แนวแกน $x$`}</MathJax>}
+        sx={{ width: "fit-content" }}
       />
       <FormControlLabel
         value={"vertical"}
         control={<Radio />}
         label={<MathJax dynamic>{`แนวแกน $y$`}</MathJax>}
+        sx={{ width: "fit-content" }}
       />
       <FormControlLabel
         value={"linear"}
         control={<Radio />}
         label="สมการเส้นตรง"
+        sx={{ width: "fit-content" }}
       />
     </RadioGroup>
   );

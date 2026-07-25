@@ -45,95 +45,80 @@ function RouteComponent() {
 
   return (
     <SplitLayout
-      slots={{
-        secondary: <Box id="desmos" sx={{ width: "100%", height: "100%" }} />,
-        primary: (
-          <Stack spacing={2}>
-            <RouterLink
-              to="/"
-              color="textPrimary"
-              underline="always"
-              sx={{
-                width: "fit-content",
-              }}
-            >
-              {`กลับหน้าแรก`}
-            </RouterLink>
-            <Stack spacing={0.5}>
-              <Typography
-                variant="h5"
-                component="span"
-                sx={{ fontWeight: 700 }}
-              >
-                {`(การแปลงทางเรขาคณิต)`}
-              </Typography>
-              <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
-                {`การหมุน`}
-              </Typography>
-            </Stack>
-            <RotationForm
-              form={form}
-              fields={{
-                angle: "angle",
-                center: "center",
-                direction: "direction",
-                points: "points",
-              }}
-            />
-            <Collapsible
-              title={
-                <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
-              }
-            >
-              {result === null ? (
-                <Typography color="textSecondary" sx={{ fontStyle: "italic" }}>
-                  {`ไม่มีข้อมูลให้แสดง`}
-                </Typography>
-              ) : (
-                <Stack>
-                  <MathJax dynamic>
-                    {`จุดหมุน: $(${result.center.x} , ${result.center.y})$`}
-                  </MathJax>
-                  <MathJax dynamic>
-                    {`ขนาดของมุมที่หมุน: $${result.angle}^{\\circ}$`}
-                  </MathJax>
-                  {result.direction === -1 && (
-                    <MathJax dynamic>{`ทิศทาง: ทวนเข็มนาฬิกา`}</MathJax>
-                  )}
-                  {result.direction === 1 && (
-                    <MathJax dynamic>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
-                  )}
-                  <MathJax dynamic>
-                    {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-                  </MathJax>
-                  <CoordinateResultDisplay
-                    preImages={result.points}
-                    imageMap={image}
-                  />
-                </Stack>
+      secondary={<Box id="desmos" sx={{ width: "100%", height: "100%" }} />}
+    >
+      <Stack spacing={2}>
+        <RouterLink
+          to="/"
+          color="textPrimary"
+          underline="always"
+          sx={{
+            width: "fit-content",
+          }}
+        >
+          {`กลับหน้าแรก`}
+        </RouterLink>
+        <Stack spacing={0.5}>
+          <Typography variant="h5" component="span" sx={{ fontWeight: 700 }}>
+            {`(การแปลงทางเรขาคณิต)`}
+          </Typography>
+          <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
+            {`การหมุน`}
+          </Typography>
+        </Stack>
+        <RotationForm
+          form={form}
+          fields={{
+            angle: "angle",
+            center: "center",
+            direction: "direction",
+            points: "points",
+          }}
+        />
+        <Collapsible
+          title={<Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>}
+        >
+          {result === null ? (
+            <Typography color="textSecondary" sx={{ fontStyle: "italic" }}>
+              {`ไม่มีข้อมูลให้แสดง`}
+            </Typography>
+          ) : (
+            <Stack>
+              <MathJax dynamic>
+                {`จุดหมุน: $(${result.center.x} , ${result.center.y})$`}
+              </MathJax>
+              <MathJax dynamic>
+                {`ขนาดของมุมที่หมุน: $${result.angle}^{\\circ}$`}
+              </MathJax>
+              {result.direction === -1 && (
+                <MathJax dynamic>{`ทิศทาง: ทวนเข็มนาฬิกา`}</MathJax>
               )}
-            </Collapsible>
-            <Collapsible
-              title={
-                <Typography sx={{ fontWeight: 700 }}>
-                  {`สมบัติการหมุน`}
-                </Typography>
-              }
-            >
-              <RotationFormulaBlog />
-            </Collapsible>
-            <Collapsible
-              title={
-                <Typography sx={{ fontWeight: 700 }}>
-                  {`สูตรการหมุน`}
-                </Typography>
-              }
-            >
-              <RotationPropertyBlog />
-            </Collapsible>
-          </Stack>
-        ),
-      }}
-    />
+              {result.direction === 1 && (
+                <MathJax dynamic>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
+              )}
+              <MathJax dynamic>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
+              <CoordinateResultDisplay
+                preImages={result.points}
+                imageMap={image}
+              />
+            </Stack>
+          )}
+        </Collapsible>
+        <Collapsible
+          title={
+            <Typography sx={{ fontWeight: 700 }}>{`สมบัติการหมุน`}</Typography>
+          }
+        >
+          <RotationFormulaBlog />
+        </Collapsible>
+        <Collapsible
+          title={
+            <Typography sx={{ fontWeight: 700 }}>{`สูตรการหมุน`}</Typography>
+          }
+        >
+          <RotationPropertyBlog />
+        </Collapsible>
+      </Stack>
+    </SplitLayout>
   );
 }
