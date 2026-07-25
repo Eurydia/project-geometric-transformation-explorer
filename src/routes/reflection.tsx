@@ -9,7 +9,9 @@ import {
 import { SplitLayout } from "@/components/layouts/split-layout";
 import { Collapsible } from "@/components/surface/Collapsible";
 import { useReflectionGraph } from "@/hooks/useReflectionGraph";
-import { Stack, Paper, Typography } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MathJax } from "better-react-mathjax";
 import { useCallback, useEffect, useState } from "react";

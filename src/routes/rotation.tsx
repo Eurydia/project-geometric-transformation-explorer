@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Paper, Stack, Typography } from "@mui/material";
 import {
   RotationForm,
   RotationFormDataSchema,
@@ -13,6 +12,9 @@ import { MathJax } from "better-react-mathjax";
 import { CoordinateResultDisplay } from "@/components/data-display/result-display";
 import { RotationPropertyBlog } from "@/components/blogs/rotation-property-blog";
 import { RotationFormulaBlog } from "@/components/blogs/rotation-formula-blog";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 export const Route = createFileRoute("/rotation")({
   component: RouteComponent,
