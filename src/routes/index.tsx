@@ -89,7 +89,7 @@ function RouteComponent() {
             <ArchitectureRounded fontSize="inherit" />
           </Box>
           <Typography
-            component="div"
+            component="h1"
             variant="h3"
             sx={(t) => ({
               display: "inline",
