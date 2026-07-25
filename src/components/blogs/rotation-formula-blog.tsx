@@ -19,10 +19,10 @@ const FORMULAE = [
 export const RotationFormulaBlog: FC = memo(() => {
   return (
     <List
-      sx={{
-        paddingLeft: 4,
+      sx={(t) => ({
+        paddingLeft: t.spacing(4),
         listStyleType: "disc",
-      }}
+      })}
     >
       {FORMULAE.map((formula, index) => {
         return (

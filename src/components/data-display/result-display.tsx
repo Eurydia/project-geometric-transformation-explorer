@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import { MathJax } from "better-react-mathjax";
 import type { FC } from "react";
 
@@ -18,16 +19,17 @@ export const CoordinateResultDisplay: FC<Props> = ({ imageMap, preImages }) => {
   });
 
   return (
-    <MathJax
-      dynamic
-      style={{
+    <Box
+      sx={{
         width: "100%",
         overflowX: "auto",
         scrollbarWidth: "thin",
         scrollbarGutter: "stable",
       }}
     >
-      {`$$\\begin{array}{lll}${result.join("\\\\")}\\end{array}$$`}
-    </MathJax>
+      <MathJax dynamic>
+        {`$$\\begin{array}{lll}${result.join("\\\\")}\\end{array}$$`}
+      </MathJax>
+    </Box>
   );
 };

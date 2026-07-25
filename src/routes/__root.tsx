@@ -1,3 +1,4 @@
+import { ScrapbookBackdrop } from "@/components/surface/ScrapbookBackdrop";
 import { theme } from "@/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
@@ -21,7 +22,9 @@ function RouteComponent() {
     >
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Outlet />
+        <ScrapbookBackdrop>
+          <Outlet />
+        </ScrapbookBackdrop>
         <TanStackRouterDevtools />
       </ThemeProvider>
     </MathJaxContext>

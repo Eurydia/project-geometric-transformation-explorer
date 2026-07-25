@@ -1,0 +1,48 @@
+import z from "zod/v4";
+
+const NumericString = z
+  .string()
+  .trim()
+  .normalize()
+  .nonempty()
+  .refine((arg) => !Number.isFinite(Number(arg)))
+  .pipe(z.transform((arg) => Number(arg)));
+
+export const Schema$ReflectionFormData = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("vertical"),
+    value: NumericString,
+    points: z
+      .object({ x: NumericString, y: NumericString })
+      .array()
+      .max(4)
+      .min(1),
+  }),
+  z.object({
+    type: z.literal("horizontal"),
+    value: NumericString,
+    points: z
+      .object({ x: NumericString, y: NumericString })
+      .array()
+      .max(4)
+      .min(1),
+  }),
+  z.object({
+    type: z.literal("linear"),
+    value: z
+      .string()
+      .trim()
+      .normalize()
+      .nonempty()
+      .refine((arg) => {
+        const tokens = arg.split("=");
+        return tokens.length === 2;
+      })
+      .pipe(z.transform((arg) => arg.split("=") as [string, string])),
+    points: z
+      .object({ x: NumericString, y: NumericString })
+      .array()
+      .max(4)
+      .min(1),
+  }),
+]);

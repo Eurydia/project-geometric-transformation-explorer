@@ -14,10 +14,10 @@ export const RotationPropertyBlog: FC = memo(() => {
   return (
     <Stack spacing={0.5}>
       <List
-        sx={{
-          pl: 4,
+        sx={(t) => ({
+          paddingLeft: t.spacing(4),
           listStyleType: "disc",
-        }}
+        })}
       >
         <ListItem sx={{ display: "list-item" }}>
           <ListItemText
@@ -43,10 +43,10 @@ export const RotationPropertyBlog: FC = memo(() => {
         alt={`แผนภาพแสดงคุณสมบัติที่หนึ่งและสองของการหมุน`}
       />
       <List
-        sx={{
-          pl: 4,
+        sx={(t) => ({
+          paddingLeft: t.spacing(4),
           listStyleType: "disc",
-        }}
+        })}
       >
         <ListItem sx={{ display: "list-item" }}>
           <ListItemText

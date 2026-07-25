@@ -1,4 +1,4 @@
-import { grey } from "@mui/material/colors";
+import { theme } from "@/theme";
 import _ from "lodash";
 import { useRef, useEffect, useCallback } from "react";
 
@@ -109,7 +109,7 @@ export const useDesmos = (selector: string) => {
           points: false,
           lines: true,
           lineStyle: "DASHED",
-          color: grey["A400"],
+          color: theme.palette.scrapbook.graphLine,
         },
         {
           latex: "y",
@@ -117,7 +117,7 @@ export const useDesmos = (selector: string) => {
           points: false,
           lines: true,
           lineStyle: "DASHED",
-          color: grey["A400"],
+          color: theme.palette.scrapbook.graphLine,
         },
       ],
     });

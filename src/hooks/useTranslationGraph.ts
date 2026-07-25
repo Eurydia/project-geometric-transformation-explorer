@@ -1,4 +1,4 @@
-import { blue, deepOrange } from "@mui/material/colors";
+import { theme } from "@/theme";
 import { useCallback } from "react";
 import z from "zod/v4";
 import { useDesmos } from "./useDesmos";
@@ -39,7 +39,7 @@ export const useTranslationGraph = (selector: string) => {
           texName: "A",
           tex: `(${p.x}, ${p.y})`,
           label: labelSym,
-          color: blue["A400"],
+          color: theme.palette.scrapbook.graphPreimage,
         });
 
         addPoint({
@@ -50,13 +50,13 @@ export const useTranslationGraph = (selector: string) => {
             ${texName}.y
           )`,
           label: `${labelSym}^{\\prime}`,
-          color: deepOrange["A400"],
+          color: theme.palette.scrapbook.graphImage,
         });
       }
 
       if (points.length > 1) {
-        addPolygon("A", points.length, blue["A400"]);
-        addPolygon("B", points.length, deepOrange["A400"]);
+        addPolygon("A", points.length, theme.palette.scrapbook.graphPreimage);
+        addPolygon("B", points.length, theme.palette.scrapbook.graphImage);
       }
     },
     [addLine, addPoint, addPolygon, clearGraph, desmosRef]

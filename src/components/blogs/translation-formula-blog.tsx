@@ -10,10 +10,10 @@ export const TranslationFormulaBlog: FC = memo(
   () => {
     return (
       <List
-        sx={{
-          paddingLeft: 4,
+        sx={(t) => ({
+          paddingLeft: t.spacing(4),
           listStyleType: "disc",
-        }}
+        })}
       >
         {FORMULAS.map((formula, index) => {
           return (

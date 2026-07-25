@@ -7,9 +7,10 @@ import {
   TranslationFormDataSchema,
 } from "@/components/form/translation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
+import { RouterLink } from "@/components/router/router-link";
 import { Collapsible } from "@/components/surface/Collapsible";
 import { useTranslationGraph } from "@/hooks/useTranslationGraph";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -43,6 +44,7 @@ function RouteComponent() {
     }
     return () => ref.destroy();
   }, [desmosRef]);
+
   const [result, setResult] = useState<z.output<
     typeof TranslationFormDataSchema
   > | null>(null);
@@ -58,113 +60,78 @@ function RouteComponent() {
   return (
     <SplitLayout
       slots={{
-        secondary: (
-          <Paper
-            sx={{
-              height: "100%",
-            }}
-          >
-            <div
-              id="desmos"
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-            />
-          </Paper>
-        ),
+        secondary: <Box id="desmos" sx={{ width: "100%", height: "100%" }} />,
         primary: (
-          <Paper
-            variant="outlined"
-            sx={{
-              height: "100%",
-              padding: 2,
-              overflowY: "auto",
-              scrollbarWidth: "thin",
-              scrollbarGutter: "stable",
-            }}
-          >
-            <Stack spacing={2}>
-              <Typography
-                color="textPrimary"
-                sx={{ "&:hover": { textDecorationLine: "underline" } }}
-              >
-                <Link
-                  to="/"
-                  style={{ color: "inherit", textDecorationLine: "none" }}
-                >
-                  {`กลับหน้าแรก`}
-                </Link>
+          <Stack spacing={2}>
+            <RouterLink
+              to="/"
+              color="textPrimary"
+              sx={{
+                width: "fit-content",
+              }}
+            >
+              {`กลับหน้าแรก`}
+            </RouterLink>
+            <Stack spacing={0.5}>
+              <Typography component="div" variant="h5" sx={{ fontWeight: 700 }}>
+                {`(การแปลงทางเรขาคณิต)`}
               </Typography>
-              <Stack spacing={0.5}>
-                <Typography
-                  component={"div"}
-                  variant="h5"
-                  sx={{ fontWeight: 700 }}
-                >
-                  {`(การแปลงทางเรขาคณิต)`}
-                </Typography>
-                <Typography
-                  variant="h5"
-                  component={"div"}
-                  sx={{ fontWeight: 700 }}
-                >
-                  {`การเลื่อนขนาน`}
-                </Typography>
-              </Stack>
-              <TranslationForm onSubmit={handleSolve} />
-              <Collapsible
-                title={
-                  <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
-                }
-              >
-                <Stack>
-                  {result === null && (
-                    <>
-                      <Typography>{`เวกเตอร์ของการเลื่อนขนาน:`}</Typography>
-                      <MathJax dynamic>
-                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-                      </MathJax>
-                    </>
-                  )}
-                  {result !== null && (
-                    <>
-                      <MathJax dynamic>
-                        {`เวกเตอร์ของการเลื่อนขนาน: $\\begin{bmatrix} ${result.translation.x} \\\\ ${result.translation.y}\\end{bmatrix}$`}
-                      </MathJax>
-                      <MathJax dynamic>
-                        {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-                      </MathJax>
-                      <CoordinateResultDisplay
-                        preImages={result.points}
-                        imageMap={image}
-                      />
-                    </>
-                  )}
-                </Stack>
-              </Collapsible>
-              <Collapsible
-                title={
-                  <Typography sx={{ fontWeight: 700 }}>
-                    {`สมบัติการเลื่อนขนาน`}
-                  </Typography>
-                }
-              >
-                <TranslationPropertyBlog />
-              </Collapsible>
-
-              <Collapsible
-                title={
-                  <Typography sx={{ fontWeight: 700 }}>
-                    {`สูตรการเลื่อนขนาน`}
-                  </Typography>
-                }
-              >
-                <TranslationFormulaBlog />
-              </Collapsible>
-              <AttributionBlog />
+              <Typography variant="h5" component="div" sx={{ fontWeight: 700 }}>
+                {`การเลื่อนขนาน`}
+              </Typography>
             </Stack>
-          </Paper>
+            <TranslationForm onSubmit={handleSolve} />
+            <Collapsible
+              title={
+                <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
+              }
+            >
+              <Stack>
+                {result === null && (
+                  <>
+                    <Typography>{`เวกเตอร์ของการเลื่อนขนาน:`}</Typography>
+                    <MathJax dynamic>
+                      {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
+                    </MathJax>
+                  </>
+                )}
+                {result !== null && (
+                  <>
+                    <MathJax dynamic>
+                      {`เวกเตอร์ของการเลื่อนขนาน: $\\begin{bmatrix} ${result.translation.x} \\\\ ${result.translation.y}\\end{bmatrix}$`}
+                    </MathJax>
+                    <MathJax dynamic>
+                      {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
+                    </MathJax>
+                    <CoordinateResultDisplay
+                      preImages={result.points}
+                      imageMap={image}
+                    />
+                  </>
+                )}
+              </Stack>
+            </Collapsible>
+            <Collapsible
+              title={
+                <Typography sx={{ fontWeight: 700 }}>
+                  {`สมบัติการเลื่อนขนาน`}
+                </Typography>
+              }
+            >
+              <TranslationPropertyBlog />
+            </Collapsible>
+
+            <Collapsible
+              title={
+                <Typography sx={{ fontWeight: 700 }}>
+                  {`สูตรการเลื่อนขนาน`}
+                </Typography>
+              }
+            >
+              <TranslationFormulaBlog />
+            </Collapsible>
+            <AttributionBlog />
+          </Stack>
         ),
       }}
     />

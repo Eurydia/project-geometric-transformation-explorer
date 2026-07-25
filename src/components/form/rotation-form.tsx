@@ -1,4 +1,4 @@
-import { fieldContext, formContext } from "@/contexts/app-form-context";
+import { fieldContext, formContext } from "@/libs/form/app-form-hook-context";
 import Stack from "@mui/material/Stack";
 import { alpha, useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
@@ -79,13 +79,19 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
           <FormResetButton />
         </AppForm>
       </Toolbar>
-      <Stack spacing={0.5} sx={{ padding: 1 }}>
+      <Stack spacing={0.5} sx={(t) => ({ padding: t.spacing(1) })}>
         <Typography>{`ทิศทางการหมุน`}</Typography>
         <AppField name="direction">
           {(field) => <field.RotationDirectionInput />}
         </AppField>
       </Stack>
-      <Stack spacing={0.5} sx={{ backgroundColor: alternateColor, padding: 1 }}>
+      <Stack
+        spacing={0.5}
+        sx={(t) => ({
+          padding: t.spacing(1),
+          backgroundColor: alternateColor,
+        })}
+      >
         <Typography sx={{ whiteSpace: "normal", textWrap: "wrap" }}>
           {`ขนาดของมุมที่หมุน (องศา)`}
         </Typography>
@@ -98,7 +104,7 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
           )}
         </AppField>
       </Stack>
-      <Stack spacing={0.5} sx={{ padding: 1 }}>
+      <Stack spacing={0.5} sx={(t) => ({ padding: t.spacing(1) })}>
         <Typography>
           <MathJax dynamic>{`จุดหมุน $(a,b)$`}</MathJax>
         </Typography>
@@ -119,11 +125,11 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
                 <Stack
                   key={`point-${index}`}
                   spacing={0.5}
-                  sx={{
-                    padding: 1,
+                  sx={(t) => ({
+                    padding: t.spacing(1),
                     backgroundColor:
                       index % 2 === 0 ? alternateColor : undefined,
-                  }}
+                  })}
                 >
                   <Stack
                     direction={"row"}

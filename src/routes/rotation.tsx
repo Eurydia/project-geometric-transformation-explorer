@@ -1,20 +1,20 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { RotationFormulaBlog } from "@/components/blogs/rotation-formula-blog";
+import { RotationPropertyBlog } from "@/components/blogs/rotation-property-blog";
+import { CoordinateResultDisplay } from "@/components/data-display/result-display";
 import {
   RotationForm,
   RotationFormDataSchema,
 } from "@/components/form/rotation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
-import { useCallback, useEffect, useState } from "react";
-import z from "zod/v4";
-import { useRotationGraph } from "@/hooks/useRotationGraph";
 import { Collapsible } from "@/components/surface/Collapsible";
-import { MathJax } from "better-react-mathjax";
-import { CoordinateResultDisplay } from "@/components/data-display/result-display";
-import { RotationPropertyBlog } from "@/components/blogs/rotation-property-blog";
-import { RotationFormulaBlog } from "@/components/blogs/rotation-formula-blog";
-import Paper from "@mui/material/Paper";
+import { useRotationGraph } from "@/hooks/useRotationGraph";
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { MathJax } from "better-react-mathjax";
+import { useCallback, useEffect, useState } from "react";
+import z from "zod/v4";
 
 export const Route = createFileRoute("/rotation")({
   component: RouteComponent,
@@ -56,121 +56,103 @@ function RouteComponent() {
     <SplitLayout
       slots={{
         primary: (
-          <Paper
-            sx={{
-              padding: 2,
-              overflowY: "auto",
-              scrollbarWidth: "thin",
-              scrollbarGutter: "stable",
-              maxHeight: "100%",
-            }}
-          >
-            <Stack spacing={2}>
+          <Stack spacing={2}>
+            <Box
+              component={Link}
+              to="/"
+              sx={(theme) => ({
+                width: "fit-content",
+                color: theme.palette.text.primary,
+                fontFamily: theme.typography.fontFamily,
+                fontSize: theme.typography.body1.fontSize,
+                textDecorationLine: "none",
+                ":hover": {
+                  textDecorationLine: "underline",
+                  textDecorationColor: theme.palette.primary.main,
+                },
+              })}
+            >
+              {`กลับหน้าแรก`}
+            </Box>
+            <Stack spacing={0.5}>
               <Typography
-                color="textPrimary"
-                sx={{ "&:hover": { textDecorationLine: "underline" } }}
+                variant="h5"
+                component="div"
+                sx={{ fontWeight: 700 }}
               >
-                <Link
-                  to="/"
-                  style={{ color: "inherit", textDecorationLine: "none" }}
-                >
-                  {`กลับหน้าแรก`}
-                </Link>
+                {`(การแปลงทางเรขาคณิต)`}
               </Typography>
-              <Stack spacing={0.5}>
-                <Typography
-                  variant="h5"
-                  component="div"
-                  sx={{ fontWeight: 700 }}
-                >
-                  {`(การแปลงทางเรขาคณิต)`}
-                </Typography>
-                <Typography
-                  variant="h5"
-                  component="div"
-                  sx={{ fontWeight: 700 }}
-                >
-                  {`การหมุน`}
-                </Typography>
-              </Stack>
-              <RotationForm onSubmit={handleSolve} />
-              <Collapsible
-                title={
-                  <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
-                }
+              <Typography
+                variant="h5"
+                component="div"
+                sx={{ fontWeight: 700 }}
               >
-                <Stack>
-                  {result === null && (
-                    <>
-                      <Typography>{`จุดหมุน:`}</Typography>
-                      <Typography>{`ขนาดของมุมที่หมุน:`}</Typography>
-                      <Typography>{`ทิศทาง:`}</Typography>
-                      <MathJax
-                        dynamic
-                      >{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
-                    </>
-                  )}
-                  {result !== null && (
-                    <>
-                      <MathJax dynamic>
-                        {`จุดหมุน: $(${result.center.x} , ${result.center.y})$`}
-                      </MathJax>
-                      <MathJax dynamic>
-                        {`ขนาดของมุมที่หมุน: $${result.angle}^{\\circ}$`}
-                      </MathJax>
-                      {result.direction === -1 && (
-                        <MathJax dynamic>{`ทิศทาง: ทวนเข็มนาฬิกา`}</MathJax>
-                      )}
-                      {result.direction === 1 && (
-                        <MathJax dynamic>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
-                      )}
-                      <MathJax
-                        dynamic
-                      >{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
-                      <CoordinateResultDisplay
-                        preImages={result.points}
-                        imageMap={image}
-                      />
-                    </>
-                  )}
-                </Stack>
-              </Collapsible>
-              <Collapsible
-                title={
-                  <Typography sx={{ fontWeight: 700 }}>
-                    {`สมบัติการหมุน`}
-                  </Typography>
-                }
-              >
-                <RotationFormulaBlog />
-              </Collapsible>
-              <Collapsible
-                title={
-                  <Typography sx={{ fontWeight: 700 }}>
-                    {`สูตรการหมุน`}
-                  </Typography>
-                }
-              >
-                <RotationPropertyBlog />
-              </Collapsible>
+                {`การหมุน`}
+              </Typography>
             </Stack>
-          </Paper>
+            <RotationForm onSubmit={handleSolve} />
+            <Collapsible
+              title={
+                <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
+              }
+            >
+              <Stack>
+                {result === null && (
+                  <>
+                    <Typography>{`จุดหมุน:`}</Typography>
+                    <Typography>{`ขนาดของมุมที่หมุน:`}</Typography>
+                    <Typography>{`ทิศทาง:`}</Typography>
+                    <MathJax dynamic>
+                      {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
+                    </MathJax>
+                  </>
+                )}
+                {result !== null && (
+                  <>
+                    <MathJax dynamic>
+                      {`จุดหมุน: $(${result.center.x} , ${result.center.y})$`}
+                    </MathJax>
+                    <MathJax dynamic>
+                      {`ขนาดของมุมที่หมุน: $${result.angle}^{\\circ}$`}
+                    </MathJax>
+                    {result.direction === -1 && (
+                      <MathJax dynamic>{`ทิศทาง: ทวนเข็มนาฬิกา`}</MathJax>
+                    )}
+                    {result.direction === 1 && (
+                      <MathJax dynamic>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
+                    )}
+                    <MathJax dynamic>
+                      {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
+                    </MathJax>
+                    <CoordinateResultDisplay
+                      preImages={result.points}
+                      imageMap={image}
+                    />
+                  </>
+                )}
+              </Stack>
+            </Collapsible>
+            <Collapsible
+              title={
+                <Typography sx={{ fontWeight: 700 }}>
+                  {`สมบัติการหมุน`}
+                </Typography>
+              }
+            >
+              <RotationFormulaBlog />
+            </Collapsible>
+            <Collapsible
+              title={
+                <Typography sx={{ fontWeight: 700 }}>
+                  {`สูตรการหมุน`}
+                </Typography>
+              }
+            >
+              <RotationPropertyBlog />
+            </Collapsible>
+          </Stack>
         ),
-        secondary: (
-          <Paper
-            sx={{
-              height: "100%",
-            }}
-          >
-            <div
-              id="desmos"
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-            />
-          </Paper>
-        ),
+        secondary: <Box id="desmos" sx={{ width: "100%", height: "100%" }} />,
       }}
     />
   );

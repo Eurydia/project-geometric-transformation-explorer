@@ -1,8 +1,8 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import z from "zod";
 import { useDesmos } from "./useDesmos";
-import type { ReflectionFormDataSchema } from "@/components/form/reflection-form";
-import { blue, blueGrey, deepOrange } from "@mui/material/colors";
+import { theme } from "@/theme";
+import type { Schema$ReflectionFormData } from "@/types/schemas/form-data/reflection-form";
 
 export const useReflectionGraph = (selector: string) => {
   const { clearGraph, desmosRef, addLine, addPoint, addPolygon } =
@@ -19,7 +19,7 @@ export const useReflectionGraph = (selector: string) => {
       },
       {
         latex: `x=${value}`,
-        color: blueGrey["A200"],
+        color: theme.palette.scrapbook.graphReference,
         lines: true,
         lineWidth: 4,
       },
@@ -37,7 +37,7 @@ export const useReflectionGraph = (selector: string) => {
       },
       {
         latex: `y=${value}`,
-        color: blueGrey["A200"],
+        color: theme.palette.scrapbook.graphReference,
         lines: true,
         lineWidth: 4,
       },
@@ -61,17 +61,17 @@ export const useReflectionGraph = (selector: string) => {
         },
         {
           latex: `${lhs}=${rhs}`,
-          color: blueGrey["A200"],
+          color: theme.palette.scrapbook.graphReference,
           lines: true,
           lineWidth: 4,
         },
       ]);
     },
-    []
+    [],
   );
 
   const plotReflection = useCallback(
-    (options: z.output<typeof ReflectionFormDataSchema>) => {
+    (options: z.output<typeof Schema$ReflectionFormData>) => {
       if (desmosRef.current === undefined) {
         return;
       }
@@ -101,7 +101,7 @@ export const useReflectionGraph = (selector: string) => {
           texName: `A`,
           tex: `(${p.x},${p.y})`,
           label: sym,
-          color: blue["A400"],
+          color: theme.palette.scrapbook.graphPreimage,
         });
         addPoint({
           index: i,
@@ -111,13 +111,13 @@ export const useReflectionGraph = (selector: string) => {
             (A_{${i}}).y   
           )`,
           label: `${sym}\\prime`,
-          color: deepOrange["A400"],
+          color: theme.palette.scrapbook.graphImage,
         });
       }
 
       if (points.length > 1) {
-        addPolygon("A", points.length, blue["A400"]);
-        addPolygon("B", points.length, deepOrange["A400"]);
+        addPolygon("A", points.length, theme.palette.scrapbook.graphPreimage);
+        addPolygon("B", points.length, theme.palette.scrapbook.graphImage);
       }
     },
     [
@@ -129,11 +129,34 @@ export const useReflectionGraph = (selector: string) => {
       plotHorizontal,
       plotLinearFromString,
       plotVertical,
-    ]
+    ],
   );
 
+  const [image, setImage] = useState<Record<number, number[] | undefined>>({});
+
+  useEffect(() => {
+    if (desmosRef.current === undefined) {
+      return;
+    }
+    const ref = desmosRef.current;
+
+    for (let i = 0; i < 4; i++) {
+      const obs = ref.HelperExpression({ latex: `B_{${i}}` });
+      obs.observe("listValue", () => {
+        setImage((prev) => {
+          const next = { ...prev };
+          next[i] = [...obs.listValue];
+          return next;
+        });
+      });
+    }
+    return () => {
+      ref.destroy();
+    };
+  }, [desmosRef]);
+
   return {
+    image,
     plotReflection,
-    desmosRef,
   };
 };

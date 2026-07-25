@@ -12,10 +12,10 @@ export const TranslationPropertyBlog: FC = memo(
     return (
       <Stack spacing={0.5}>
         <List
-          sx={{
-            pl: 4,
+          sx={(t) => ({
+            paddingLeft: t.spacing(4),
             listStyleType: "disc",
-          }}
+          })}
         >
           {PROPERTIES.map((p, index) => (
             <ListItem sx={{ display: "list-item" }} key={`PROP-${index}`}>

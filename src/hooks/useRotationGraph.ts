@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useDesmos } from "./useDesmos";
 import type z from "zod";
 import type { RotationFormDataSchema } from "@/components/form/rotation-form";
-import { blue, deepOrange, grey } from "@mui/material/colors";
+import { theme } from "@/theme";
 
 export const useRotationGraph = (selector: string) => {
   const { addPoint, addPolygon, clearGraph, desmosRef } = useDesmos(selector);
@@ -21,7 +21,7 @@ export const useRotationGraph = (selector: string) => {
         texName: "O",
         tex: `(${center.x} , ${center.y})`,
         label: "O",
-        color: grey["A700"],
+        color: theme.palette.scrapbook.graphLine,
       });
       d.setExpressions([
         {
@@ -72,7 +72,7 @@ export const useRotationGraph = (selector: string) => {
             lineOpacity: 0.2,
             lines: true,
             lineStyle: "SOLID",
-            color: grey["A700"],
+            color: theme.palette.scrapbook.graphLine,
           },
         ]);
 
@@ -81,7 +81,7 @@ export const useRotationGraph = (selector: string) => {
           texName: "A",
           tex: `(${p.x}, ${p.y})`,
           label: sym,
-          color: blue["A400"],
+          color: theme.palette.scrapbook.graphPreimage,
         });
         addPoint({
           index: i,
@@ -90,12 +90,12 @@ export const useRotationGraph = (selector: string) => {
                     ${texSym}.y   
           )`,
           label: `${sym}^{\\prime}`,
-          color: deepOrange["A400"],
+          color: theme.palette.scrapbook.graphImage,
         });
       }
       if (points.length > 1) {
-        addPolygon("A", points.length, blue["A400"]);
-        addPolygon("B", points.length, deepOrange["A400"]);
+        addPolygon("A", points.length, theme.palette.scrapbook.graphPreimage);
+        addPolygon("B", points.length, theme.palette.scrapbook.graphImage);
       }
     },
     [addPoint, addPolygon, clearGraph, desmosRef]

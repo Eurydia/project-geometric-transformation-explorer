@@ -3,7 +3,7 @@ import { createFormHook } from "@tanstack/react-form";
 import { alpha, Stack, Toolbar, Typography } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
 import z from "zod/v4";
-import { fieldContext, formContext } from "@/contexts/app-form-context";
+import { fieldContext, formContext } from "@/libs/form/app-form-hook-context";
 import { ArrayItemAddButton } from "../form-input/array-item-add-button";
 import { ArrayItemRemoveButton } from "../form-input/arrat-item-remove-button";
 import { FormResetButton } from "../form-input/form-reset-button";
@@ -64,7 +64,7 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
           <FormResetButton />
         </AppForm>
       </Toolbar>
-      <Stack spacing={0.5} sx={{ padding: 1 }}>
+      <Stack spacing={0.5} sx={(t) => ({ padding: t.spacing(1) })}>
         <Typography>
           <MathJax dynamic>{`เวกเตอร์ของการเลื่อนขนาน $(a,b)$`}</MathJax>
         </Typography>
@@ -85,11 +85,13 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
                 <Stack
                   key={`translate-point-${index}`}
                   spacing={0.5}
-                  sx={{
-                    backgroundColor: ({ palette: { primary } }) =>
-                      index % 2 === 1 ? undefined : alpha(primary.light, 0.08),
-                    padding: 1,
-                  }}
+                  sx={(t) => ({
+                    backgroundColor:
+                      index % 2 === 1
+                        ? undefined
+                        : alpha(t.palette.primary.light, 0.08),
+                    padding: t.spacing(1),
+                  })}
                 >
                   <Stack
                     direction={"row"}

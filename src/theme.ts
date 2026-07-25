@@ -1,18 +1,96 @@
-import { createTheme, darken } from "@mui/material";
-import { green, red } from "@mui/material/colors";
+import { alpha, createTheme } from "@mui/material/styles";
+
+export type ScrapbookPalette = {
+  ink: string;
+  inkSecondary: string;
+  inkDisabled: string;
+  blue: string;
+  blueDark: string;
+  blueSoft: string;
+  red: string;
+  redDark: string;
+  redSoft: string;
+  yellow: string;
+  yellowPale: string;
+  green: string;
+  pink: string;
+  paper: string;
+  paperDeep: string;
+  graphPaper: string;
+  desk: string;
+  shadow: string;
+  graphLine: string;
+  graphPreimage: string;
+  graphImage: string;
+  graphReference: string;
+};
+
+declare module "@mui/material/styles" {
+  interface Palette {
+    scrapbook: ScrapbookPalette;
+  }
+
+  interface PaletteOptions {
+    scrapbook?: ScrapbookPalette;
+  }
+}
+
+const scrapbook: ScrapbookPalette = {
+  ink: "#24435e",
+  inkSecondary: "#526779",
+  inkDisabled: "#8d948f",
+  blue: "#2f6fa7",
+  blueDark: "#214f78",
+  blueSoft: "#82b2d6",
+  red: "#c9575d",
+  redDark: "#923b41",
+  redSoft: "#e49a9f",
+  yellow: "#f4cf55",
+  yellowPale: "#fff1a8",
+  green: "#dcefdc",
+  pink: "#f5d9dc",
+  paper: "#fffdf4",
+  paperDeep: "#f6edda",
+  graphPaper: "#fffefa",
+  desk: "#e9dfc9",
+  shadow: "#372b1c",
+  graphLine: "#616161",
+  graphPreimage: "#2979ff",
+  graphImage: "#ff3d00",
+  graphReference: "#90a4ae",
+};
 
 export const theme = createTheme({
-  typography: { fontFamily: "Noto Serif Thai; serif" },
+  shape: { borderRadius: 8 },
+  typography: {
+    fontFamily: '"Noto Serif Thai", serif',
+  },
   palette: {
     primary: {
-      main: green["700"],
+      main: scrapbook.blue,
+      dark: scrapbook.blueDark,
+      light: scrapbook.blueSoft,
+      contrastText: scrapbook.paper,
     },
-    secondary: red,
+    secondary: {
+      main: scrapbook.red,
+      dark: scrapbook.redDark,
+      light: scrapbook.redSoft,
+    },
+    error: {
+      main: scrapbook.red,
+    },
     background: {
-      default: green["200"],
-      paper: "#fff",
+      default: scrapbook.desk,
+      paper: scrapbook.paper,
     },
-    text: { primary: darken(green[900], 0.1) },
+    text: {
+      primary: scrapbook.ink,
+      secondary: scrapbook.inkSecondary,
+      disabled: scrapbook.inkDisabled,
+    },
+    divider: alpha(scrapbook.ink, 0.28),
+    scrapbook,
   },
   components: {
     MuiToolbar: {
@@ -30,8 +108,8 @@ export const theme = createTheme({
     MuiPaper: {
       defaultProps: { variant: "outlined" },
     },
-    MuiTypography: {
-      styleOverrides: { root: { textWrap: "pretty" } },
+    MuiCardActionArea: {
+      defaultProps: { disableRipple: true },
     },
   },
 });

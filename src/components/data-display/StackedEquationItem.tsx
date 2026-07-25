@@ -12,15 +12,15 @@ export const StackedEquationItem: FC<Props> = memo(
     } = useTheme();
     return (
       <Box
-        sx={{
-          paddingX: 2,
+        sx={(theme) => ({
+          padding: theme.spacing(0, 2),
           borderLeftStyle: "solid",
           borderLeftColor: !isLast
             ? lighten(light, 0.5)
             : dark,
           borderLeftWidth: 8,
           backgroundColor: lighten(light, 0.87),
-        }}
+        })}
       >
         <MathJax dynamic>{latex}</MathJax>
       </Box>

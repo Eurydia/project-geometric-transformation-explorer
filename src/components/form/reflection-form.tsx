@@ -1,243 +1,120 @@
-import { fieldContext, formContext } from "@/contexts/app-form-context";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { createFormHook } from "@tanstack/react-form";
 import { MathJax } from "better-react-mathjax";
-import { Fragment, type FC } from "react";
+import { Fragment } from "react";
 import z from "zod/v4";
-import { ArrayItemRemoveButton } from "../form-input/arrat-item-remove-button";
-import { ArrayItemAddButton } from "../form-input/array-item-add-button";
-import { FormResetButton } from "../form-input/form-reset-button";
-import { FormSubmitButton } from "../form-input/form-submit-button";
-import { NumberTextField } from "../form-input/NumberTextField";
-import { ReflectionEquationTypeInput } from "../form-input/reflection-equation-type-input";
+import { AppFormHook } from "@/libs/form/app-form-hooks";
+import type { Schema$ReflectionFormData } from "@/types/schemas/form-data/reflection-form";
 
-const NumericString = z
-  .string()
-  .trim()
-  .normalize()
-  .nonempty()
-  .refine((arg) => !isNaN(Number(arg)))
-  .pipe(z.transform((arg) => Number(arg)));
-
-export const ReflectionFormDataSchema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("vertical"),
-    value: NumericString,
-    points: z
-      .object({ x: NumericString, y: NumericString })
-      .array()
-      .max(4)
-      .min(1),
-  }),
-  z.object({
-    type: z.literal("horizontal"),
-    value: NumericString,
-    points: z
-      .object({ x: NumericString, y: NumericString })
-      .array()
-      .max(4)
-      .min(1),
-  }),
-  z.object({
-    type: z.literal("linear"),
-    value: z
-      .string()
-      .trim()
-      .normalize()
-      .nonempty()
-      .refine((arg) => {
-        const tokens = arg.split("=");
-        return tokens.length === 2;
-      })
-      .pipe(z.transform((arg) => arg.split("=") as [string, string])),
-    points: z
-      .object({ x: NumericString, y: NumericString })
-      .array()
-      .max(4)
-      .min(1),
-  }),
-]);
-
-const { useAppForm } = createFormHook({
-  fieldComponents: {
-    NumberTextField,
-    ArrayItemAddButton,
-    ArrayItemRemoveButton,
-    ReflectionEquationTypeInput,
-  },
-  formComponents: {
-    FormResetButton,
-    FormSubmitButton,
-  },
-  fieldContext: fieldContext,
-  formContext: formContext,
-});
-
-type Props = {
-  onSubmit: (v: z.output<typeof ReflectionFormDataSchema>) => unknown;
-};
-export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
-  const {
-    setFieldValue,
-    AppField,
-    AppForm,
-    FormResetButton,
-    FormSubmitButton,
-    Subscribe,
-  } = useAppForm({
-    defaultValues: {
-      type: "horizontal",
-      value: "0",
-      points: [{ x: "1", y: "1" }],
-    } as z.input<typeof ReflectionFormDataSchema>,
-    validators: { onChange: ReflectionFormDataSchema },
-    onSubmit: ({ value }) => {
-      const res = ReflectionFormDataSchema.safeParse(value);
-      if (res.success) {
-        onSubmit(res.data);
-      }
-    },
-  });
-
-  return (
-    <Stack spacing={0.5}>
-      <Toolbar>
-        <AppForm>
-          <FormResetButton />
-        </AppForm>
-      </Toolbar>
-      <Stack>
-        <Typography>{`ประเภทของเส้นสะท้อน`}</Typography>
-        <AppField
-          name="type"
-          listeners={{
-            onChange: ({ value }) => {
-              if (value === "linear") {
-                setFieldValue("value", "y=x");
-              } else {
-                setFieldValue("value", "0");
-              }
-            },
-          }}
-        >
-          {(field) => <field.ReflectionEquationTypeInput />}
-        </AppField>
-      </Stack>
-      <Subscribe selector={({ values }) => ({ values })}>
-        {({ values }) => (
-          <Fragment>
-            {values.type === "linear" && (
-              <Stack
-                spacing={0.5}
-                sx={{
-                  padding: 1,
-                  backgroundColor: (t) => t.alpha(t.palette.primary.main, 0.08),
-                }}
-              >
-                <Typography>สมการเส้นสะท้อน</Typography>
-                <AppField name="value">
-                  {({ state, handleBlur, handleChange }) => (
-                    <OutlinedInput
-                      fullWidth
-                      placeholder="y=-x+2"
-                      error={state.meta.errors.length > 0}
-                      value={state.value}
-                      onChange={(e) => handleChange(e.target.value)}
-                      onBlur={handleBlur}
-                      slotProps={{
-                        input: {
-                          sx: { fontFamily: "monospace" },
-                        },
-                      }}
-                    />
-                  )}
-                </AppField>
-              </Stack>
-            )}
-            {values.type === "vertical" && (
-              <Stack
-                spacing={0.5}
-                sx={{
-                  padding: 1,
-                  backgroundColor: (t) => t.alpha(t.palette.primary.main, 0.08),
-                }}
-              >
-                <Typography>{`เส้นสะท้อน (แนวตั้ง)`}</Typography>
-                <AppField name="value">
-                  {(field) => <field.NumberTextField />}
-                </AppField>
-              </Stack>
-            )}
-            {values.type === "horizontal" && (
-              <Stack
-                spacing={0.5}
-                sx={{
-                  padding: 1,
-                  backgroundColor: (t) => t.alpha(t.palette.primary.main, 0.08),
-                }}
-              >
-                <Typography>เส้นสะท้อน (แนวนอน)</Typography>
-                <AppField name="value">
-                  {(field) => <field.NumberTextField />}
-                </AppField>
-              </Stack>
-            )}
-          </Fragment>
-        )}
-      </Subscribe>
-      <Stack>
-        <AppField name="points" mode="array">
-          {(field) => (
-            <Fragment>
-              {field.state.value.map((_, index) => (
-                <Stack
-                  key={`translate-point-${index}`}
-                  spacing={0.5}
-                  sx={{
-                    padding: 1,
-                    backgroundColor: (t) =>
-                      index % 2 === 0
-                        ? undefined
-                        : t.alpha(t.palette.primary.light, 0.08),
-                  }}
-                >
-                  <Stack
-                    direction={"row"}
-                    sx={{ justifyContent: "space-between" }}
-                  >
-                    <Typography>
-                      <MathJax>
-                        {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}
-                        {index !== 0 && `พิกัดที่ ${index + 1}`}
-                      </MathJax>
-                    </Typography>
-                    <field.ArrayItemRemoveButton index={index} />
-                  </Stack>
-                  <Stack spacing={0.5} direction="row">
-                    <AppField name={`points[${index}].x`}>
-                      {(subField) => <subField.NumberTextField />}
-                    </AppField>
-                    <AppField name={`points[${index}].y`}>
-                      {(subField) => <subField.NumberTextField />}
-                    </AppField>
-                  </Stack>
+export const ReflectionForm = AppFormHook.withFieldGroup({
+  defaultValues: {} as z.input<typeof Schema$ReflectionFormData>,
+  render: ({ group }) => {
+    return (
+      <Stack spacing={3}>
+        <Toolbar>
+          <group.AppForm>
+            <group.FormResetButton />
+          </group.AppForm>
+        </Toolbar>
+        <Stack>
+          <Typography>{`ประเภทของเส้นสะท้อน`}</Typography>
+          <group.AppField
+            name="type"
+            listeners={{
+              onChange: ({ value }) => {
+                if (value === "linear") {
+                  group.setFieldValue("value", "y=x");
+                } else {
+                  group.setFieldValue("value", "0");
+                }
+              },
+            }}
+          >
+            {(field) => <field.ReflectionEquationTypeInput />}
+          </group.AppField>
+        </Stack>
+        <group.Subscribe selector={({ values }) => ({ values })}>
+          {({ values }) => (
+            <Stack spacing={3}>
+              {values.type === "linear" && (
+                <Stack spacing={0.5}>
+                  <Typography>{`สมการเส้นสะท้อน`}</Typography>
+                  <group.AppField name="value">
+                    {({ state, handleBlur, handleChange }) => (
+                      <OutlinedInput
+                        fullWidth
+                        placeholder="y=-x+2"
+                        error={state.meta.errors.length > 0}
+                        value={state.value}
+                        onChange={(e) => handleChange(e.target.value)}
+                        onBlur={handleBlur}
+                      />
+                    )}
+                  </group.AppField>
                 </Stack>
-              ))}
-            </Fragment>
+              )}
+              {values.type === "vertical" && (
+                <Stack spacing={0.5}>
+                  <Typography>{`เส้นสะท้อน (แนวตั้ง)`}</Typography>
+                  <group.AppField name="value">
+                    {(field) => <field.NumberTextField />}
+                  </group.AppField>
+                </Stack>
+              )}
+              {values.type === "horizontal" && (
+                <Stack spacing={0.5}>
+                  <Typography>{`เส้นสะท้อน (แนวนอน)`}</Typography>
+                  <group.AppField name="value">
+                    {(field) => <field.NumberTextField />}
+                  </group.AppField>
+                </Stack>
+              )}
+            </Stack>
           )}
-        </AppField>
+        </group.Subscribe>
+        <Stack spacing={3}>
+          <group.AppField name="points" mode="array">
+            {(field) => (
+              <Fragment>
+                {field.state.value.map((_, index) => (
+                  <Stack key={`translate-point-${index}`} spacing={0.5}>
+                    <Stack
+                      direction={"row"}
+                      sx={{ justifyContent: "space-between" }}
+                    >
+                      <Typography>
+                        <MathJax>
+                          {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}
+                          {index !== 0 && `พิกัดที่ ${index + 1}`}
+                        </MathJax>
+                      </Typography>
+                      <field.ArrayItemRemoveButton index={index} />
+                    </Stack>
+                    <Stack spacing={0.5} direction="row">
+                      <group.AppField name={`points[${index}].x`}>
+                        {(subField) => <subField.NumberTextField />}
+                      </group.AppField>
+                      <group.AppField name={`points[${index}].y`}>
+                        {(subField) => <subField.NumberTextField />}
+                      </group.AppField>
+                    </Stack>
+                  </Stack>
+                ))}
+              </Fragment>
+            )}
+          </group.AppField>
+        </Stack>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <group.AppForm>
+            <group.FormSubmitButton />
+          </group.AppForm>
+          <group.AppField name="points">
+            {(field) => <field.ArrayItemAddButton />}
+          </group.AppField>
+        </Toolbar>
       </Stack>
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <AppForm>
-          <FormSubmitButton />
-        </AppForm>
-        <AppField name="points">
-          {(field) => <field.ArrayItemAddButton />}
-        </AppField>
-      </Toolbar>
-    </Stack>
-  );
-};
+    );
+  },
+});

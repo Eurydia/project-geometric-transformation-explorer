@@ -1,4 +1,4 @@
-import { useFieldContext } from "@/contexts/app-form-context";
+import { useFieldContext } from "@/libs/form/app-form-hook-context";
 import { Typography } from "@mui/material";
 import { useMemo, type FC } from "react";
 
@@ -25,7 +25,7 @@ export const ArrayItemRemoveButton: FC<Props> = ({ index }) => {
       sx={{
         cursor: !disabled ? "pointer" : undefined,
         width: "fit-content",
-        "&:hover": {
+        ":hover": {
           textDecorationLine: !disabled ? "underline" : undefined,
         },
       }}
