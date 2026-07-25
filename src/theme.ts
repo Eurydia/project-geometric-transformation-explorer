@@ -111,5 +111,8 @@ export const theme = createTheme({
     MuiCardActionArea: {
       defaultProps: { disableRipple: true },
     },
+    MuiCssBaseline: {
+      styleOverrides: { "*": { userSelectable: "none" } },
+    },
   },
 });

@@ -1,6 +1,7 @@
 import { GraphNotebookPaper } from "@/components/surface/GraphNotebookPaper";
 import { PrimaryNotebookPaper } from "@/components/surface/PrimaryNotebookPaper";
-import { alpha, Box, Grid } from "@mui/material";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import type { FC, ReactNode } from "react";
 
 type Props = {
@@ -16,20 +17,19 @@ export const SplitLayout: FC<Props> = ({ slots: { primary, secondary } }) => {
         container
         columns={12}
         spacing={{ xs: 3, md: 4 }}
-        sx={(theme) => ({
+        sx={(t) => ({
           width: "100%",
-          height: "100vh",
           padding: {
-            xs: theme.spacing(2),
-            sm: theme.spacing(3),
-            lg: theme.spacing(5),
+            xs: t.spacing(2),
+            sm: t.spacing(3),
+            lg: t.spacing(5),
           },
-          filter: `drop-shadow(0 ${theme.spacing(2.5)} ${theme.spacing(3)} ${alpha(theme.palette.scrapbook.shadow, 0.1)})`,
+          filter: `drop-shadow(0 ${t.spacing(2.5)} ${t.spacing(3)} ${t.alpha(t.palette.scrapbook.shadow, 0.1)})`,
         })}
       >
         <Grid
           size={{ xs: 12, md: 5, lg: 4 }}
-          sx={{ maxHeight: { md: "100%" } }}
+          sx={{ maxHeight: { md: "100vh" } }}
         >
           <PrimaryNotebookPaper>{primary}</PrimaryNotebookPaper>
         </Grid>

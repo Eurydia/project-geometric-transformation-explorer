@@ -2,14 +2,14 @@ import { theme } from "@/theme";
 import { useCallback, useEffect, useState } from "react";
 import z from "zod/v4";
 import { useDesmos } from "./useDesmos";
-import type { TranslationFormDataSchema } from "@/components/form/translation-form";
+import type { Schema$TranslationFormData } from "@/types/schemas/form-data/translation-form";
 
 export const useTranslationGraph = (selector: string) => {
   const { addLine, addPoint, addPolygon, clearGraph, desmosRef } =
     useDesmos(selector);
 
   const plotTranslation = useCallback(
-    (options: z.output<typeof TranslationFormDataSchema>) => {
+    (options: z.output<typeof Schema$TranslationFormData>) => {
       if (desmosRef.current === undefined) {
         return;
       }

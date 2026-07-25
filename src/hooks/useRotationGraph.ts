@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDesmos } from "./useDesmos";
 import type z from "zod";
-import type { RotationFormDataSchema } from "@/components/form/rotation-form";
 import { theme } from "@/theme";
+import type { Schema$RotationFormData } from "@/types/schemas/form-data/rotation-form.schema";
 
 export const useRotationGraph = (selector: string) => {
   const { addPoint, addPolygon, clearGraph, desmosRef } = useDesmos(selector);
 
   const plotRotation = useCallback(
-    (v: z.output<typeof RotationFormDataSchema>) => {
+    (v: z.output<typeof Schema$RotationFormData>) => {
       if (desmosRef.current === undefined) {
         return;
       }
