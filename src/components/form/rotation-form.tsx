@@ -1,16 +1,19 @@
-import { alpha, Stack, Toolbar, Typography, useTheme } from "@mui/material";
+import { fieldContext, formContext } from "@/contexts/app-form-context";
+import Stack from "@mui/material/Stack";
+import { alpha, useTheme } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { createFormHook } from "@tanstack/react-form";
+import { MathJax } from "better-react-mathjax";
 import { Fragment, memo, useMemo, type FC } from "react";
 import z from "zod/v4";
-import { MathJax } from "better-react-mathjax";
-import { createFormHook } from "@tanstack/react-form";
-import { fieldContext, formContext } from "@/contexts/app-form-context";
+import { ArrayItemRemoveButton } from "../form-input/arrat-item-remove-button";
+import { ArrayItemAddButton } from "../form-input/array-item-add-button";
+import { FormResetButton } from "../form-input/form-reset-button";
+import { FormSubmitButton } from "../form-input/form-submit-button";
 import { NumberTextField } from "../form-input/NumberTextField";
 import { RotationAnglePresetInput } from "../form-input/rotation-angle-preset-input";
 import { RotationDirectionInput } from "../form-input/rotation-direction-input";
-import { ArrayItemAddButton } from "../form-input/array-item-add-button";
-import { ArrayItemRemoveButton } from "../form-input/arrat-item-remove-button";
-import { FormResetButton } from "../form-input/form-reset-button";
-import { FormSubmitButton } from "../form-input/form-submit-button";
 
 const { useAppForm } = createFormHook({
   fieldContext,
@@ -76,13 +79,13 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
           <FormResetButton />
         </AppForm>
       </Toolbar>
-      <Stack spacing={0.5} padding={1}>
+      <Stack spacing={0.5} sx={{ padding: 1 }}>
         <Typography>{`ทิศทางการหมุน`}</Typography>
         <AppField name="direction">
           {(field) => <field.RotationDirectionInput />}
         </AppField>
       </Stack>
-      <Stack spacing={0.5} padding={1} sx={{ backgroundColor: alternateColor }}>
+      <Stack spacing={0.5} sx={{ backgroundColor: alternateColor, padding: 1 }}>
         <Typography sx={{ whiteSpace: "normal", textWrap: "wrap" }}>
           {`ขนาดของมุมที่หมุน (องศา)`}
         </Typography>
@@ -95,11 +98,11 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
           )}
         </AppField>
       </Stack>
-      <Stack spacing={0.5} padding={1}>
+      <Stack spacing={0.5} sx={{ padding: 1 }}>
         <Typography>
           <MathJax dynamic>{`จุดหมุน $(a,b)$`}</MathJax>
         </Typography>
-        <Stack useFlexGap spacing={0.5} direction={"row"} flexWrap={"nowrap"}>
+        <Stack spacing={0.5} direction={"row"} sx={{ flexWrap: "nowrap" }}>
           <AppField name="center.x">
             {(field) => <field.NumberTextField />}
           </AppField>
@@ -116,13 +119,16 @@ export const RotationForm: FC<Props> = memo(({ onSubmit }) => {
                 <Stack
                   key={`point-${index}`}
                   spacing={0.5}
-                  padding={1}
                   sx={{
+                    padding: 1,
                     backgroundColor:
                       index % 2 === 0 ? alternateColor : undefined,
                   }}
                 >
-                  <Stack direction={"row"} justifyContent={"space-between"}>
+                  <Stack
+                    direction={"row"}
+                    sx={{ justifyContent: "space-between" }}
+                  >
                     <Typography>
                       <MathJax>
                         {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}

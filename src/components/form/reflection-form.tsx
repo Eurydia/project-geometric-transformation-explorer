@@ -1,20 +1,17 @@
 import { fieldContext, formContext } from "@/contexts/app-form-context";
-import {
-  alpha,
-  OutlinedInput,
-  Stack,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Stack from "@mui/material/Stack";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { createFormHook } from "@tanstack/react-form";
 import { MathJax } from "better-react-mathjax";
 import { Fragment, type FC } from "react";
 import z from "zod/v4";
+import { ArrayItemRemoveButton } from "../form-input/arrat-item-remove-button";
+import { ArrayItemAddButton } from "../form-input/array-item-add-button";
 import { FormResetButton } from "../form-input/form-reset-button";
 import { FormSubmitButton } from "../form-input/form-submit-button";
 import { NumberTextField } from "../form-input/NumberTextField";
-import { ArrayItemAddButton } from "../form-input/array-item-add-button";
-import { ArrayItemRemoveButton } from "../form-input/arrat-item-remove-button";
 import { ReflectionEquationTypeInput } from "../form-input/reflection-equation-type-input";
 
 const NumericString = z
@@ -134,11 +131,10 @@ export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
           <Fragment>
             {values.type === "linear" && (
               <Stack
-                padding={1}
                 spacing={0.5}
                 sx={{
-                  backgroundColor: ({ palette }) =>
-                    alpha(palette.primary.main, 0.08),
+                  padding: 1,
+                  backgroundColor: (t) => t.alpha(t.palette.primary.main, 0.08),
                 }}
               >
                 <Typography>สมการเส้นสะท้อน</Typography>
@@ -163,14 +159,13 @@ export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
             )}
             {values.type === "vertical" && (
               <Stack
-                padding={1}
                 spacing={0.5}
                 sx={{
-                  backgroundColor: ({ palette }) =>
-                    alpha(palette.primary.main, 0.08),
+                  padding: 1,
+                  backgroundColor: (t) => t.alpha(t.palette.primary.main, 0.08),
                 }}
               >
-                <Typography>เส้นสะท้อน (แนวตั้ง)</Typography>
+                <Typography>{`เส้นสะท้อน (แนวตั้ง)`}</Typography>
                 <AppField name="value">
                   {(field) => <field.NumberTextField />}
                 </AppField>
@@ -178,11 +173,10 @@ export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
             )}
             {values.type === "horizontal" && (
               <Stack
-                padding={1}
                 spacing={0.5}
                 sx={{
-                  backgroundColor: ({ palette }) =>
-                    alpha(palette.primary.main, 0.08),
+                  padding: 1,
+                  backgroundColor: (t) => t.alpha(t.palette.primary.main, 0.08),
                 }}
               >
                 <Typography>เส้นสะท้อน (แนวนอน)</Typography>
@@ -202,13 +196,18 @@ export const ReflectionForm: FC<Props> = ({ onSubmit }) => {
                 <Stack
                   key={`translate-point-${index}`}
                   spacing={0.5}
-                  padding={1}
                   sx={{
-                    backgroundColor: ({ palette: { primary } }) =>
-                      index % 2 === 0 ? undefined : alpha(primary.light, 0.08),
+                    padding: 1,
+                    backgroundColor: (t) =>
+                      index % 2 === 0
+                        ? undefined
+                        : t.alpha(t.palette.primary.light, 0.08),
                   }}
                 >
-                  <Stack direction={"row"} justifyContent={"space-between"}>
+                  <Stack
+                    direction={"row"}
+                    sx={{ justifyContent: "space-between" }}
+                  >
                     <Typography>
                       <MathJax>
                         {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}

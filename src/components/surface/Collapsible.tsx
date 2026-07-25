@@ -10,10 +10,11 @@ export const Collapsible: FC<Props> = memo(({ children, title }) => {
     <Stack>
       <Stack
         direction="row"
-        useFlexGap
-        flexWrap="wrap"
-        alignItems="center"
-        justifyContent="space-between"
+        sx={{
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
         {title}
         <Typography
@@ -23,7 +24,7 @@ export const Collapsible: FC<Props> = memo(({ children, title }) => {
           sx={{
             width: "fit-content",
             cursor: "pointer",
-            "&:hover": {
+            ":hover": {
               textDecorationLine: "underline",
             },
           }}

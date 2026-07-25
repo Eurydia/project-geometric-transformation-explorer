@@ -1,21 +1,14 @@
 import { theme } from "@/theme";
-import { ThemeProvider, CssBaseline, GlobalStyles } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { MathJaxContext } from "better-react-mathjax";
 
-const globalStyles = (
-  <GlobalStyles
-    styles={{
-      "*": {
-        userSelect: "none",
-      },
-    }}
-  />
-);
+export const Route = createRootRoute({ component: RouteComponent });
 
-const RouteComponent = () => (
-  <>
+function RouteComponent() {
+  return (
     <MathJaxContext
       config={{
         loader: { load: ["input/asciimath"] },
@@ -27,13 +20,10 @@ const RouteComponent = () => (
       }}
     >
       <ThemeProvider theme={theme}>
-        {globalStyles}
         <CssBaseline />
         <Outlet />
         <TanStackRouterDevtools />
       </ThemeProvider>
     </MathJaxContext>
-  </>
-);
-
-export const Route = createRootRoute({ component: RouteComponent });
+  );
+}

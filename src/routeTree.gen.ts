@@ -9,19 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TranslationRouteImport } from './routes/translation'
-import { Route as RotationRouteImport } from './routes/rotation'
-import { Route as ReflectionRouteImport } from './routes/reflection'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ReflectionRouteImport } from './routes/reflection'
+import { Route as RotationRouteImport } from './routes/rotation'
+import { Route as TranslationRouteImport } from './routes/translation'
 
-const TranslationRoute = TranslationRouteImport.update({
-  id: '/translation',
-  path: '/translation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RotationRoute = RotationRouteImport.update({
-  id: '/rotation',
-  path: '/rotation',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReflectionRoute = ReflectionRouteImport.update({
@@ -29,9 +24,14 @@ const ReflectionRoute = ReflectionRouteImport.update({
   path: '/reflection',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const RotationRoute = RotationRouteImport.update({
+  id: '/rotation',
+  path: '/rotation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TranslationRoute = TranslationRouteImport.update({
+  id: '/translation',
+  path: '/translation',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -71,18 +71,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/translation': {
-      id: '/translation'
-      path: '/translation'
-      fullPath: '/translation'
-      preLoaderRoute: typeof TranslationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rotation': {
-      id: '/rotation'
-      path: '/rotation'
-      fullPath: '/rotation'
-      preLoaderRoute: typeof RotationRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reflection': {
@@ -92,11 +85,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReflectionRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/rotation': {
+      id: '/rotation'
+      path: '/rotation'
+      fullPath: '/rotation'
+      preLoaderRoute: typeof RotationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/translation': {
+      id: '/translation'
+      path: '/translation'
+      fullPath: '/translation'
+      preLoaderRoute: typeof TranslationRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

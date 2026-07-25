@@ -51,7 +51,7 @@ export const useDesmos = (selector: string) => {
         color,
       });
     },
-    []
+    [],
   );
 
   const addPoint = useCallback(
@@ -92,7 +92,7 @@ export const useDesmos = (selector: string) => {
       });
       return iden();
     },
-    []
+    [],
   );
 
   const addLine = useCallback((names: string[]) => {
@@ -149,7 +149,7 @@ export const useDesmos = (selector: string) => {
         desmosRef.current
           .getExpressions()
           .filter(({ id }) => id !== undefined)
-          .map(({ id }) => ({ id: id! }))
+          .map(({ id }) => ({ id: id! })),
       );
     }
   }, [desmosRef]);

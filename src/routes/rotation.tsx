@@ -48,7 +48,7 @@ function RouteComponent() {
       setResult(v);
       plotRotation(v);
     },
-    [plotRotation]
+    [plotRotation],
   );
   return (
     <SplitLayout
@@ -76,16 +76,26 @@ function RouteComponent() {
                 </Link>
               </Typography>
               <Stack spacing={0.5}>
-                <Typography variant="h5" component="div" fontWeight={700}>
+                <Typography
+                  variant="h5"
+                  component="div"
+                  sx={{ fontWeight: 700 }}
+                >
                   {`(การแปลงทางเรขาคณิต)`}
                 </Typography>
-                <Typography variant="h5" component="div" fontWeight={700}>
+                <Typography
+                  variant="h5"
+                  component="div"
+                  sx={{ fontWeight: 700 }}
+                >
                   {`การหมุน`}
                 </Typography>
               </Stack>
               <RotationForm onSubmit={handleSolve} />
               <Collapsible
-                title={<Typography fontWeight={700}>{"ผลลัพธ์"}</Typography>}
+                title={
+                  <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
+                }
               >
                 <Stack>
                   {result === null && (
@@ -125,14 +135,18 @@ function RouteComponent() {
               </Collapsible>
               <Collapsible
                 title={
-                  <Typography fontWeight={600}>{`สมบัติการหมุน`}</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>
+                    {`สมบัติการหมุน`}
+                  </Typography>
                 }
               >
                 <RotationFormulaBlog />
               </Collapsible>
               <Collapsible
                 title={
-                  <Typography fontWeight={600}>{`สูตรการหมุน`}</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>
+                    {`สูตรการหมุน`}
+                  </Typography>
                 }
               >
                 <RotationPropertyBlog />

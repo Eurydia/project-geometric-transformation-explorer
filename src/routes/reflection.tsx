@@ -49,7 +49,7 @@ function RouteComponent() {
       setResult(v);
       plotReflection(v);
     },
-    [plotReflection]
+    [plotReflection],
   );
 
   return (
@@ -93,16 +93,26 @@ function RouteComponent() {
                 </Link>
               </Typography>
               <Stack spacing={0.5}>
-                <Typography variant="h5" component={"div"} fontWeight={700}>
+                <Typography
+                  variant="h5"
+                  component={"div"}
+                  sx={{ fontWeight: 700 }}
+                >
                   {`(การแปลงทางเรขาคณิต)`}
                 </Typography>
-                <Typography variant="h5" component={"div"} fontWeight={700}>
+                <Typography
+                  variant="h5"
+                  component={"div"}
+                  sx={{ fontWeight: 700 }}
+                >
                   {`การสะท้อน`}
                 </Typography>
               </Stack>
               <ReflectionForm onSubmit={handleSolve} />
               <Collapsible
-                title={<Typography fontWeight={800}>{"ผลลัพธ์"}</Typography>}
+                title={
+                  <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
+                }
               >
                 <Stack>
                   {result === null && (
@@ -143,14 +153,18 @@ function RouteComponent() {
               </Collapsible>
               <Collapsible
                 title={
-                  <Typography fontWeight={600}>{`สมบัติการสะท้อน`}</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>
+                    {`สมบัติการสะท้อน`}
+                  </Typography>
                 }
               >
                 <ReflectionPropertyBlog />
               </Collapsible>
               <Collapsible
                 title={
-                  <Typography fontWeight={600}>{`สูตรการสะท้อน`}</Typography>
+                  <Typography sx={{ fontWeight: 700 }}>
+                    {`สูตรการสะท้อน`}
+                  </Typography>
                 }
               >
                 <ReflectionFormulaBlog />

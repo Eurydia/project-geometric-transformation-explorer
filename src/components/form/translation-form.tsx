@@ -64,11 +64,11 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
           <FormResetButton />
         </AppForm>
       </Toolbar>
-      <Stack spacing={0.5} padding={1}>
+      <Stack spacing={0.5} sx={{ padding: 1 }}>
         <Typography>
           <MathJax dynamic>{`เวกเตอร์ของการเลื่อนขนาน $(a,b)$`}</MathJax>
         </Typography>
-        <Stack useFlexGap spacing={0.5} direction={"row"} flexWrap={"nowrap"}>
+        <Stack spacing={0.5} direction={"row"} sx={{ flexWrap: "nowrap" }}>
           <AppField name="translation.x">
             {(field) => <field.NumberTextField />}
           </AppField>
@@ -85,13 +85,16 @@ export const TranslationForm: FC<Props> = ({ onSubmit }) => {
                 <Stack
                   key={`translate-point-${index}`}
                   spacing={0.5}
-                  padding={1}
                   sx={{
                     backgroundColor: ({ palette: { primary } }) =>
                       index % 2 === 1 ? undefined : alpha(primary.light, 0.08),
+                    padding: 1,
                   }}
                 >
-                  <Stack direction={"row"} justifyContent={"space-between"}>
+                  <Stack
+                    direction={"row"}
+                    sx={{ justifyContent: "space-between" }}
+                  >
                     <Typography>
                       <MathJax dynamic>
                         {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}

@@ -1,21 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
-import {
-  ArchitectureRounded,
-  FlipRounded,
-  RotateRightRounded,
-  TextRotationNoneRounded,
-} from "@mui/icons-material";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { theme } from "@/theme";
-import {
-  Box,
-  Card,
-  Grid,
-  CardActionArea,
-  Typography,
-  useTheme,
-  Stack,
-} from "@mui/material";
+import ArchitectureRounded from "@mui/icons-material/ArchitectureRounded";
+import FlipRounded from "@mui/icons-material/FlipRounded";
+import RotateRightRounded from "@mui/icons-material/RotateRightRounded";
+import TextRotationNoneRounded from "@mui/icons-material/TextRotationNoneRounded";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
+import { createFileRoute } from "@tanstack/react-router";
 import { Fragment, type ReactNode } from "react";
 
 const ITEMS: {
@@ -50,18 +46,16 @@ function RouteComponent() {
   return (
     <Fragment>
       <Box
-        paddingX={{ xs: 2, lg: 0 }}
-        paddingY={8}
         sx={{
           backgroundColor: palette.common.white,
+          paddingX: { xs: 2, lg: 0 },
+          paddingY: 8,
         }}
       >
         <Stack
           direction={"row"}
           spacing={1}
-          maxWidth="lg"
-          marginX={"auto"}
-          alignItems={"center"}
+          sx={{ marginX: "auto", maxWidth: "lg", alignItems: "center" }}
         >
           <ArchitectureRounded
             fontSize="inherit"
@@ -70,9 +64,9 @@ function RouteComponent() {
           <Typography
             component={"div"}
             variant="h3"
-            fontWeight={700}
             sx={{
               textWrap: "pretty",
+              fontWeight: 700,
             }}
           >
             {`การแปลงทางเรขาคณิต`}
@@ -80,11 +74,13 @@ function RouteComponent() {
         </Stack>
       </Box>
       <Box
-        width="100%"
-        maxWidth="lg"
-        marginX={{ xs: 0, md: "auto" }}
-        paddingX={{ xs: 2, lg: 0 }}
-        paddingY={8}
+        sx={{
+          maxWidth: "lg",
+          width: "100%",
+          marginX: { xs: 0, md: "auto" },
+          paddingX: { xs: 2, lg: 0 },
+          paddingY: 8,
+        }}
       >
         <Grid container columns={{ xs: 1, md: 2 }} spacing={4}>
           {ITEMS.map(({ icon, path, label }) => (
@@ -125,8 +121,8 @@ function RouteComponent() {
                     >
                       <Typography
                         variant="h5"
-                        fontWeight={600}
                         component={"div"}
+                        sx={{ fontWeight: 700 }}
                       >
                         {label}
                       </Typography>

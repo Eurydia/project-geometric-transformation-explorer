@@ -50,7 +50,7 @@ function RouteComponent() {
       setResult(value);
       plotTranslation(value);
     },
-    [plotTranslation]
+    [plotTranslation],
   );
 
   return (
@@ -95,16 +95,26 @@ function RouteComponent() {
                 </Link>
               </Typography>
               <Stack spacing={0.5}>
-                <Typography component={"div"} variant="h5" fontWeight={700}>
+                <Typography
+                  component={"div"}
+                  variant="h5"
+                  sx={{ fontWeight: 700 }}
+                >
                   {`(การแปลงทางเรขาคณิต)`}
                 </Typography>
-                <Typography variant="h5" component={"div"} fontWeight={700}>
+                <Typography
+                  variant="h5"
+                  component={"div"}
+                  sx={{ fontWeight: 700 }}
+                >
                   {`การเลื่อนขนาน`}
                 </Typography>
               </Stack>
               <TranslationForm onSubmit={handleSolve} />
               <Collapsible
-                title={<Typography fontWeight={700}>{"ผลลัพธ์"}</Typography>}
+                title={
+                  <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
+                }
               >
                 <Stack>
                   {result === null && (
@@ -133,7 +143,7 @@ function RouteComponent() {
               </Collapsible>
               <Collapsible
                 title={
-                  <Typography fontWeight={600}>
+                  <Typography sx={{ fontWeight: 700 }}>
                     {`สมบัติการเลื่อนขนาน`}
                   </Typography>
                 }
@@ -143,7 +153,7 @@ function RouteComponent() {
 
               <Collapsible
                 title={
-                  <Typography fontWeight={600}>
+                  <Typography sx={{ fontWeight: 700 }}>
                     {`สูตรการเลื่อนขนาน`}
                   </Typography>
                 }
