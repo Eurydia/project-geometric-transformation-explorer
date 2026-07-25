@@ -1,5 +1,5 @@
-import { useFieldContext } from "@/libs/form/app-form-hook-context";
-import { alpha, OutlinedInput } from "@mui/material";
+import { AppFormHookContexts } from "@/libs/form/app-form-hook-context";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import type { FC } from "react";
 
 export const NumberTextField: FC = () => {
@@ -10,7 +10,7 @@ export const NumberTextField: FC = () => {
     },
     handleBlur,
     handleChange,
-  } = useFieldContext<string>();
+  } = AppFormHookContexts.useFieldContext<string>();
   return (
     <OutlinedInput
       fullWidth
@@ -25,11 +25,11 @@ export const NumberTextField: FC = () => {
           inputMode: "decimal",
         },
       }}
-      sx={(theme) => ({
-        backgroundColor: alpha(theme.palette.scrapbook.graphPaper, 0.9),
-        borderRadius: theme.spacing(0.5, 0.75, 0.375, 0.625),
+      sx={(t) => ({
+        backgroundColor: t.alpha(t.palette.scrapbook.graphPaper, 0.9),
+        borderRadius: t.spacing(0.5, 0.75, 0.375, 0.625),
         ":focus-within": {
-          boxShadow: `${theme.spacing(0.375)} ${theme.spacing(0.375)} 0 ${alpha(theme.palette.scrapbook.blue, 0.2)}`,
+          boxShadow: `${t.spacing(0.375)} ${t.spacing(0.375)} 0 ${t.alpha(t.palette.scrapbook.blue, 0.2)}`,
         },
       })}
     />

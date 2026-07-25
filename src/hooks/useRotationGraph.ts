@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDesmos } from "./useDesmos";
 import type z from "zod";
 import type { RotationFormDataSchema } from "@/components/form/rotation-form";
@@ -98,11 +98,32 @@ export const useRotationGraph = (selector: string) => {
         addPolygon("B", points.length, theme.palette.scrapbook.graphImage);
       }
     },
-    [addPoint, addPolygon, clearGraph, desmosRef]
+    [addPoint, addPolygon, clearGraph, desmosRef],
   );
+
+  const [image, setImage] = useState<Record<number, number[] | undefined>>({});
+
+  useEffect(() => {
+    if (desmosRef.current === undefined) {
+      return;
+    }
+    const ref = desmosRef.current;
+
+    for (let i = 0; i < 4; i++) {
+      const obs = ref.HelperExpression({ latex: `B_{${i}}` });
+      obs.observe("listValue", () => {
+        setImage((prev) => {
+          const next = { ...prev };
+          next[i] = [...obs.listValue];
+          return next;
+        });
+      });
+    }
+    return () => ref.destroy();
+  }, [desmosRef]);
 
   return {
     plotRotation,
-    desmosRef,
+    image,
   };
 };

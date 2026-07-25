@@ -1,33 +1,32 @@
-import { useFieldContext } from "@/libs/form/app-form-hook-context";
-import { alpha, Button, ButtonGroup } from "@mui/material";
+import { AppFormHookContexts } from "@/libs/form/app-form-hook-context";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import { MathJax } from "better-react-mathjax";
-import _ from "lodash";
 import type { FC } from "react";
 
 export const RotationAnglePresetInput: FC = () => {
-  const { handleBlur, handleChange } = useFieldContext<string>();
+  const { handleBlur, handleChange } =
+    AppFormHookContexts.useFieldContext<string>();
   return (
     <ButtonGroup fullWidth variant="outlined" color="inherit">
-      {_.range(3).map((index) => (
+      {Array.from({ length: 3 }).map((_, index) => (
         <Button
           key={`btn-${index}`}
           onBlur={handleBlur}
           onClick={() => handleChange((90 * (index + 1)).toString())}
-          sx={(theme) => ({
-            minHeight: 38,
+          sx={(t) => ({
             borderWidth: 2,
-            borderRadius: theme.spacing(0.5, 0.875, 0.5, 0.75),
-            fontWeight: 700,
+            borderRadius: t.spacing(0.875),
             textTransform: "none",
-            boxShadow: `${theme.spacing(0.375)} ${theme.spacing(0.375)} 0 ${alpha(theme.palette.scrapbook.ink, 0.72)}`,
-            transition: theme.transitions.create(["transform", "box-shadow"], {
+            boxShadow: `${t.spacing(0.375)} ${t.spacing(0.375)} 0 ${t.alpha(t.palette.scrapbook.ink, 0.72)}`,
+            transition: t.transitions.create(["transform", "box-shadow"], {
               duration: 140,
               easing: "ease",
             }),
             ":hover": {
               borderWidth: 2,
-              transform: `translate(${theme.spacing(0.125)}, ${theme.spacing(0.125)}) rotate(-0.25deg)`,
-              boxShadow: `${theme.spacing(0.25)} ${theme.spacing(0.25)} 0 ${alpha(theme.palette.scrapbook.ink, 0.64)}`,
+              transform: `translate(${t.spacing(0.125)}, ${t.spacing(0.125)}) rotate(-0.25deg)`,
+              boxShadow: `${t.spacing(0.25)} ${t.spacing(0.25)} 0 ${t.alpha(t.palette.scrapbook.ink, 0.64)}`,
             },
           })}
         >

@@ -39,7 +39,7 @@ export const ReflectionForm = AppFormHook.withFieldGroup({
           {({ values }) => (
             <Stack spacing={3}>
               {values.type === "linear" && (
-                <Stack spacing={0.5}>
+                <Stack>
                   <Typography>{`สมการเส้นสะท้อน`}</Typography>
                   <group.AppField name="value">
                     {({ state, handleBlur, handleChange }) => (
@@ -56,7 +56,7 @@ export const ReflectionForm = AppFormHook.withFieldGroup({
                 </Stack>
               )}
               {values.type === "vertical" && (
-                <Stack spacing={0.5}>
+                <Stack>
                   <Typography>{`เส้นสะท้อน (แนวตั้ง)`}</Typography>
                   <group.AppField name="value">
                     {(field) => <field.NumberTextField />}
@@ -64,7 +64,7 @@ export const ReflectionForm = AppFormHook.withFieldGroup({
                 </Stack>
               )}
               {values.type === "horizontal" && (
-                <Stack spacing={0.5}>
+                <Stack>
                   <Typography>{`เส้นสะท้อน (แนวนอน)`}</Typography>
                   <group.AppField name="value">
                     {(field) => <field.NumberTextField />}
@@ -79,15 +79,16 @@ export const ReflectionForm = AppFormHook.withFieldGroup({
             {(field) => (
               <Fragment>
                 {field.state.value.map((_, index) => (
-                  <Stack key={`translate-point-${index}`} spacing={0.5}>
+                  <Stack key={`translate-point-${index}`}>
                     <Stack
                       direction={"row"}
                       sx={{ justifyContent: "space-between" }}
                     >
                       <Typography>
-                        <MathJax>
-                          {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}
-                          {index !== 0 && `พิกัดที่ ${index + 1}`}
+                        <MathJax dynamic>
+                          {index === 0
+                            ? `พิกัดที่ ${index + 1} $(x,y)$`
+                            : `พิกัดที่ ${index + 1}`}
                         </MathJax>
                       </Typography>
                       <field.ArrayItemRemoveButton index={index} />

@@ -1,4 +1,4 @@
-import { useFieldContext } from "@/libs/form/app-form-hook-context";
+import { AppFormHookContexts } from "@/libs/form/app-form-hook-context";
 import { FormControlLabel, RadioGroup, Radio } from "@mui/material";
 import { type FC } from "react";
 
@@ -7,11 +7,11 @@ export const RotationDirectionInput: FC = () => {
     state: { value },
     handleChange,
     handleBlur,
-  } = useFieldContext<string>();
+  } = AppFormHookContexts.useFieldContext<"1" | "-1">();
   return (
     <RadioGroup
       value={value}
-      onChange={(_, v) => handleChange(v)}
+      onChange={(_, v) => handleChange(v as "-1" | "1")}
       onBlur={handleBlur}
     >
       <FormControlLabel value={"1"} control={<Radio />} label="ตามเข็มนาฬิกา" />

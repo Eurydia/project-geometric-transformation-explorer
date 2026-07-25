@@ -1,12 +1,5 @@
 import z from "zod/v4";
-
-const NumericString = z
-  .string()
-  .trim()
-  .normalize()
-  .nonempty()
-  .refine((arg) => !Number.isFinite(Number(arg)))
-  .pipe(z.transform((arg) => Number(arg)));
+import { NumericString } from "../generic";
 
 export const Schema$ReflectionFormData = z.discriminatedUnion("type", [
   z.object({

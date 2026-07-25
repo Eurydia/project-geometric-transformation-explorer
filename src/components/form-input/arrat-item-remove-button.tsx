@@ -1,5 +1,5 @@
-import { useFieldContext } from "@/libs/form/app-form-hook-context";
-import { Typography } from "@mui/material";
+import { AppFormHookContexts } from "@/libs/form/app-form-hook-context";
+import Typography from "@mui/material/Typography";
 import { useMemo, type FC } from "react";
 
 type Props = {
@@ -9,7 +9,7 @@ export const ArrayItemRemoveButton: FC<Props> = ({ index }) => {
   const {
     state: { value },
     removeValue,
-  } = useFieldContext<unknown[]>();
+  } = AppFormHookContexts.useFieldContext<unknown[]>();
   const disabled = useMemo(() => value.length === 1, [value.length]);
   return (
     <Typography
@@ -30,7 +30,7 @@ export const ArrayItemRemoveButton: FC<Props> = ({ index }) => {
         },
       }}
     >
-      (ลบ)
+      {`(ลบ)`}
     </Typography>
   );
 };

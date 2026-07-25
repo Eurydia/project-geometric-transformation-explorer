@@ -1,21 +1,23 @@
-import { useFieldContext } from "@/libs/form/app-form-hook-context";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
-import type z from "zod/v4";
-import type { ReflectionFormDataSchema } from "../form/reflection-form";
 import type { FC } from "react";
+import { AppFormHookContexts } from "@/libs/form/app-form-hook-context";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
 
 export const ReflectionEquationTypeInput: FC = () => {
   const {
     state: { value },
     handleChange,
     handleBlur,
-  } = useFieldContext<z.input<typeof ReflectionFormDataSchema>["type"]>();
+  } = AppFormHookContexts.useFieldContext<
+    "horizontal" | "vertical" | "linear"
+  >();
   return (
     <RadioGroup
       value={value}
       onChange={(_, value) =>
-        handleChange(value as z.input<typeof ReflectionFormDataSchema>["type"])
+        handleChange(value as "horizontal" | "vertical" | "linear")
       }
       onBlur={handleBlur}
     >

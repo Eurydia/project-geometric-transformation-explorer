@@ -1,19 +1,19 @@
 import { RotationFormulaBlog } from "@/components/blogs/rotation-formula-blog";
 import { RotationPropertyBlog } from "@/components/blogs/rotation-property-blog";
 import { CoordinateResultDisplay } from "@/components/data-display/result-display";
-import {
-  RotationForm,
-  RotationFormDataSchema,
-} from "@/components/form/rotation-form";
+import { RotationForm } from "@/components/form/rotation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
+import { RouterLink } from "@/components/router/router-link";
 import { Collapsible } from "@/components/surface/Collapsible";
 import { useRotationGraph } from "@/hooks/useRotationGraph";
+import { AppFormHook } from "@/libs/form/app-form-hooks";
+import { Schema$RotationFormData } from "@/types/schemas/form-data/rotation-form.schema";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { MathJax } from "better-react-mathjax";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import z from "zod/v4";
 
 export const Route = createFileRoute("/rotation")({
@@ -22,115 +22,96 @@ export const Route = createFileRoute("/rotation")({
 
 function RouteComponent() {
   const [result, setResult] = useState<z.output<
-    typeof RotationFormDataSchema
+    typeof Schema$RotationFormData
   > | null>(null);
-  const { plotRotation, desmosRef } = useRotationGraph("#desmos");
-  const [image, setImage] = useState<Record<number, number[] | undefined>>({});
+  const { plotRotation, image } = useRotationGraph("#desmos");
 
-  useEffect(() => {
-    if (desmosRef.current === undefined) {
-      return;
-    }
-    const ref = desmosRef.current;
-
-    for (let i = 0; i < 4; i++) {
-      const obs = ref.HelperExpression({ latex: `B_{${i}}` });
-      obs.observe("listValue", () => {
-        setImage((prev) => {
-          const next = { ...prev };
-          next[i] = [...obs.listValue];
-          return next;
-        });
-      });
-    }
-    return () => ref.destroy();
-  }, [desmosRef]);
-  const handleSolve = useCallback(
-    (v: z.output<typeof RotationFormDataSchema>) => {
-      setResult(v);
-      plotRotation(v);
+  const form = AppFormHook.useAppForm({
+    defaultValues: {
+      direction: "1",
+      angle: "90",
+      center: { x: "0", y: "0" },
+      points: [{ x: "1", y: "1" }],
+    } as z.input<typeof Schema$RotationFormData>,
+    validators: { onChange: Schema$RotationFormData },
+    onSubmit: ({ value }) => {
+      const parseResult = Schema$RotationFormData.safeParse(value);
+      if (parseResult.success) {
+        setResult(parseResult.data);
+        plotRotation(parseResult.data);
+      }
     },
-    [plotRotation],
-  );
+  });
+
   return (
     <SplitLayout
       slots={{
+        secondary: <Box id="desmos" sx={{ width: "100%", height: "100%" }} />,
         primary: (
           <Stack spacing={2}>
-            <Box
-              component={Link}
+            <RouterLink
               to="/"
-              sx={(theme) => ({
+              color="textPrimary"
+              underline="always"
+              sx={{
                 width: "fit-content",
-                color: theme.palette.text.primary,
-                fontFamily: theme.typography.fontFamily,
-                fontSize: theme.typography.body1.fontSize,
-                textDecorationLine: "none",
-                ":hover": {
-                  textDecorationLine: "underline",
-                  textDecorationColor: theme.palette.primary.main,
-                },
-              })}
+              }}
             >
               {`กลับหน้าแรก`}
-            </Box>
+            </RouterLink>
             <Stack spacing={0.5}>
               <Typography
                 variant="h5"
-                component="div"
+                component="span"
                 sx={{ fontWeight: 700 }}
               >
                 {`(การแปลงทางเรขาคณิต)`}
               </Typography>
-              <Typography
-                variant="h5"
-                component="div"
-                sx={{ fontWeight: 700 }}
-              >
+              <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
                 {`การหมุน`}
               </Typography>
             </Stack>
-            <RotationForm onSubmit={handleSolve} />
+            <RotationForm
+              form={form}
+              fields={{
+                angle: "angle",
+                center: "center",
+                direction: "direction",
+                points: "points",
+              }}
+            />
             <Collapsible
               title={
                 <Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>
               }
             >
-              <Stack>
-                {result === null && (
-                  <>
-                    <Typography>{`จุดหมุน:`}</Typography>
-                    <Typography>{`ขนาดของมุมที่หมุน:`}</Typography>
-                    <Typography>{`ทิศทาง:`}</Typography>
-                    <MathJax dynamic>
-                      {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-                    </MathJax>
-                  </>
-                )}
-                {result !== null && (
-                  <>
-                    <MathJax dynamic>
-                      {`จุดหมุน: $(${result.center.x} , ${result.center.y})$`}
-                    </MathJax>
-                    <MathJax dynamic>
-                      {`ขนาดของมุมที่หมุน: $${result.angle}^{\\circ}$`}
-                    </MathJax>
-                    {result.direction === -1 && (
-                      <MathJax dynamic>{`ทิศทาง: ทวนเข็มนาฬิกา`}</MathJax>
-                    )}
-                    {result.direction === 1 && (
-                      <MathJax dynamic>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
-                    )}
-                    <MathJax dynamic>
-                      {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
-                    </MathJax>
-                    <CoordinateResultDisplay
-                      preImages={result.points}
-                      imageMap={image}
-                    />
-                  </>
-                )}
-              </Stack>
+              {result === null ? (
+                <Typography color="textSecondary" sx={{ fontStyle: "italic" }}>
+                  {`ไม่มีข้อมูลให้แสดง`}
+                </Typography>
+              ) : (
+                <Stack>
+                  <MathJax dynamic>
+                    {`จุดหมุน: $(${result.center.x} , ${result.center.y})$`}
+                  </MathJax>
+                  <MathJax dynamic>
+                    {`ขนาดของมุมที่หมุน: $${result.angle}^{\\circ}$`}
+                  </MathJax>
+                  {result.direction === -1 && (
+                    <MathJax dynamic>{`ทิศทาง: ทวนเข็มนาฬิกา`}</MathJax>
+                  )}
+                  {result.direction === 1 && (
+                    <MathJax dynamic>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
+                  )}
+                  <MathJax dynamic>
+                    {`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}
+                  </MathJax>
+                  <CoordinateResultDisplay
+                    preImages={result.points}
+                    imageMap={image}
+                  />
+                </Stack>
+              )}
             </Collapsible>
             <Collapsible
               title={
@@ -152,7 +133,6 @@ function RouteComponent() {
             </Collapsible>
           </Stack>
         ),
-        secondary: <Box id="desmos" sx={{ width: "100%", height: "100%" }} />,
       }}
     />
   );
