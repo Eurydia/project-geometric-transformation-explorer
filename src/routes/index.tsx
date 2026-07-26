@@ -26,21 +26,21 @@ const ITEMS: {
     path: "/reflection",
     icon: <FlipRounded fontSize="inherit" />,
     tone: "yellowPale",
-    rotation: 0.75,
+    rotation: -0.7,
   },
   {
     label: "การเลื่อนขนาน",
     path: "/translation",
     icon: <TextRotationNoneRounded fontSize="inherit" />,
     tone: "green",
-    rotation: 0.35,
+    rotation: 1.3,
   },
   {
     label: "การหมุน",
     path: "/rotation",
     icon: <RotateRightRounded fontSize="inherit" />,
     tone: "pink",
-    rotation: -0.4,
+    rotation: -2,
   },
 ] as const;
 
@@ -127,7 +127,7 @@ function RouteComponent() {
                     padding: { xs: t.spacing(3), md: t.spacing(4) },
                   })}
                 >
-                  <Stack sx={{ alignItems: "center" }}>
+                  <Stack sx={{ alignItems: "center" }} spacing={2}>
                     <DoodleIconFrame>{icon}</DoodleIconFrame>
                     <Stack>
                       <Typography
@@ -137,7 +137,7 @@ function RouteComponent() {
                           fontWeight: 700,
                           textDecorationColor: t.alpha(
                             t.palette.scrapbook.blueSoft,
-                            0.68,
+                            0.4,
                           ),
                           textDecorationLine: "underline",
                           textDecorationSkipInk: "none",

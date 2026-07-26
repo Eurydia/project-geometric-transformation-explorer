@@ -1,5 +1,4 @@
 import { theme } from "@/theme";
-import _ from "lodash";
 import { useRef, useEffect, useCallback } from "react";
 
 type AddPointOptions = {
@@ -22,8 +21,8 @@ export const useDesmos = (selector: string) => {
       d.setExpression({
         latex: `P_{${varName}} =
           \\left[
-            ${_.range(pointCount)
-              .map((index) => `${varName}_{${index}}`)
+            ${Array.from({ length: pointCount })
+              .map((_, index) => `${varName}_{${index}}`)
               .join(",")}
           \\right]`,
         hidden: true,
