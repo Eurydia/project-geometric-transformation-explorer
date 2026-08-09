@@ -9,6 +9,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { RouterLink } from "@/components/router/router-link";
 import { DoodleIconFrame } from "@/components/surface/DoodleIconFrame";
 import { HeroNotebookSheet } from "@/components/surface/HeroNotebookSheet";
 import { TopicCardFrame } from "@/components/surface/TopicCardFrame";
@@ -24,21 +25,21 @@ const ITEMS: {
   {
     label: "การสะท้อน",
     path: "/reflection",
-    icon: <FlipRounded fontSize="inherit" />,
+    icon: <FlipRounded />,
     tone: "yellowPale",
     rotation: -0.7,
   },
   {
     label: "การเลื่อนขนาน",
     path: "/translation",
-    icon: <TextRotationNoneRounded fontSize="inherit" />,
+    icon: <TextRotationNoneRounded />,
     tone: "green",
     rotation: 1.3,
   },
   {
     label: "การหมุน",
     path: "/rotation",
-    icon: <RotateRightRounded fontSize="inherit" />,
+    icon: <RotateRightRounded />,
     tone: "pink",
     rotation: -2,
   },
@@ -49,9 +50,9 @@ export const Route = createFileRoute("/")({
 });
 
 function RouteComponent() {
-  const navigate = Route.useNavigate();
   return (
     <Box
+      component="main"
       sx={(t) => ({
         minHeight: "100vh",
         padding: {
@@ -64,11 +65,14 @@ function RouteComponent() {
     >
       <HeroNotebookSheet>
         <Stack
+          component="section"
           direction={{ xs: "column", sm: "row" }}
           spacing={{ xs: 2, sm: 3 }}
           sx={{ alignItems: { xs: "flex-start", sm: "center" } }}
         >
-          <Box
+          <Typography
+            component="figure"
+            variant="h1"
             sx={(t) => ({
               display: "flex",
               padding: { xs: t.spacing(1), md: t.spacing(1.5) },
@@ -78,23 +82,18 @@ function RouteComponent() {
               borderStyle: "dashed",
               borderColor: t.alpha(t.palette.scrapbook.blue, 0.54),
               borderRadius: "50%",
-              fontSize: {
-                xs: t.typography.h2.fontSize,
-                md: t.typography.h1.fontSize,
-              },
               filter: `drop-shadow(${t.spacing(0.375)} ${t.spacing(0.5)} 0 ${t.alpha(t.palette.scrapbook.ink, 0.12)})`,
               transform: "rotate(-5deg)",
             })}
           >
-            <ArchitectureRounded fontSize="inherit" />
-          </Box>
+            <ArchitectureRounded />
+          </Typography>
           <Typography
             component="h1"
             variant="h3"
             sx={(t) => ({
               display: "inline",
               textWrap: "pretty",
-              fontWeight: 700,
               textDecorationColor: t.alpha(t.palette.scrapbook.yellow, 0.72),
               textDecorationLine: "underline",
               textDecorationSkipInk: "none",
@@ -109,6 +108,7 @@ function RouteComponent() {
       </HeroNotebookSheet>
 
       <Box
+        component="nav"
         sx={(t) => ({
           maxWidth: "xl",
           width: "100%",
@@ -116,25 +116,35 @@ function RouteComponent() {
           paddingTop: { xs: t.spacing(5), md: t.spacing(8) },
         })}
       >
-        <Grid container columns={{ xs: 1, md: 3 }} spacing={{ xs: 4, md: 5 }}>
+        <Grid
+          component="ul"
+          container
+          columns={{ xs: 1, md: 3 }}
+          spacing={{ xs: 4, md: 5 }}
+          sx={{ listStyle: "none", margin: 0, padding: 0 }}
+        >
           {ITEMS.map(({ rotation, tone, icon, path, label }) => (
-            <Grid key={path} size={1}>
+            <Grid component="li" key={path} size={1}>
               <TopicCardFrame tone={tone} rotation={rotation}>
                 <CardActionArea
+                  component={RouterLink}
+                  to={path}
                   disableRipple
-                  onClick={() => navigate({ to: path })}
                   sx={(t) => ({
                     padding: { xs: t.spacing(3), md: t.spacing(4) },
                   })}
                 >
-                  <Stack sx={{ alignItems: "center" }} spacing={2}>
+                  <Stack
+                    component="section"
+                    sx={{ alignItems: "center" }}
+                    spacing={2}
+                  >
                     <DoodleIconFrame>{icon}</DoodleIconFrame>
-                    <Stack>
+                    <Stack component="header">
                       <Typography
                         variant="h5"
-                        component="div"
+                        component="h2"
                         sx={(t) => ({
-                          fontWeight: 700,
                           textDecorationColor: t.alpha(
                             t.palette.scrapbook.blueSoft,
                             0.4,

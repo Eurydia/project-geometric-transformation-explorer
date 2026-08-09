@@ -1,6 +1,6 @@
-import { List, ListItem, ListItemText } from "@mui/material";
-import { MathJax } from "better-react-mathjax";
+import { List, ListItem } from "@mui/material";
 import { type FC, memo } from "react";
+import { BlockMath } from "@/components/data-display/BlockMath";
 
 const FORMULAE = [
   `$A(x,y)$ หมุนตามเข็มนาฬิกา $90^{\\circ}$ รอบจุดกำเนิด $(0,0)$: $$A'(y,-x)$$`,
@@ -27,13 +27,7 @@ export const RotationFormulaBlog: FC = memo(() => {
       {FORMULAE.map((formula, index) => {
         return (
           <ListItem key={`forumla-${index}`} sx={{ display: "list-item" }}>
-            <ListItemText
-              slotProps={{
-                primary: { variant: "body1" },
-              }}
-            >
-              <MathJax dynamic>{formula}</MathJax>
-            </ListItemText>
+            <BlockMath>{formula}</BlockMath>
           </ListItem>
         );
       })}

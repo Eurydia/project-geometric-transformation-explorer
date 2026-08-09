@@ -3,8 +3,9 @@ import Paper from "@mui/material/Paper";
 import type { FC, PropsWithChildren } from "react";
 
 export const PrimaryNotebookPaper: FC<PropsWithChildren> = ({ children }) => (
-  <Box sx={{ height: "100%" }}>
+  <Box component="article" sx={{ height: "100%" }}>
     <Paper
+      component="section"
       sx={(t) => ({
         height: "100%",
         padding: {

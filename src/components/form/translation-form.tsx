@@ -1,9 +1,9 @@
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { MathJax } from "better-react-mathjax";
 import { Fragment } from "react";
 import type z from "zod/v4";
+import { InlineMath } from "@/components/data-display/InlineMath";
 import { AppFormHook } from "@/libs/form/app-form-hooks";
 import type { Schema$TranslationFormData } from "@/types/schemas/form-data/translation-form";
 
@@ -11,17 +11,26 @@ export const TranslationForm = AppFormHook.withFieldGroup({
   defaultValues: {} as z.input<typeof Schema$TranslationFormData>,
   render: ({ group }) => {
     return (
-      <Stack spacing={3}>
-        <Toolbar disableGutters>
+      <Stack
+        component="form"
+        spacing={3}
+        onSubmit={(event) => event.preventDefault()}
+      >
+        <Toolbar component="header" disableGutters>
           <group.AppForm>
             <group.FormResetButton />
           </group.AppForm>
         </Toolbar>
-        <Stack>
-          <Typography>
-            <MathJax dynamic>{`เวกเตอร์ของการเลื่อนขนาน $(a,b)$`}</MathJax>
+        <Stack component="section">
+          <Typography component="h2">
+            <InlineMath>{`เวกเตอร์ของการเลื่อนขนาน $(a,b)$`}</InlineMath>
           </Typography>
-          <Stack spacing={0.5} direction={"row"} sx={{ flexWrap: "nowrap" }}>
+          <Stack
+            component="section"
+            spacing={0.5}
+            direction={"row"}
+            sx={{ flexWrap: "nowrap" }}
+          >
             <group.AppField name="translation.x">
               {(field) => <field.NumberTextField />}
             </group.AppField>
@@ -30,25 +39,31 @@ export const TranslationForm = AppFormHook.withFieldGroup({
             </group.AppField>
           </Stack>
         </Stack>
-        <Stack>
+        <Stack component="section">
           <group.AppField name="points" mode="array">
             {(field) => (
               <Fragment>
                 {field.state.value.map((_, index) => (
-                  <Stack key={`translate-point-${index}`} spacing={0.5}>
+                  <Stack
+                    component="article"
+                    key={`translate-point-${index}`}
+                    spacing={0.5}
+                  >
                     <Stack
+                      component="header"
                       direction={"row"}
                       sx={{ justifyContent: "space-between" }}
                     >
-                      <Typography>
-                        <MathJax dynamic>
-                          {index === 0 && `พิกัดที่ ${index + 1} $(x,y)$`}
-                          {index !== 0 && `พิกัดที่ ${index + 1}`}
-                        </MathJax>
+                      <Typography component="h2">
+                        <InlineMath>
+                          {index === 0
+                            ? `พิกัดที่ ${index + 1} $(x,y)$`
+                            : `พิกัดที่ ${index + 1}`}
+                        </InlineMath>
                       </Typography>
                       <field.ArrayItemRemoveButton index={index} />
                     </Stack>
-                    <Stack spacing={0.5} direction="row">
+                    <Stack component="section" spacing={0.5} direction="row">
                       <group.AppField name={`points[${index}].x`}>
                         {(subField) => <subField.NumberTextField />}
                       </group.AppField>
@@ -62,7 +77,7 @@ export const TranslationForm = AppFormHook.withFieldGroup({
             )}
           </group.AppField>
         </Stack>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Toolbar component="footer" sx={{ justifyContent: "space-between" }}>
           <group.AppForm>
             <group.FormSubmitButton />
           </group.AppForm>

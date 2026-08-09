@@ -5,6 +5,7 @@ export const ScrapbookBackdrop: FC<{ children: ReactNode }> = ({
   children,
 }) => (
   <Box
+    component="section"
     sx={(theme) => ({
       position: "relative",
       isolation: "isolate",

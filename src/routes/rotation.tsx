@@ -2,11 +2,11 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { createFileRoute } from "@tanstack/react-router";
-import { MathJax } from "better-react-mathjax";
 import { useState } from "react";
 import type z from "zod/v4";
 import { RotationFormulaBlog } from "@/components/blogs/rotation-formula-blog";
 import { RotationPropertyBlog } from "@/components/blogs/rotation-property-blog";
+import { BlockMath } from "@/components/data-display/BlockMath";
 import { CoordinateResultDisplay } from "@/components/data-display/result-display";
 import { RotationForm } from "@/components/form/rotation-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
@@ -45,9 +45,15 @@ function RouteComponent() {
 
   return (
     <SplitLayout
-      secondary={<Box id="desmos" sx={{ width: "100%", height: "100%" }} />}
+      secondary={
+        <Box
+          component="figure"
+          id="desmos"
+          sx={{ width: "100%", height: "100%", margin: 0 }}
+        />
+      }
     >
-      <Stack spacing={2}>
+      <Stack component="article" spacing={2}>
         <RouterLink
           to="/"
           color="textPrimary"
@@ -58,11 +64,11 @@ function RouteComponent() {
         >
           {`กลับหน้าแรก`}
         </RouterLink>
-        <Stack spacing={0.5}>
-          <Typography variant="h5" component="span" sx={{ fontWeight: 700 }}>
+        <Stack component="header" spacing={0.5}>
+          <Typography variant="h5" component="p">
             {`(การแปลงทางเรขาคณิต)`}
           </Typography>
-          <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
+          <Typography variant="h5" component="h1">
             {`การหมุน`}
           </Typography>
         </Stack>
@@ -76,27 +82,35 @@ function RouteComponent() {
           }}
         />
         <Collapsible
-          title={<Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>}
+          title={
+            <Typography component="h2" variant="subtitle1">
+              {"ผลลัพธ์"}
+            </Typography>
+          }
         >
           {result === null ? (
-            <Typography color="textSecondary" sx={{ fontStyle: "italic" }}>
+            <Typography
+              component="p"
+              color="textSecondary"
+              variant="emptyState"
+            >
               {`ไม่มีข้อมูลให้แสดง`}
             </Typography>
           ) : (
-            <Stack>
-              <MathJax dynamic>
+            <Stack component="section">
+              <BlockMath>
                 {`จุดหมุน: $(${result.center.x} , ${result.center.y})$`}
-              </MathJax>
-              <MathJax dynamic>
+              </BlockMath>
+              <BlockMath>
                 {`ขนาดของมุมที่หมุน: $${result.angle}^{\\circ}$`}
-              </MathJax>
+              </BlockMath>
               {result.direction === -1 && (
-                <MathJax dynamic>{`ทิศทาง: ทวนเข็มนาฬิกา`}</MathJax>
+                <BlockMath>{`ทิศทาง: ทวนเข็มนาฬิกา`}</BlockMath>
               )}
               {result.direction === 1 && (
-                <MathJax dynamic>{`ทิศทาง: ตามเข็มนาฬิกา`}</MathJax>
+                <BlockMath>{`ทิศทาง: ตามเข็มนาฬิกา`}</BlockMath>
               )}
-              <MathJax dynamic>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
+              <BlockMath>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</BlockMath>
               <CoordinateResultDisplay
                 preImages={result.points}
                 imageMap={image}
@@ -106,14 +120,20 @@ function RouteComponent() {
         </Collapsible>
         <Collapsible
           title={
-            <Typography sx={{ fontWeight: 700 }}>{`สมบัติการหมุน`}</Typography>
+            <Typography
+              component="h2"
+              variant="subtitle1"
+            >{`สมบัติการหมุน`}</Typography>
           }
         >
           <RotationFormulaBlog />
         </Collapsible>
         <Collapsible
           title={
-            <Typography sx={{ fontWeight: 700 }}>{`สูตรการหมุน`}</Typography>
+            <Typography
+              component="h2"
+              variant="subtitle1"
+            >{`สูตรการหมุน`}</Typography>
           }
         >
           <RotationPropertyBlog />

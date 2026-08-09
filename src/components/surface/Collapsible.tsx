@@ -1,6 +1,5 @@
-import Collapse from "@mui/material/Collapse";
+import ButtonBase from "@mui/material/ButtonBase";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import {
   type FC,
   memo,
@@ -16,6 +15,7 @@ export const Collapsible: FC<PropsWithChildren<{ title: ReactNode }>> = memo(
     const handleToggle = useCallback(() => setOpen((prev) => !prev), []);
     return (
       <Stack
+        component="section"
         spacing={2}
         sx={(t) => ({
           padding: t.spacing(1.375),
@@ -28,6 +28,7 @@ export const Collapsible: FC<PropsWithChildren<{ title: ReactNode }>> = memo(
         })}
       >
         <Stack
+          component="header"
           direction="row"
           spacing={1}
           sx={{
@@ -37,20 +38,21 @@ export const Collapsible: FC<PropsWithChildren<{ title: ReactNode }>> = memo(
           }}
         >
           {title}
-          <Typography
-            component="span"
+          <ButtonBase
+            type="button"
+            disableRipple
             onClick={handleToggle}
             sx={(theme) => ({
+              ...theme.typography.subtitle1,
               cursor: "pointer",
               color: theme.palette.primary.dark,
-              fontWeight: 700,
               textDecorationLine: "underline",
             })}
           >
             {open ? `(ซ่อน)` : `(แสดง)`}
-          </Typography>
+          </ButtonBase>
         </Stack>
-        <Collapse in={open}>{children}</Collapse>
+        <section hidden={!open}>{children}</section>
       </Stack>
     );
   },

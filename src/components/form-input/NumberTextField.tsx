@@ -20,7 +20,7 @@ export const NumberTextField: FC = () => {
       onBlur={handleBlur}
       slotProps={{
         input: {
-          sx: { fontFamily: "monospace" },
+          sx: (theme) => theme.typography.numericInput,
           type: "number",
           inputMode: "decimal",
         },

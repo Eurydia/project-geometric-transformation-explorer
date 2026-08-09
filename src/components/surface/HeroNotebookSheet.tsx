@@ -6,6 +6,7 @@ export const HeroNotebookSheet: FC<{ children: ReactNode }> = ({
   children,
 }) => (
   <Box
+    component="header"
     sx={{
       width: "100%",
       maxWidth: "xl",
@@ -14,6 +15,7 @@ export const HeroNotebookSheet: FC<{ children: ReactNode }> = ({
     }}
   >
     <Paper
+      component="section"
       sx={(t) => ({
         paddingY: { xs: t.spacing(5), md: t.spacing(7) },
         paddingX: {

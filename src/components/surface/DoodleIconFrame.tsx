@@ -1,8 +1,10 @@
-import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import type { FC, ReactNode } from "react";
 
 export const DoodleIconFrame: FC<{ children: ReactNode }> = ({ children }) => (
-  <Box
+  <Typography
+    component="figure"
+    variant="h2"
     sx={(t) => ({
       padding: { xs: t.spacing(1), md: t.spacing(2) },
       backgroundColor: t.alpha(t.palette.scrapbook.paper, 0.34),
@@ -16,5 +18,5 @@ export const DoodleIconFrame: FC<{ children: ReactNode }> = ({ children }) => (
     })}
   >
     {children}
-  </Box>
+  </Typography>
 );

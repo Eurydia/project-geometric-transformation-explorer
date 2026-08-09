@@ -10,8 +10,9 @@ export const SplitLayout: FC<
   }>
 > = (props) => {
   return (
-    <Box sx={{ overflow: { xs: "auto", md: "unset" } }}>
+    <Box component="main" sx={{ overflow: { xs: "auto", md: "unset" } }}>
       <Grid
+        component="section"
         container
         columns={12}
         spacing={{ xs: 3, md: 4 }}
@@ -25,12 +26,17 @@ export const SplitLayout: FC<
           },
         })}
       >
-        <Grid size={{ xs: 12, md: 5, lg: 4 }} sx={{ height: { md: "100%" } }}>
+        <Grid
+          component="article"
+          size={{ xs: 12, md: 5, lg: 4 }}
+          sx={{ height: { md: "100%" } }}
+        >
           <PrimaryNotebookPaper>{props.children}</PrimaryNotebookPaper>
         </Grid>
         <Grid
+          component="figure"
           size={{ xs: 12, md: 7, lg: 8 }}
-          sx={{ height: { xs: "70vh", md: "100%" } }}
+          sx={{ height: { xs: "70vh", md: "100%" }, margin: 0 }}
         >
           <GraphNotebookPaper>{props.secondary}</GraphNotebookPaper>
         </Grid>

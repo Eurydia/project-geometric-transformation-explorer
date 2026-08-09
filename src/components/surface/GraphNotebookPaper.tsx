@@ -5,8 +5,12 @@ import type { FC, ReactNode } from "react";
 export const GraphNotebookPaper: FC<{ children: ReactNode }> = ({
   children,
 }) => (
-  <Box sx={{ position: "relative", height: "100%" }}>
+  <Box
+    component="figure"
+    sx={{ position: "relative", height: "100%", margin: 0 }}
+  >
     <Paper
+      component="section"
       sx={(t) => ({
         height: "100%",
         backgroundColor: t.palette.scrapbook.graphPaper,

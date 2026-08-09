@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, Typography } from "@mui/material";
+import { Box, Button, Dialog, Typography } from "@mui/material";
 import { type FC, Fragment, memo, useCallback, useState } from "react";
 
 export const ExpandableImage: FC<{
@@ -29,8 +29,15 @@ export const ExpandableImage: FC<{
           cursor: "pointer",
         }}
       />
-      <Dialog open={expanded} onClose={handleClose} maxWidth="md" fullWidth>
-        <DialogActions
+      <Dialog
+        open={expanded}
+        onClose={handleClose}
+        maxWidth="md"
+        fullWidth
+        slotProps={{ paper: { component: "figure" } }}
+      >
+        <Box
+          component="figcaption"
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -38,11 +45,11 @@ export const ExpandableImage: FC<{
             justifyContent: "space-between",
           }}
         >
-          <Typography sx={{ fontWeight: 700 }}>{alt}</Typography>
+          <Typography variant="subtitle1">{alt}</Typography>
           <Button size="small" variant="text" onClick={handleClose}>
             {`ปิด`}
           </Button>
-        </DialogActions>
+        </Box>
         <Box
           component="img"
           src={src}

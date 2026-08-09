@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
+import { List, ListItem, Typography } from "@mui/material";
 import { type FC, memo } from "react";
 
 const PROPERTIES = [
@@ -10,22 +10,18 @@ const PROPERTIES = [
 export const TranslationPropertyBlog: FC = memo(
   () => {
     return (
-      <Stack spacing={0.5}>
-        <List
-          sx={(t) => ({
-            paddingLeft: t.spacing(4),
-            listStyleType: "disc",
-          })}
-        >
-          {PROPERTIES.map((p, index) => (
-            <ListItem sx={{ display: "list-item" }} key={`PROP-${index}`}>
-              <ListItemText disableTypography>
-                <Typography>{p}</Typography>
-              </ListItemText>
-            </ListItem>
-          ))}
-        </List>
-      </Stack>
+      <List
+        sx={(t) => ({
+          paddingLeft: t.spacing(4),
+          listStyleType: "disc",
+        })}
+      >
+        {PROPERTIES.map((p, index) => (
+          <ListItem sx={{ display: "list-item" }} key={`PROP-${index}`}>
+            <Typography>{p}</Typography>
+          </ListItem>
+        ))}
+      </List>
     );
   },
   () => true,

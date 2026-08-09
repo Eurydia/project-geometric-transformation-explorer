@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, Stack } from "@mui/material";
+import { List, ListItem, Stack, Typography } from "@mui/material";
 import { type FC, memo } from "react";
 import prop12 from "@/assets/prop1+2.jpg";
 import prop3 from "@/assets/prop3.jpg";
@@ -12,7 +12,7 @@ const PROPERTIES = [
 
 export const RotationPropertyBlog: FC = memo(() => {
   return (
-    <Stack spacing={0.5}>
+    <Stack component="article" spacing={0.5}>
       <List
         sx={(t) => ({
           paddingLeft: t.spacing(4),
@@ -20,22 +20,10 @@ export const RotationPropertyBlog: FC = memo(() => {
         })}
       >
         <ListItem sx={{ display: "list-item" }}>
-          <ListItemText
-            slotProps={{
-              primary: { variant: "body1" },
-            }}
-          >
-            {PROPERTIES[0]}
-          </ListItemText>
+          <Typography>{PROPERTIES[0]}</Typography>
         </ListItem>
         <ListItem sx={{ display: "list-item" }}>
-          <ListItemText
-            slotProps={{
-              primary: { variant: "body1" },
-            }}
-          >
-            {PROPERTIES[1]}
-          </ListItemText>
+          <Typography>{PROPERTIES[1]}</Typography>
         </ListItem>
       </List>
       <ExpandableImage
@@ -49,13 +37,7 @@ export const RotationPropertyBlog: FC = memo(() => {
         })}
       >
         <ListItem sx={{ display: "list-item" }}>
-          <ListItemText
-            slotProps={{
-              primary: { variant: "body1" },
-            }}
-          >
-            {PROPERTIES[2]}
-          </ListItemText>
+          <Typography>{PROPERTIES[2]}</Typography>
         </ListItem>
       </List>
       <ExpandableImage src={prop3} alt={`แผนภาพแสดงคุณสมบัติที่สามของการหมุน`} />

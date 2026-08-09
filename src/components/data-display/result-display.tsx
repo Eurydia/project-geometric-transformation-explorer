@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
-import { MathJax } from "better-react-mathjax";
 import type { FC } from "react";
+import { BlockMath } from "@/components/data-display/BlockMath";
 
 type Props = {
   preImages: { x: number; y: number }[];
@@ -20,6 +20,7 @@ export const CoordinateResultDisplay: FC<Props> = ({ imageMap, preImages }) => {
 
   return (
     <Box
+      component="section"
       sx={{
         width: "100%",
         overflowX: "auto",
@@ -27,9 +28,9 @@ export const CoordinateResultDisplay: FC<Props> = ({ imageMap, preImages }) => {
         scrollbarGutter: "stable",
       }}
     >
-      <MathJax dynamic>
+      <BlockMath>
         {`$$\\begin{array}{lll}${result.join("\\\\")}\\end{array}$$`}
-      </MathJax>
+      </BlockMath>
     </Box>
   );
 };

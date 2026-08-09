@@ -2,12 +2,12 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { createFileRoute } from "@tanstack/react-router";
-import { MathJax } from "better-react-mathjax";
 import { useState } from "react";
 import type z from "zod";
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
 import { ReflectionFormulaBlog } from "@/components/blogs/reflection-formula-blog";
 import { ReflectionPropertyBlog } from "@/components/blogs/reflection-property-blog";
+import { BlockMath } from "@/components/data-display/BlockMath";
 import { CoordinateResultDisplay } from "@/components/data-display/result-display";
 import { ReflectionForm } from "@/components/form/reflection-form";
 import { SplitLayout } from "@/components/layouts/split-layout";
@@ -46,17 +46,23 @@ function RouteComponent() {
 
   return (
     <SplitLayout
-      secondary={<Box id="desmos" sx={{ width: "100%", height: "100%" }} />}
+      secondary={
+        <Box
+          component="figure"
+          id="desmos"
+          sx={{ width: "100%", height: "100%", margin: 0 }}
+        />
+      }
     >
-      <Stack spacing={2}>
+      <Stack component="article" spacing={2}>
         <RouterLink to="/" color="textPrimary">
           {`กลับหน้าแรก`}
         </RouterLink>
-        <Stack spacing={0.5}>
-          <Typography variant="h5" component="span" sx={{ fontWeight: 700 }}>
+        <Stack component="header" spacing={0.5}>
+          <Typography variant="h5" component="p">
             {`(การแปลงทางเรขาคณิต)`}
           </Typography>
-          <Typography variant="h5" component="h1" sx={{ fontWeight: 700 }}>
+          <Typography variant="h5" component="h1">
             {`การสะท้อน`}
           </Typography>
         </Stack>
@@ -65,26 +71,34 @@ function RouteComponent() {
           fields={{ points: "points", type: "type", value: "value" }}
         />
         <Collapsible
-          title={<Typography sx={{ fontWeight: 700 }}>{"ผลลัพธ์"}</Typography>}
+          title={
+            <Typography component="h2" variant="subtitle1">
+              {"ผลลัพธ์"}
+            </Typography>
+          }
         >
           {result === null ? (
-            <Typography color="textSecondary" sx={{ fontStyle: "italic" }}>
+            <Typography
+              component="p"
+              color="textSecondary"
+              variant="emptyState"
+            >
               {`ไม่มีข้อมูลให้แสดง`}
             </Typography>
           ) : (
-            <Stack>
+            <Stack component="section">
               {result.type === "horizontal" && (
-                <MathJax dynamic>{`เส้นการสะท้อน: $y=${result.value}$`}</MathJax>
+                <BlockMath>{`เส้นการสะท้อน: $y=${result.value}$`}</BlockMath>
               )}
               {result.type === "vertical" && (
-                <MathJax dynamic>{`เส้นการสะท้อน: $x=${result.value}$`}</MathJax>
+                <BlockMath>{`เส้นการสะท้อน: $x=${result.value}$`}</BlockMath>
               )}
               {result.type === "linear" && (
-                <MathJax dynamic>
+                <BlockMath>
                   {`เส้นการสะท้อน: $${result.value.join("=")}$`}
-                </MathJax>
+                </BlockMath>
               )}
-              <MathJax dynamic>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</MathJax>
+              <BlockMath>{`พิกัดเดิม $\\rightarrow$ พิกัดใหม่:`}</BlockMath>
               <CoordinateResultDisplay
                 preImages={result.points}
                 imageMap={image}
@@ -94,14 +108,20 @@ function RouteComponent() {
         </Collapsible>
         <Collapsible
           title={
-            <Typography sx={{ fontWeight: 700 }}>{`สมบัติการสะท้อน`}</Typography>
+            <Typography
+              component="h2"
+              variant="subtitle1"
+            >{`สมบัติการสะท้อน`}</Typography>
           }
         >
           <ReflectionPropertyBlog />
         </Collapsible>
         <Collapsible
           title={
-            <Typography sx={{ fontWeight: 700 }}>{`สูตรการสะท้อน`}</Typography>
+            <Typography
+              component="h2"
+              variant="subtitle1"
+            >{`สูตรการสะท้อน`}</Typography>
           }
         >
           <ReflectionFormulaBlog />

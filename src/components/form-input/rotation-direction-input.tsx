@@ -1,4 +1,4 @@
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { Box, FormControlLabel, Radio } from "@mui/material";
 import type { FC } from "react";
 import { AppFormHookContexts } from "@/libs/form/app-form-hook-context";
 
@@ -9,13 +9,27 @@ export const RotationDirectionInput: FC = () => {
     handleBlur,
   } = AppFormHookContexts.useFieldContext<"1" | "-1">();
   return (
-    <RadioGroup
-      value={value}
-      onChange={(_, v) => handleChange(v as "-1" | "1")}
-      onBlur={handleBlur}
-    >
-      <FormControlLabel value={"1"} control={<Radio />} label="ตามเข็มนาฬิกา" />
-      <FormControlLabel value={"-1"} control={<Radio />} label="ทวนเข็มนาฬิกา" />
-    </RadioGroup>
+    <Box component="fieldset" sx={{ border: 0, margin: 0, padding: 0 }}>
+      <FormControlLabel
+        control={
+          <Radio
+            checked={value === "1"}
+            onChange={() => handleChange("1")}
+            onBlur={handleBlur}
+          />
+        }
+        label="ตามเข็มนาฬิกา"
+      />
+      <FormControlLabel
+        control={
+          <Radio
+            checked={value === "-1"}
+            onChange={() => handleChange("-1")}
+            onBlur={handleBlur}
+          />
+        }
+        label="ทวนเข็มนาฬิกา"
+      />
+    </Box>
   );
 };

@@ -1,6 +1,6 @@
 import { Box, lighten, useTheme } from "@mui/material";
-import { MathJax } from "better-react-mathjax";
 import { type FC, memo } from "react";
+import { BlockMath } from "@/components/data-display/BlockMath";
 
 type Props = { latex: string; highlight?: boolean };
 export const StackedEquationItem: FC<Props> = memo(
@@ -12,6 +12,7 @@ export const StackedEquationItem: FC<Props> = memo(
     } = useTheme();
     return (
       <Box
+        component="article"
         sx={(theme) => ({
           padding: theme.spacing(0, 2),
           borderLeftStyle: "solid",
@@ -20,7 +21,7 @@ export const StackedEquationItem: FC<Props> = memo(
           backgroundColor: lighten(light, 0.87),
         })}
       >
-        <MathJax dynamic>{latex}</MathJax>
+        <BlockMath>{latex}</BlockMath>
       </Box>
     );
   },

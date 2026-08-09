@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+import ButtonBase from "@mui/material/ButtonBase";
 import { type FC, useMemo } from "react";
 import { AppFormHookContexts } from "@/libs/form/app-form-hook-context";
 
@@ -12,25 +12,29 @@ export const ArrayItemRemoveButton: FC<Props> = ({ index }) => {
   } = AppFormHookContexts.useFieldContext<unknown[]>();
   const disabled = useMemo(() => value.length === 1, [value.length]);
   return (
-    <Typography
-      component={"div"}
-      tabIndex={0}
-      color={!disabled ? "error" : "textDisabled"}
+    <ButtonBase
+      type="button"
+      disableRipple
+      disabled={disabled}
       onClick={() => {
         if (disabled) {
           return;
         }
         removeValue(index);
       }}
-      sx={{
+      sx={(theme) => ({
+        ...theme.typography.body1,
+        color: !disabled
+          ? theme.palette.error.main
+          : theme.palette.text.disabled,
         cursor: !disabled ? "pointer" : undefined,
         width: "fit-content",
         ":hover": {
           textDecorationLine: !disabled ? "underline" : undefined,
         },
-      }}
+      })}
     >
       {`(ลบ)`}
-    </Typography>
+    </ButtonBase>
   );
 };

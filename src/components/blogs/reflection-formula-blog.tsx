@@ -1,6 +1,6 @@
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
-import { MathJax } from "better-react-mathjax";
+import { List, ListItem } from "@mui/material";
 import { type FC, memo } from "react";
+import { BlockMath } from "@/components/data-display/BlockMath";
 
 const FORMULAS = [
   "$A(x,y)$ สะท้อนข้าม แกน $x$: $$A'(x, -y)$$",
@@ -21,11 +21,7 @@ export const ReflectionFormulaBlog: FC = memo(
         {FORMULAS.map((formula, index) => {
           return (
             <ListItem key={`forumla-${index}`} sx={{ display: "list-item" }}>
-              <ListItemText disableTypography>
-                <Typography>
-                  <MathJax dynamic>{formula}</MathJax>
-                </Typography>
-              </ListItemText>
+              <BlockMath>{formula}</BlockMath>
             </ListItem>
           );
         })}

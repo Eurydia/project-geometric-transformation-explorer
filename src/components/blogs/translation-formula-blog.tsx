@@ -1,6 +1,6 @@
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
-import { MathJax } from "better-react-mathjax";
+import { List, ListItem } from "@mui/material";
 import { type FC, memo } from "react";
+import { BlockMath } from "@/components/data-display/BlockMath";
 
 const FORMULAS = [
   `$A(x,y)$ เลื่อนขนาน $\\begin{bmatrix} a \\\\ b\\end{bmatrix}$: $$A'(x+a,y+b)$$`,
@@ -18,11 +18,7 @@ export const TranslationFormulaBlog: FC = memo(
         {FORMULAS.map((formula, index) => {
           return (
             <ListItem key={`forumla-${index}`} sx={{ display: "list-item" }}>
-              <ListItemText disableTypography>
-                <Typography>
-                  <MathJax dynamic>{formula}</MathJax>
-                </Typography>
-              </ListItemText>
+              <BlockMath>{formula}</BlockMath>
             </ListItem>
           );
         })}

@@ -1,4 +1,5 @@
 import { alpha, createTheme, responsiveFontSizes } from "@mui/material/styles";
+import type { CSSProperties } from "react";
 
 export type ScrapbookPalette = {
   ink: string;
@@ -33,6 +34,22 @@ declare module "@mui/material/styles" {
   interface PaletteOptions {
     scrapbook?: ScrapbookPalette;
   }
+
+  interface TypographyVariants {
+    emptyState: CSSProperties;
+    numericInput: CSSProperties;
+  }
+
+  interface TypographyVariantsOptions {
+    emptyState?: CSSProperties;
+    numericInput?: CSSProperties;
+  }
+}
+
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    emptyState: true;
+  }
 }
 
 const scrapbook: ScrapbookPalette = {
@@ -64,6 +81,28 @@ let theme = createTheme({
   shape: { borderRadius: 8 },
   typography: {
     fontFamily: '"Noto Serif Thai", serif',
+    h3: {
+      fontWeight: 700,
+    },
+    h5: {
+      fontWeight: 700,
+    },
+    subtitle1: {
+      fontWeight: 700,
+    },
+    emptyState: {
+      fontFamily: '"Noto Serif Thai", serif',
+      fontSize: "1rem",
+      fontStyle: "italic",
+      fontWeight: 400,
+      lineHeight: 1.5,
+    },
+    numericInput: {
+      fontFamily: "monospace",
+      fontSize: "1rem",
+      fontWeight: 400,
+      lineHeight: 1.4375,
+    },
   },
   palette: {
     primary: {
@@ -104,12 +143,20 @@ let theme = createTheme({
         disableElevation: true,
         disableTouchRipple: true,
       },
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+      },
     },
     MuiPaper: {
       defaultProps: { variant: "outlined" },
     },
     MuiCardActionArea: {
       defaultProps: { disableRipple: true },
+    },
+    MuiSvgIcon: {
+      defaultProps: { fontSize: "inherit" },
     },
     MuiCssBaseline: {
       styleOverrides: { "*": { userSelectable: "none" } },

@@ -7,6 +7,7 @@ export const TopicCardFrame: FC<{
   rotation: number;
 }> = ({ children, tone, rotation }) => (
   <Card
+    component="article"
     sx={(t) => ({
       backgroundColor: t.palette.scrapbook[tone],
       borderWidth: 2,
