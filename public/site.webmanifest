@@ -1,21 +1,48 @@
 {
+  "id": "/",
   "name": "เครื่องมือสำรวจการแปลงทางเรขาคณิต",
   "short_name": "การแปลงเรขาคณิต",
-  "start_url": "./",
-  "scope": "./",
+  "description": "สำรวจการสะท้อน การเลื่อนขนาน และการหมุนบนระนาบสองมิติ พร้อมกราฟ Desmos แบบโต้ตอบ สูตร สมบัติ และเครื่องคำนวณพิกัด",
+  "lang": "th",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fffdf4",
+  "theme_color": "#e9dfc9",
+  "categories": ["education", "utilities"],
   "icons": [
     {
       "src": "android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "android-chrome-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "shortcuts": [
+    {
+      "name": "การสะท้อน",
+      "short_name": "การสะท้อน",
+      "description": "สำรวจสูตร สมบัติ พิกัด และกราฟของการสะท้อนบนระนาบสองมิติ",
+      "url": "./#/reflection"
+    },
+    {
+      "name": "การเลื่อนขนาน",
+      "short_name": "การเลื่อนขนาน",
+      "description": "สำรวจสูตร สมบัติ พิกัด และกราฟของการเลื่อนขนานบนระนาบสองมิติ",
+      "url": "./#/translation"
+    },
+    {
+      "name": "การหมุน",
+      "short_name": "การหมุน",
+      "description": "สำรวจสูตร สมบัติ พิกัด และกราฟของการหมุนบนระนาบสองมิติ",
+      "url": "./#/rotation"
+    }
+  ]
 }

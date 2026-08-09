@@ -1,4 +1,4 @@
-import { alpha, createTheme } from "@mui/material/styles";
+import { alpha, createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 export type ScrapbookPalette = {
   ink: string;
@@ -60,7 +60,7 @@ const scrapbook: ScrapbookPalette = {
   graphReference: "#90a4ae",
 };
 
-export const theme = createTheme({
+let theme = createTheme({
   shape: { borderRadius: 8 },
   typography: {
     fontFamily: '"Noto Serif Thai", serif',
@@ -116,3 +116,7 @@ export const theme = createTheme({
     },
   },
 });
+
+theme = responsiveFontSizes(theme);
+
+export { theme };

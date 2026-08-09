@@ -11,6 +11,6 @@ export default defineConfig({
     }),
     react(),
   ],
-  base: "/project-geometric-transformation-explorer/",
+  base: "/",
   resolve: { tsconfigPaths: true },
 });
