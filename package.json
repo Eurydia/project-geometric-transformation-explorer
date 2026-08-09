@@ -6,18 +6,20 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist -b gh-pages"
+    "check": "pnpx @biomejs/biome check --write && pnpm tsc --noEmit",
+    "deploy": "gh-pages -d dist -b gh-pages",
+    "prebuild": "pnpm check"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^9.2.0",
-    "@mui/material": "^9.2.0",
-    "@tanstack/react-form": "^1.33.2",
-    "@tanstack/react-router": "^1.170.18",
-    "@tanstack/react-router-devtools": "^1.167.0",
+    "@mui/icons-material": "^9.3.1",
+    "@mui/material": "^9.3.1",
+    "@tanstack/react-form": "^1.33.3",
+    "@tanstack/react-router": "^1.170.23",
+    "@tanstack/react-router-devtools": "^1.167.1",
     "better-react-mathjax": "^3.0.1",
     "desmos": "^1.5.4",
     "react": "^19.2.8",
@@ -25,19 +27,15 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.7",
     "@eslint/js": "^10.0.1",
-    "@tanstack/router-plugin": "^1.168.23",
+    "@tanstack/router-plugin": "^1.168.27",
     "@types/desmos": "^1.11.0",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.4",
-    "eslint": "^10.7.0",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
     "gh-pages": "^6.3.0",
-    "globals": "^17.7.0",
     "typescript": "~7.0.2",
-    "typescript-eslint": "^8.65.0",
-    "vite": "^8.1.5"
+    "vite": "^8.2.1"
   }
 }

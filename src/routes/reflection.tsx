@@ -1,3 +1,10 @@
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { createFileRoute } from "@tanstack/react-router";
+import { MathJax } from "better-react-mathjax";
+import { useState } from "react";
+import type z from "zod";
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
 import { ReflectionFormulaBlog } from "@/components/blogs/reflection-formula-blog";
 import { ReflectionPropertyBlog } from "@/components/blogs/reflection-property-blog";
@@ -9,13 +16,6 @@ import { Collapsible } from "@/components/surface/Collapsible";
 import { useReflectionGraph } from "@/hooks/useReflectionGraph";
 import { AppFormHook } from "@/libs/form/app-form-hooks";
 import { Schema$ReflectionFormData } from "@/types/schemas/form-data/reflection-form";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { createFileRoute } from "@tanstack/react-router";
-import { MathJax } from "better-react-mathjax";
-import { useState } from "react";
-import type z from "zod";
 
 export const Route = createFileRoute("/reflection")({
   component: RouteComponent,
@@ -74,14 +74,10 @@ function RouteComponent() {
           ) : (
             <Stack>
               {result.type === "horizontal" && (
-                <MathJax dynamic>
-                  {`เส้นการสะท้อน: $y=${result.value}$`}
-                </MathJax>
+                <MathJax dynamic>{`เส้นการสะท้อน: $y=${result.value}$`}</MathJax>
               )}
               {result.type === "vertical" && (
-                <MathJax dynamic>
-                  {`เส้นการสะท้อน: $x=${result.value}$`}
-                </MathJax>
+                <MathJax dynamic>{`เส้นการสะท้อน: $x=${result.value}$`}</MathJax>
               )}
               {result.type === "linear" && (
                 <MathJax dynamic>
@@ -98,9 +94,7 @@ function RouteComponent() {
         </Collapsible>
         <Collapsible
           title={
-            <Typography sx={{ fontWeight: 700 }}>
-              {`สมบัติการสะท้อน`}
-            </Typography>
+            <Typography sx={{ fontWeight: 700 }}>{`สมบัติการสะท้อน`}</Typography>
           }
         >
           <ReflectionPropertyBlog />

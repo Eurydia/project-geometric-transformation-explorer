@@ -1,8 +1,8 @@
-import { GraphNotebookPaper } from "@/components/surface/GraphNotebookPaper";
-import { PrimaryNotebookPaper } from "@/components/surface/PrimaryNotebookPaper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import type { FC, PropsWithChildren, ReactNode } from "react";
+import { GraphNotebookPaper } from "@/components/surface/GraphNotebookPaper";
+import { PrimaryNotebookPaper } from "@/components/surface/PrimaryNotebookPaper";
 
 export const SplitLayout: FC<
   PropsWithChildren<{

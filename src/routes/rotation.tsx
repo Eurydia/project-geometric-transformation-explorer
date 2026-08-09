@@ -1,3 +1,10 @@
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { createFileRoute } from "@tanstack/react-router";
+import { MathJax } from "better-react-mathjax";
+import { useState } from "react";
+import type z from "zod/v4";
 import { RotationFormulaBlog } from "@/components/blogs/rotation-formula-blog";
 import { RotationPropertyBlog } from "@/components/blogs/rotation-property-blog";
 import { CoordinateResultDisplay } from "@/components/data-display/result-display";
@@ -8,13 +15,6 @@ import { Collapsible } from "@/components/surface/Collapsible";
 import { useRotationGraph } from "@/hooks/useRotationGraph";
 import { AppFormHook } from "@/libs/form/app-form-hooks";
 import { Schema$RotationFormData } from "@/types/schemas/form-data/rotation-form.schema";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { createFileRoute } from "@tanstack/react-router";
-import { MathJax } from "better-react-mathjax";
-import { useState } from "react";
-import z from "zod/v4";
 
 export const Route = createFileRoute("/rotation")({
   component: RouteComponent,

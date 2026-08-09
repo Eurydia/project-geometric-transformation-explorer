@@ -1,7 +1,7 @@
+import { List, ListItem, ListItemText, Stack } from "@mui/material";
+import { type FC, memo } from "react";
 import prop12 from "@/assets/prop1+2.jpg";
 import prop3 from "@/assets/prop3.jpg";
-import { List, ListItem, ListItemText, Stack } from "@mui/material";
-import { memo, type FC } from "react";
 import { ExpandableImage } from "../data-display/ExpandableImage";
 
 const PROPERTIES = [
@@ -58,10 +58,7 @@ export const RotationPropertyBlog: FC = memo(() => {
           </ListItemText>
         </ListItem>
       </List>
-      <ExpandableImage
-        src={prop3}
-        alt={`แผนภาพแสดงคุณสมบัติที่สามของการหมุน`}
-      />
+      <ExpandableImage src={prop3} alt={`แผนภาพแสดงคุณสมบัติที่สามของการหมุน`} />
     </Stack>
   );
 });

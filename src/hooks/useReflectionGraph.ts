@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import z from "zod";
-import { useDesmos } from "./useDesmos";
+import type z from "zod";
 import { theme } from "@/theme";
 import type { Schema$ReflectionFormData } from "@/types/schemas/form-data/reflection-form";
+import { useDesmos } from "./useDesmos";
 
 export const useReflectionGraph = (selector: string) => {
   const { clearGraph, desmosRef, addLine, addPoint, addPolygon } =

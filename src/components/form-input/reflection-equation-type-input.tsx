@@ -1,9 +1,9 @@
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import { MathJax } from "better-react-mathjax";
 import type { FC } from "react";
 import { AppFormHookContexts } from "@/libs/form/app-form-hook-context";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
 
 export const ReflectionEquationTypeInput: FC = () => {
   const {

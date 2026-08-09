@@ -2,12 +2,12 @@ import Collapse from "@mui/material/Collapse";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import {
-  memo,
-  useCallback,
-  useState,
   type FC,
+  memo,
   type PropsWithChildren,
   type ReactNode,
+  useCallback,
+  useState,
 } from "react";
 
 export const Collapsible: FC<PropsWithChildren<{ title: ReactNode }>> = memo(

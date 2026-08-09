@@ -1,10 +1,10 @@
-import { ScrapbookBackdrop } from "@/components/surface/ScrapbookBackdrop";
-import { theme } from "@/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { MathJaxContext } from "better-react-mathjax";
+import { ScrapbookBackdrop } from "@/components/surface/ScrapbookBackdrop";
+import { theme } from "@/theme";
 
 export const Route = createRootRoute({ component: RouteComponent });
 

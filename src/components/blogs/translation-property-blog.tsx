@@ -1,5 +1,5 @@
-import { Typography, Stack, List, ListItem, ListItemText } from "@mui/material";
-import { memo, type FC } from "react";
+import { List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
+import { type FC, memo } from "react";
 
 const PROPERTIES = [
   "รูปต้นแบบและภาพที่ได้จากการเลื่อนขนานสามารถทับกันได้สนิทโดยไม่ต้องพลิกรูป หรือกล่าวว่ารูปต้นแบบและภาพที่ได้จากการเลื่อนขนานเท่ากันทุกประการ",
@@ -28,5 +28,5 @@ export const TranslationPropertyBlog: FC = memo(
       </Stack>
     );
   },
-  () => true
+  () => true,
 );

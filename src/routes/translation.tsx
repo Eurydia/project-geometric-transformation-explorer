@@ -1,3 +1,10 @@
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { createFileRoute } from "@tanstack/react-router";
+import { MathJax } from "better-react-mathjax";
+import { useState } from "react";
+import type z from "zod/v4";
 import { AttributionBlog } from "@/components/blogs/AttributionBlog";
 import { TranslationFormulaBlog } from "@/components/blogs/translation-formula-blog";
 import { TranslationPropertyBlog } from "@/components/blogs/translation-property-blog";
@@ -9,13 +16,6 @@ import { Collapsible } from "@/components/surface/Collapsible";
 import { useTranslationGraph } from "@/hooks/useTranslationGraph";
 import { AppFormHook } from "@/libs/form/app-form-hooks";
 import { Schema$TranslationFormData } from "@/types/schemas/form-data/translation-form";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { createFileRoute } from "@tanstack/react-router";
-import { MathJax } from "better-react-mathjax";
-import { useState } from "react";
-import type z from "zod/v4";
 
 export const Route = createFileRoute("/translation")({
   component: RouteComponent,
@@ -101,9 +101,7 @@ function RouteComponent() {
         </Collapsible>
         <Collapsible
           title={
-            <Typography sx={{ fontWeight: 700 }}>
-              {`สูตรการเลื่อนขนาน`}
-            </Typography>
+            <Typography sx={{ fontWeight: 700 }}>{`สูตรการเลื่อนขนาน`}</Typography>
           }
         >
           <TranslationFormulaBlog />

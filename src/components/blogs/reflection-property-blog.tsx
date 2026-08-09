@@ -1,5 +1,5 @@
-import { Typography, Stack, List, ListItem, ListItemText } from "@mui/material";
-import { memo, type FC } from "react";
+import { List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
+import { type FC, memo } from "react";
 
 const PROPERTIES = [
   "รูปต้นแบบและภาพที่ได้จากการสะท้อน สามารถทับกันได้สนิทโดยต้องพลิกรูปต้นแบบหรือพลิกภาพที่ได้จากการสะท้อนอย่างหนึ่งอย่างใด หรือกล่าวว่า รูปต้นแบบและภาพที่ได้จากการสะท้อนเท่ากันทุกประการ",
@@ -28,5 +28,5 @@ export const ReflectionPropertyBlog: FC = memo(
       </Stack>
     );
   },
-  () => true
+  () => true,
 );

@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemText, Typography } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
-import { memo, type FC } from "react";
+import { type FC, memo } from "react";
 
 const FORMULAS = [
   `$A(x,y)$ เลื่อนขนาน $\\begin{bmatrix} a \\\\ b\\end{bmatrix}$: $$A'(x+a,y+b)$$`,
@@ -29,5 +29,5 @@ export const TranslationFormulaBlog: FC = memo(
       </List>
     );
   },
-  () => true
+  () => true,
 );

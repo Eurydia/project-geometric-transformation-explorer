@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemText } from "@mui/material";
 import { MathJax } from "better-react-mathjax";
-import { memo, type FC } from "react";
+import { type FC, memo } from "react";
 
 const FORMULAE = [
   `$A(x,y)$ หมุนตามเข็มนาฬิกา $90^{\\circ}$ รอบจุดกำเนิด $(0,0)$: $$A'(y,-x)$$`,

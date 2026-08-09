@@ -1,7 +1,3 @@
-import { DoodleIconFrame } from "@/components/surface/DoodleIconFrame";
-import { HeroNotebookSheet } from "@/components/surface/HeroNotebookSheet";
-import { TopicCardFrame } from "@/components/surface/TopicCardFrame";
-import type { FileRouteTypes } from "@/routeTree.gen";
 import ArchitectureRounded from "@mui/icons-material/ArchitectureRounded";
 import FlipRounded from "@mui/icons-material/FlipRounded";
 import RotateRightRounded from "@mui/icons-material/RotateRightRounded";
@@ -13,6 +9,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { DoodleIconFrame } from "@/components/surface/DoodleIconFrame";
+import { HeroNotebookSheet } from "@/components/surface/HeroNotebookSheet";
+import { TopicCardFrame } from "@/components/surface/TopicCardFrame";
+import type { FileRouteTypes } from "@/routeTree.gen";
 
 const ITEMS: {
   path: FileRouteTypes["fullPaths"];

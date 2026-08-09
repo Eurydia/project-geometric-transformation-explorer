@@ -1,5 +1,5 @@
 import { Box, Button, Dialog, DialogActions, Typography } from "@mui/material";
-import { Fragment, memo, useCallback, useState, type FC } from "react";
+import { type FC, Fragment, memo, useCallback, useState } from "react";
 
 export const ExpandableImage: FC<{
   src: string;

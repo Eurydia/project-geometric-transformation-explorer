@@ -1,5 +1,5 @@
 import z from "zod";
-import { NumericString, Coord2D } from "../generic";
+import { Coord2D, NumericString } from "../generic";
 
 export const Schema$RotationFormData = z.object({
   direction: NumericString,

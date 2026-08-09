@@ -1,8 +1,8 @@
-import { theme } from "@/theme";
 import { useCallback, useEffect, useState } from "react";
-import z from "zod/v4";
-import { useDesmos } from "./useDesmos";
+import type z from "zod/v4";
+import { theme } from "@/theme";
 import type { Schema$TranslationFormData } from "@/types/schemas/form-data/translation-form";
+import { useDesmos } from "./useDesmos";
 
 export const useTranslationGraph = (selector: string) => {
   const { addLine, addPoint, addPolygon, clearGraph, desmosRef } =

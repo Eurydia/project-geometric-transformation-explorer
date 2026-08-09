@@ -1,6 +1,6 @@
-import type { FC, PropsWithChildren } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import type { FC, PropsWithChildren } from "react";
 
 export const PrimaryNotebookPaper: FC<PropsWithChildren> = ({ children }) => (
   <Box sx={{ height: "100%" }}>

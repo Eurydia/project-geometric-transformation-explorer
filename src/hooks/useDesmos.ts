@@ -1,5 +1,5 @@
+import { useCallback, useEffect, useRef } from "react";
 import { theme } from "@/theme";
-import { useRef, useEffect, useCallback } from "react";
 
 type AddPointOptions = {
   texName: string;
@@ -136,19 +136,20 @@ export const useDesmos = (selector: string) => {
 
     return () => {
       if (desmosRef.current !== undefined) {
-        desmosRef.current!.destroy();
+        desmosRef.current.destroy();
       }
       desmosRef.current = undefined;
     };
   }, [selector]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: need this ref to keep expr updated
   const clearGraph = useCallback(() => {
     if (desmosRef.current !== undefined) {
       desmosRef.current.removeExpressions(
         desmosRef.current
           .getExpressions()
-          .filter(({ id }) => id !== undefined)
-          .map(({ id }) => ({ id: id! })),
+          .filter((expr): expr is { id: string } => expr.id !== undefined)
+          .map(({ id }) => ({ id })),
       );
     }
   }, [desmosRef]);

@@ -3,7 +3,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { MathJax } from "better-react-mathjax";
 import { Fragment } from "react";
-import z from "zod/v4";
+import type z from "zod/v4";
 import { AppFormHook } from "@/libs/form/app-form-hooks";
 import type { Schema$RotationFormData } from "@/types/schemas/form-data/rotation-form.schema";
 
