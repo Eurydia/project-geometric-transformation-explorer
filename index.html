@@ -3,53 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>เครื่องมือสำรวจการแปลงทางเรขาคณิต</title>
+    <title>เครื่องมือแปลงทางเรขาคณิต</title>
     <meta
       name="description"
       content="สำรวจการสะท้อน การเลื่อนขนาน และการหมุนบนระนาบสองมิติ พร้อมกราฟ Desmos แบบโต้ตอบ สูตร สมบัติ และเครื่องคำนวณพิกัด"
     />
     <meta
       name="robots"
-      content="max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
     />
-    <link
-      rel="canonical"
-      href="https://eurydia.github.io/project-geometric-transformation-explorer/"
-    />
+    <meta name="application-name" content="เครื่องมือสำรวจการแปลงทางเรขาคณิต" />
+    <meta name="theme-color" content="#e9dfc9" />
+    <meta name="color-scheme" content="light" />
+    <link rel="canonical" href="https://geotransviz.eurydia.work/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="th_TH" />
-    <meta property="og:title" content="เครื่องมือสำรวจการแปลงทางเรขาคณิต" />
+    <meta property="og:title" content="เครื่องมือแปลงทางเรขาคณิต" />
     <meta
       property="og:description"
       content="สำรวจการสะท้อน การเลื่อนขนาน และการหมุนบนระนาบสองมิติ พร้อมกราฟ Desmos แบบโต้ตอบ สูตร สมบัติ และเครื่องคำนวณพิกัด"
     />
-    <meta
-      property="og:url"
-      content="https://eurydia.github.io/project-geometric-transformation-explorer/"
-    />
+    <meta property="og:url" content="https://geotransviz.eurydia.work/" />
     <meta property="og:site_name" content="เครื่องมือสำรวจการแปลงทางเรขาคณิต" />
     <meta
       property="og:image"
-      content="https://eurydia.github.io/project-geometric-transformation-explorer/og.png"
+      content="https://geotransviz.eurydia.work/og.png"
+    />
+    <meta
+      property="og:image:secure_url"
+      content="https://geotransviz.eurydia.work/og.png"
     />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="2880" />
-    <meta property="og:image:height" content="1552" />
+    <meta property="og:image:height" content="1800" />
     <meta
       property="og:image:alt"
       content="ภาพตัวอย่างเครื่องมือสำรวจการสะท้อน การเลื่อนขนาน และการหมุนบนระนาบสองมิติ"
     />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="เครื่องมือสำรวจการแปลงทางเรขาคณิต" />
+    <meta name="twitter:url" content="https://geotransviz.eurydia.work/" />
+    <meta name="twitter:title" content="เครื่องมือแปลงทางเรขาคณิต" />
     <meta
       name="twitter:description"
       content="สำรวจการสะท้อน การเลื่อนขนาน และการหมุนบนระนาบสองมิติ พร้อมกราฟ Desmos แบบโต้ตอบ สูตร สมบัติ และเครื่องคำนวณพิกัด"
     />
     <meta
       name="twitter:image"
-      content="https://eurydia.github.io/project-geometric-transformation-explorer/og.png"
+      content="https://geotransviz.eurydia.work/og.png"
     />
     <meta
       name="twitter:image:alt"
@@ -59,56 +61,101 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "เครื่องมือสำรวจการแปลงทางเรขาคณิต",
-        "description": "สำรวจการสะท้อน การเลื่อนขนาน และการหมุนบนระนาบสองมิติ พร้อมกราฟ Desmos แบบโต้ตอบ สูตร สมบัติ และเครื่องคำนวณพิกัด",
-        "url": "https://eurydia.github.io/project-geometric-transformation-explorer/",
-        "image": "https://eurydia.github.io/project-geometric-transformation-explorer/og.png",
-        "inLanguage": "th",
-        "applicationCategory": "EducationalApplication",
-        "operatingSystem": "Any",
-        "browserRequirements": "Requires JavaScript and a modern web browser",
-        "isAccessibleForFree": true,
-        "isFamilyFriendly": true,
-        "interactivityType": "active",
-        "educationalUse": "instruction",
-        "featureList": [
-          "การสะท้อนบนระนาบสองมิติ",
-          "การเลื่อนขนานบนระนาบสองมิติ",
-          "การหมุนบนระนาบสองมิติ",
-          "กราฟ Desmos แบบโต้ตอบ",
-          "เครื่องคำนวณพิกัด"
-        ],
-        "creator": [
+        "@graph": [
           {
-            "@type": "Person",
-            "name": "เจนจิรา แจ้งมาก"
+            "@type": "WebSite",
+            "@id": "https://geotransviz.eurydia.work/#website",
+            "url": "https://geotransviz.eurydia.work/",
+            "name": "เครื่องมือสำรวจการแปลงทางเรขาคณิต",
+            "inLanguage": "th"
           },
           {
-            "@type": "Person",
-            "name": "ธนกร พุทธรักษา"
+            "@type": "WebApplication",
+            "@id": "https://geotransviz.eurydia.work/#application",
+            "url": "https://geotransviz.eurydia.work/",
+            "name": "เครื่องมือสำรวจการแปลงทางเรขาคณิต",
+            "description": "สำรวจการสะท้อน การเลื่อนขนาน และการหมุนบนระนาบสองมิติ พร้อมกราฟ Desmos แบบโต้ตอบ สูตร สมบัติ และเครื่องคำนวณพิกัด",
+            "image": "https://geotransviz.eurydia.work/og.png",
+            "inLanguage": "th",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript and a modern web browser",
+            "isAccessibleForFree": true,
+            "isFamilyFriendly": true,
+            "interactivityType": "active",
+            "educationalUse": "instruction",
+            "featureList": [
+              "การสะท้อนบนระนาบสองมิติ",
+              "การเลื่อนขนานบนระนาบสองมิติ",
+              "การหมุนบนระนาบสองมิติ",
+              "กราฟ Desmos แบบโต้ตอบ",
+              "เครื่องคำนวณพิกัด"
+            ],
+            "creator": [
+              {
+                "@type": "Person",
+                "name": "เจนจิรา แจ้งมาก"
+              },
+              {
+                "@type": "Person",
+                "name": "ธนกร พุทธรักษา"
+              }
+            ]
           }
         ]
       }
     </script>
 
-    <link rel="icon" href="/project-geometric-transformation-explorer/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/project-geometric-transformation-explorer/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/project-geometric-transformation-explorer/favicon-16x16.png" />
-    <link rel="apple-touch-icon" href="/project-geometric-transformation-explorer/apple-touch-icon.png" />
-    <link rel="manifest" href="/project-geometric-transformation-explorer/site.webmanifest" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@100..900&display=swap"
       rel="stylesheet"
     />
     <script src="https://www.desmos.com/api/v1.11/calculator.js?apiKey=c7d4692b24d5441caf04ea36aa2417fc"></script>
-    <meta name="theme-color" content="#e9dfc9">
-    <script type="module" crossorigin src="/project-geometric-transformation-explorer/assets/index-D0bg_MTc.js"></script>
-    <link rel="modulepreload" crossorigin href="/project-geometric-transformation-explorer/assets/Box-B774n63A.js">
-    <link rel="modulepreload" crossorigin href="/project-geometric-transformation-explorer/assets/routes-DxSC7x4q.js">
-    <link rel="modulepreload" crossorigin href="/project-geometric-transformation-explorer/assets/MathJaxContext-DCrjnH7K.js">
+    <script type="module" crossorigin src="/assets/index-DKmGv6X8.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/Box-DA7Vo0oc.js">
+    <link rel="modulepreload" crossorigin href="/assets/theme-DFBEVCHN.js">
   </head>
   <body>
-    <div id="root"></div>
+    <section id="root">
+      <header>
+        <h1>เครื่องมือสำรวจการแปลงทางเรขาคณิต</h1>
+        <p>
+          เรียนรู้การสะท้อน การเลื่อนขนาน และการหมุนบนระนาบสองมิติ
+          ผ่านกราฟและเครื่องคำนวณแบบโต้ตอบ
+        </p>
+        <nav>
+          <ul>
+            <li><a href="/#/">หน้าหลัก</a></li>
+            <li><a href="/#/reflection">การสะท้อน</a></li>
+            <li><a href="/#/translation">การเลื่อนขนาน</a></li>
+            <li><a href="/#/rotation">การหมุน</a></li>
+          </ul>
+        </nav>
+      </header>
+      <main>
+        <section>
+          <h2>สำรวจการสะท้อนบนระนาบสองมิติ</h2>
+          <p>เรียนรู้สูตรและสมบัติ พร้อมคำนวณพิกัดและดูกราฟ Desmos แบบโต้ตอบ</p>
+        </section>
+        <section>
+          <h2>สำรวจการเลื่อนขนานบนระนาบสองมิติ</h2>
+          <p>
+            ทดลองกำหนดเวกเตอร์การเลื่อน คำนวณพิกัด
+            และเปรียบเทียบรูปก่อนและหลังการแปลง
+          </p>
+        </section>
+        <section>
+          <h2>สำรวจการหมุนบนระนาบสองมิติ</h2>
+          <p>
+            ทดลองกำหนดจุดศูนย์กลาง มุม และทิศทางการหมุน พร้อมดูผลลัพธ์บนกราฟ
+          </p>
+        </section>
+      </main>
+    </section>
   </body>
 </html>
