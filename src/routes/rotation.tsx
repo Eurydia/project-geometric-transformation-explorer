@@ -120,23 +120,21 @@ function RouteComponent() {
         </Collapsible>
         <Collapsible
           title={
-            <Typography
-              component="h2"
-              variant="subtitle1"
-            >{`สมบัติการหมุน`}</Typography>
-          }
-        >
-          <RotationFormulaBlog />
-        </Collapsible>
-        <Collapsible
-          title={
-            <Typography
-              component="h2"
-              variant="subtitle1"
-            >{`สูตรการหมุน`}</Typography>
+            <Typography component="h2" variant="subtitle1">
+              {`สมบัติการหมุน`}
+            </Typography>
           }
         >
           <RotationPropertyBlog />
+        </Collapsible>
+        <Collapsible
+          title={
+            <Typography component="h2" variant="subtitle1">
+              {`สูตรการหมุน`}
+            </Typography>
+          }
+        >
+          <RotationFormulaBlog />
         </Collapsible>
       </Stack>
     </SplitLayout>
